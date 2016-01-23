@@ -7,6 +7,10 @@ $ bower i
 ```
 
 ```
+$ npm i
+```
+
+```
 $ gulp build
 ```
 
