@@ -1,0 +1,19 @@
+{
+  "name": "web-player",
+  "version": "0.0.1",
+  "authors": [
+    "sergey.illarionov <easthunch@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendors/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "*"
+  }
+}
