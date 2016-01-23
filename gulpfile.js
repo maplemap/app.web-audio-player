@@ -53,8 +53,9 @@ gulp.task('html:build', function(){
 //js
 gulp.task('js:build', function(){
     gulp.src(path.src.js)
-        .pipe(concat('app.js'))
+        .pipe(concat('main.js'))
         .pipe(uglify())
+        .pipe(rename({suffix: ".min"}))
         .pipe(gulp.dest(path.build.js))
 });
 
