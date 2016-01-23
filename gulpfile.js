@@ -25,6 +25,9 @@ var path = {
     src: { //path of source
         html: 'src/*.html',
         js: [
+                'bower_components/jquery/dist/jquery.js',
+                'bower_components/underscore/underscore.js',
+                'bower_components/backbone/backbone.js',
                 'src/js/app.js'
             ],
         css: 'src/css/main.less',
