@@ -17,6 +17,7 @@ var gulp = require('gulp'),
 var path = {
     build: { //path of build
         html: 'build/',
+        favicon: 'build/',
         js: 'build/js',
         css: 'build/css',
         img: 'build/img',
@@ -24,6 +25,10 @@ var path = {
     },
     src: { //path of source
         html: 'src/*.html',
+        favicon: [
+            'src/apple-touch-favicon.png',
+            'src/favicon.png'
+        ],
         js: [
                 'bower_components/jquery/dist/jquery.js',
                 'bower_components/underscore/underscore.js',
@@ -48,10 +53,23 @@ var path = {
     clean: './build'
 };
 
+
 //html
 gulp.task('html:build', function(){
     gulp.src(path.src.html)
         .pipe(gulp.dest(path.build.html))
+});
+
+//favicon
+gulp.task('favicon:build', function(){
+    gulp.src(path.src.favicon)
+        .pipe(imagemin({
+            progressive: true,
+            svgoPlugins: [{removeViewBox: false}],
+            use: [pngquant()],
+            interlaced: true
+        }))
+        .pipe(gulp.dest(path.build.favicon))
 });
 
 //js
@@ -93,6 +111,7 @@ gulp.task('fonts:build',function(){ // copy fonts from source to build
 
 gulp.task('build', [ // building task
     'html:build',
+    'favicon:build',
     'js:build',
     'css:build',
     'fonts:build',
@@ -102,6 +121,9 @@ gulp.task('build', [ // building task
 gulp.task('watch', function(event, cb){
     watch([path.watch.html], function(event, cb){
         gulp.start('html:build');
+    });
+    watch([path.watch.favicon], function(event, cb){
+        gulp.start('favicon:build');
     });
     watch([path.watch.css], function(event, cb){
         gulp.start('css:build');
