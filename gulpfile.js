@@ -28,6 +28,9 @@ var path = {
                 'bower_components/jquery/dist/jquery.js',
                 'bower_components/underscore/underscore.js',
                 'bower_components/backbone/backbone.js',
+                'js/models/song.js',
+                'js/views/player.js',
+                'js/views/song.js',
                 'src/js/app.js'
             ],
         css: 'src/css/main.less',
