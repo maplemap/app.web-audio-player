@@ -1,6 +1,7 @@
 @import (inline) "partials/reset.css";
+@import "partials/web-player.less";
 
-/******** default **********/
+/*** default ****/
 .clear-fix {
   &::after {
     content: '';
@@ -9,4 +10,12 @@
     clear: both;
     visibility: hidden;
   }
+}
+
+/*** player ****/
+#widget {
+  width: 600px;
+  height: 400px;
+  text-align: center;
+  margin: 100px auto;
 }

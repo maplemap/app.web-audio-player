@@ -61,11 +61,32 @@ table {
     outline: medium none;
 }
 
-/******** default **********/
+/**
+  WEB-PLAYER STYLES START
+  **/
+/*** fonts ***/
+@font-face {
+  font-family: 'proxima-Nova-Regular';
+  src: url('../fonts/proxima_nova_regular-webfont.eot');
+  src: url('../fonts/proxima_nova_regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/proxima_nova_regular-webfont.woff2') format('woff2'), url('../fonts/proxima_nova_regular-webfont.woff') format('woff'), url('../fonts/proxima_nova_regular-webfont.ttf') format('truetype'), url('../fonts/proxima_nova_regular-webfont.svg#proxima_nova_rgregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/**
+  WEB-PLAYER STYLES END
+  **/
+/*** default ****/
 .clear-fix::after {
   content: '';
   display: block;
   height: 0;
   clear: both;
   visibility: hidden;
+}
+/*** player ****/
+#widget {
+  width: 600px;
+  height: 400px;
+  text-align: center;
+  margin: 100px auto;
 }
