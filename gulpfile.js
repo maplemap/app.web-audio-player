@@ -19,6 +19,7 @@ var path = {
         html: 'build/',
         favicon: 'build/',
         js: 'build/js',
+        views: 'build/views',
         css: 'build/css',
         img: 'build/img',
         fonts: 'build/fonts'
@@ -34,18 +35,22 @@ var path = {
                 'bower_components/underscore/underscore.js',
                 'bower_components/backbone/backbone.js',
                 'bower_components/twig.js/twig.js',
-                'js/models/song.js',
-                'js/views/player.js',
-                'js/views/song.js',
+                'src/js/plugins/twigTemplater.js',
+                'src/js/models/song.js',
+                'src/js/views/player.js',
+                'src/js/views/song.js',
                 'src/js/app.js'
             ],
+        views: 'src/views/**/*.*',
         css: 'src/css/main.less',
         img: 'src/img/**/*.*',
         fonts: 'src/fonts/**/*.*'
     },
     watch: { //see after
         html: 'src/**/*.html',
+        favicon: 'src/**/*.png',
         js: 'src/js/**/*.js',
+        views: 'src/views/**/*.*',
         css: 'src/css/**/*.less',
         img: 'src/img/**/*.*',
         fonts: 'src/fonts/**/*.*'
@@ -81,6 +86,12 @@ gulp.task('js:build', function(){
         .pipe(gulp.dest(path.build.js))
 });
 
+//views
+gulp.task('views:build',function(){ // copy views from source to build
+    gulp.src(path.src.views)
+        .pipe(gulp.dest(path.build.views))
+});
+
 //css
 gulp.task('css:build', function(){
     gulp.src(path.src.css)
@@ -113,6 +124,7 @@ gulp.task('build', [ // building task
     'html:build',
     'favicon:build',
     'js:build',
+    'views:build',
     'css:build',
     'fonts:build',
     'img:build'
@@ -130,6 +142,9 @@ gulp.task('watch', function(event, cb){
     });
     watch([path.watch.js], function(event, cb){
         gulp.start('js:build');
+    });
+    watch([path.watch.views], function(event, cb){
+        gulp.start('views:build');
     });
     watch([path.watch.img], function(event, cb){
         gulp.start('img:build');
