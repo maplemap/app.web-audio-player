@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Web Player</title>
+    <link rel="stylesheet" href="../dist/css/web-player.min.css" />
+</head>
+<body>
+    <div id="widget"></div>
+<script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../bower_components/underscore/underscore-min.js"></script>
+<script type="text/javascript" src="../bower_components/backbone/backbone-min.js"></script>
+<script type="text/javascript" src="../dist/js/web-player.min.js"></script>
+<script>
+    var app = app || {};
+
+    $(function() {
+        new app.PlayerView({
+            el: '#widget'
+        });
+    });
+</script>
+</body>
+</html>
