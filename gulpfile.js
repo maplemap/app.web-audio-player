@@ -35,7 +35,7 @@ var path = {
                 'bower_components/underscore/underscore.js',
                 'bower_components/backbone/backbone.js',
                 'bower_components/twig.js/twig.js',
-                'src/js/plugins/twigTemplater.js',
+                'src/js/helpers/templater.js',
                 'src/js/models/song.js',
                 'src/js/views/player.js',
                 'src/js/views/song.js',
