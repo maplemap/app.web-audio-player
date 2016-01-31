@@ -14,25 +14,27 @@ app.PlayerView = Backbone.View.extend({
 
 var TmpEngine = (function () {
 
-    var settings = {
-            templater: {
-                name: 'twig',
-                fileResolution: '.html.twig'
-            },
-            path: {
-                templates: 'views/'
-            }
-        },
-
-        render = function (tmpName, data) {
+    var render = function (tmpName, data) {
+            data = data || {};
             if( Templates[tmpName] ) return Templates[tmpName](data);
         },
 
         Templates = {
             player: function (data) {
-                return '<div id="webPlayer">\
-                            <div class="header">\
-                               ' + data.phrase + '\
+                return '<div id="webAudioPlayer">\
+                            <div class="wap-header">\
+                                <div class="wap-logo"></div>\
+                            </div>\
+                            <ul class="wap-playlist">\
+                                <li>We’ll be coming back</li>\
+                                <li>We’ll be coming back</li>\
+                                <li>We’ll be coming back</li>\
+                                <li>We’ll be coming back</li>\
+                                <li>We’ll be coming back</li>\
+                                <li>We’ll be coming back</li>\
+                                <li>We’ll be coming back</li>\
+                            </ul>\
+                            <div class="wap-footer">\
                             </div>\
                         </div>'
             }

@@ -1,5 +1,13 @@
 
-@playerBg: #272e2a;
+@player-bg: #272e2a;
+@player-border-radius: 10px;
+@wap-header-bg: #f86f05;
+@wap-header-height: 60px;
+@wap-footer-bg: #1b1f1c;
+@wap-playlist-width: 278px;
+@wap-playlist-bg: #fff;
+@wap-song-even-bg: #ddd8d3;
+@wap-footer-height: 54px;
 
 @font-face {
     font-family: 'Proxima-Nova-Regular';
@@ -13,21 +21,72 @@
     font-style: normal;
 }
 
-#webPlayer {
+#webAudioPlayer {
+  position: relative;
   width: 100%;
-  height: 430px;
-  max-width: 580px;
-  min-width: 270px;
+  height: 430px - @wap-header-height - @wap-footer-height + 8px;
+  max-width: 578px;
+  min-width: @wap-playlist-width;
   font-family: Proxima-Nova-Regular, sans-serif;
-  border-radius: 10px;
-  background: @playerBg;
+  margin: @wap-header-height*2 auto @wap-footer-height*2 auto;
+  background: @player-bg;
 
-  .header {
-    height: 60px;
+  .wap-header,
+  .wap-playlist,
+  .wap-footer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+  }
+
+  .wap-header {
+    top: -@wap-header-height;
+    height: @wap-header-height;
+    border-top-left-radius: @player-border-radius;
+    border-top-right-radius: @player-border-radius;
+    text-align: center;
+    line-height: @wap-header-height - 3px;
+    background: @wap-header-bg;
+
+    .wap-logo {
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      vertical-align: middle;
+      background: url("../img/wap-logo.png") no-repeat;
+    }
+  }
+
+  .wap-footer {
+    bottom: -@wap-footer-height;
+    height: @wap-footer-height;
+    border-bottom-left-radius: @player-border-radius;
+    border-bottom-right-radius: @player-border-radius;
+    background: @wap-footer-bg;
+  }
+
+  .wap-playlist {
+    top: 0;
+    left: auto;
+    right: 0;
+    width: @wap-playlist-width;
+    height: 100%;
+    min-width: 278px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    box-shadow: inset 0 -20px 24px -6px #fff;
+    background: @wap-playlist-bg;
+
+    li {
+      list-style-type: none;
+      color: #353535;
+      font-size: 16px;
+      padding: 15px 0 15px 35px;
+
+      &:nth-child(even) {
+        background: @wap-song-even-bg;
+      }
+    }
   }
 }
-
-/**
-  WEB-PLAYER STYLES END
-  **/
-
