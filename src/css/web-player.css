@@ -1,9 +1,5 @@
-/**
-  WEB-PLAYER STYLES START
-  **/
-/*** fonts ***/
 @font-face {
-  font-family: 'proxima-Nova-Regular';
+  font-family: 'Proxima-Nova-Regular';
   src: url('../fonts/proxima_nova_regular-webfont.eot');
   src: url('../fonts/proxima_nova_regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/proxima_nova_regular-webfont.woff2') format('woff2'), url('../fonts/proxima_nova_regular-webfont.woff') format('woff'), url('../fonts/proxima_nova_regular-webfont.ttf') format('truetype'), url('../fonts/proxima_nova_regular-webfont.svg#proxima_nova_rgregular') format('svg');
   font-weight: normal;
@@ -14,6 +10,7 @@
   height: 430px;
   max-width: 580px;
   min-width: 270px;
+  font-family: Proxima-Nova-Regular, sans-serif;
   border-radius: 10px;
   background: #272e2a;
 }
