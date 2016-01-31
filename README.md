@@ -1,17 +1,13 @@
+#Web Audio Player
+
 ## Usage
 
-run in project's folder
+first of all
 
-```
-$ bower i
-```
+``$ bower i``
 
-```
-$ npm i
-```
+``$ npm i``
 
-```
-$ gulp build
-```
+``$ gulp build``
 
-copy all from `build/` folder on your web-server
+and than run ``index.html`` in ``test/``
