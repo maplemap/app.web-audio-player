@@ -20,20 +20,47 @@ var TmpEngine = (function () {
         },
 
         Templates = {
-            player: function (data) {
+            player: function () {
                 return '<div id="webAudioPlayer">\
                             <div class="wap-header">\
-                                <div class="wap-logo"></div>\
+                                <span class="wap-logo"></span>\
                             </div>\
-                            <ul class="wap-playlist">\
-                                <li>We’ll be coming back</li>\
-                                <li>We’ll be coming back</li>\
-                                <li>We’ll be coming back</li>\
-                                <li>We’ll be coming back</li>\
-                                <li>We’ll be coming back</li>\
-                                <li>We’ll be coming back</li>\
-                                <li>We’ll be coming back</li>\
-                            </ul>\
+                            <div class="wap-playlist">\
+                                 <ul class="wap-tracker">\
+                                    <li class="active">\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="wap-track-name">We’ll be coming back</span>\
+                                        <span class="wap-track-duration">3:55</span>\
+                                    </li>\
+                        </ul>\
+                            </div>\
                             <div class="wap-footer">\
                             </div>\
                         </div>'
