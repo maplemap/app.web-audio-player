@@ -14,54 +14,59 @@ app.PlayerView = Backbone.View.extend({
 
 var TmpEngine = (function () {
 
-    var render = function (tmpName, data) {
+    var settings = {
+            playerID: 'webAudioPlayer',
+            classPrefix: 'wap'
+        },
+        render = function (tmpName, data) {
             data = data || {};
             if( Templates[tmpName] ) return Templates[tmpName](data);
         },
 
         Templates = {
             player: function () {
-                return '<div id="webAudioPlayer">\
-                            <div class="wap-header">\
-                                <span class="wap-logo"></span>\
+                return '<div id="'+ settings.playerID +'">\
+                            <div class="'+ settings.classPrefix +'-header">\
+                                <span class="'+ settings.classPrefix +'-logo"></span>\
                             </div>\
-                            <div class="wap-playlist">\
-                                 <ul class="wap-tracker">\
+                            <div class="'+ settings.classPrefix +'-playlist">\
+                                 <ul class="'+ settings.classPrefix +'-tracker">\
                                     <li class="active">\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="wap-track-name">We’ll be coming back</span>\
-                                        <span class="wap-track-duration">3:55</span>\
+                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
-                        </ul>\
+                                 </ul>\
                             </div>\
-                            <div class="wap-footer">\
+                            <div class="wap">\
+                            <div class="'+ settings.classPrefix +'-footer">\
                             </div>\
                         </div>'
             }
