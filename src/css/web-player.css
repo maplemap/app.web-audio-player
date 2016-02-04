@@ -9,7 +9,7 @@
   position: relative;
   width: 100%;
   height: 324px;
-  max-width: 578px;
+  max-width: 580px;
   min-width: 278px;
   font-family: Proxima-Nova-Regular, sans-serif;
   margin: 120px auto 108px auto;
@@ -17,6 +17,7 @@
 }
 #webAudioPlayer .wap-header,
 #webAudioPlayer .wap-playlist,
+#webAudioPlayer .wap-information,
 #webAudioPlayer .wap-footer {
   position: absolute;
   width: 100%;
@@ -49,7 +50,7 @@
   top: 0;
   left: auto;
   right: 0;
-  width: 278px;
+  width: 50%;
   height: 100%;
   min-width: 278px;
   overflow: hidden;
@@ -87,4 +88,17 @@
 #webAudioPlayer .wap-playlist .wap-tracker .wap-track-duration {
   float: right;
   color: #9e9e9e;
+}
+#webAudioPlayer .wap-information {
+  width: 50%;
+  background: #272e2a;
+}
+#webAudioPlayer .wap-information .wap-album-cover {
+  width: 225px;
+  height: 225px;
+  margin: 0 auto 0 auto;
+}
+#webAudioPlayer .wap-information .wap-album-cover img {
+  max-width: 100%;
+  border-radius: 5px;
 }

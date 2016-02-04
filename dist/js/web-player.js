@@ -65,7 +65,11 @@ var TmpEngine = (function () {
                                     </li>\
                                  </ul>\
                             </div>\
-                            <div class="wap">\
+                            <div class="'+ settings.classPrefix +'-information">\
+                                <div class="'+ settings.classPrefix +'-album-cover">\
+                                    <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
+                                </div>\
+                            </div>\
                             <div class="'+ settings.classPrefix +'-footer">\
                             </div>\
                         </div>'
