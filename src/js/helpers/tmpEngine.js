@@ -57,6 +57,9 @@ var TmpEngine = (function () {
                                 <div class="'+ settings.classPrefix +'-album-cover">\
                                     <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
                                 </div>\
+                                <div class="'+ settings.classPrefix +'-track-name">We’ll be coming back</div>\
+                                <div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
+                                <div class="'+ settings.classPrefix +'-album-name">18 months</div>\
                             </div>\
                             <div class="'+ settings.classPrefix +'-footer">\
                             </div>\

@@ -7,9 +7,8 @@
 @header-bg: #f86f05;
 @header-height: 60px;
 @footer-bg: #1b1f1c;
-@information-width: 50%;
 @information-bg: #272e2a;
-@playlist-width: 50%;
+@playlist-width: 48%;
 @playlist-bg: #fff;
 @song-even-bg: #ddd8d3;
 @footer-height: 54px;
@@ -92,6 +91,7 @@
         list-style-type: none;
         color: #353535;
         font-size: 16px;
+        font-family: Proxima-Nova-Regular, sans-serif;
         cursor: pointer;
         padding: 15px 30px 15px 35px;
 
@@ -122,18 +122,56 @@
   }
 
   .@{class-prefix}-information {
-    width: @information-width;
+    width: 100 - @playlist-width;
     background: @information-bg;
 
     .@{class-prefix}-album-cover {
       width: 225px;
       height: 225px;
-      margin: 0 auto 0 auto;
+      margin: 30px auto 0 auto;
 
       img {
         max-width: 100%;
         border-radius: 5px;
       }
+    }
+
+    .@{class-prefix}-track-name,
+    .@{class-prefix}-author,
+    .@{class-prefix}-album-name {
+      color: #536259;
+      width: 85%;
+      text-align: center;
+      font-family: Proxima-Nova-Regular, sans-serif;
+      margin: 0 auto;
+    }
+    .@{class-prefix}-track-name {
+      color: #fff;
+      font-size: 16px;
+      text-transform: uppercase;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-top: 7px;
+
+      &::first-letter {
+        font-size: 20px;
+      }
+    }
+    .@{class-prefix}-author,
+    .@{class-prefix}-album-name {
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .@{class-prefix}-author {
+      margin-top: -2px;
+
+      &::first-letter {
+        font-size: 14px;
+      }
+    }
+    .@{class-prefix}-album-name {
+      margin-top: 4px;
     }
   }
 }
