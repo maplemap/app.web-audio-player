@@ -64,6 +64,13 @@ var TmpEngine = (function () {
                             <div class="'+ settings.classPrefix +'-footer">\
                             </div>\
                         </div>'
+            },
+
+            track: function () {
+                return '<li>\
+                          <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
+                          <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                        </li>'
             }
         };
 
