@@ -67,7 +67,7 @@ var TmpEngine = (function () {
                             </div>\
                             <div class="'+ settings.classPrefix +'-information">\
                                 <div class="'+ settings.classPrefix +'-album-cover">\
-                                    <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
+                                    <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="default album image" />\
                                 </div>\
                                 <div class="'+ settings.classPrefix +'-track-name">We’ll be coming back</div>\
                                 <div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
