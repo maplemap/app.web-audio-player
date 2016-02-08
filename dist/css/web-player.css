@@ -102,11 +102,15 @@
   background-size: cover;
 }
 #webAudioPlayer .wap-information .wap-album-cover,
-#webAudioPlayer .wap-information .wap-album-cover img {
+#webAudioPlayer .wap-information .wap-album-cover img.cover-image {
   border-radius: 5px;
 }
-#webAudioPlayer .wap-information .wap-album-cover img {
+#webAudioPlayer .wap-information .wap-album-cover img.cover-image {
+  display: none;
   max-width: 100%;
+}
+#webAudioPlayer .wap-information .wap-album-cover img.cover-image.active {
+  display: block;
 }
 #webAudioPlayer .wap-information .wap-track-name,
 #webAudioPlayer .wap-information .wap-author,

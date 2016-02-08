@@ -133,11 +133,15 @@
       background-size: cover;
 
       &,
-      img {
+      img.cover-image {
         border-radius: 5px;
       }
-      img {
+      img.cover-image {
+        display: none;
         max-width: 100%;
+      }
+      img.cover-image.active {
+        display: block;
       }
     }
 
