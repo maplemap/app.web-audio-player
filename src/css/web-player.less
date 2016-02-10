@@ -68,6 +68,59 @@
     border-bottom-left-radius: @player-border-radius;
     border-bottom-right-radius: @player-border-radius;
     background: @footer-bg;
+
+    .@{class-prefix}-controls {
+      text-align: left;
+      padding: 0;
+      margin: 12px 0 0 37px;
+
+      li {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .prev,
+      .next,
+      .play-pause {
+        height: 25px;
+        cursor: pointer;
+        background: url("../img/player-controls-spryte.png") no-repeat;
+      }
+      .prev,
+      .next {
+        width: 17px;
+      }
+      .next {
+        margin-left: 4px;
+        background-position: -19px 0;
+      }
+      .play-pause {
+        width: 25px;
+        margin-left: 4px;
+        background-position: -36px 0;
+
+        &.active {
+          background-position: -60px 0;
+        }
+      }
+
+      #timeline {
+        width: 265px;
+        cursor: pointer;
+        margin-left: 10px;
+        background: #262c28;
+
+        &,
+        .ui-slider-range {
+          height: 18px;
+          border-radius: 5px;
+        }
+
+        .ui-slider-range {
+          background: #d07d3c;
+        }
+      }
+    }
   }
 
   .@{class-prefix}-playlist {
@@ -78,6 +131,7 @@
     height: 100%;
     min-width: 278px;
     overflow: hidden;
+    overflow-y: scroll;
     -moz-box-shadow: inset 0 -20px 20px -20px #000;
     -webkit-box-shadow: inset 0 -20px 20px -20px #000;
     box-shadow: inset 0 -20px 20px -20px #000;

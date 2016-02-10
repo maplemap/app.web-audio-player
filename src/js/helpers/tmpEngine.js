@@ -62,6 +62,12 @@ var TmpEngine = (function () {
                                 <div class="'+ settings.classPrefix +'-album-name">18 months</div>\
                             </div>\
                             <div class="'+ settings.classPrefix +'-footer">\
+                                <ul class="'+ settings.classPrefix +'-controls">\
+                                   <li class="prev"></li>\
+                                   <li class="play-pause"></li>\
+                                   <li class="next"></li>\
+                                   <li id="timeline"></li>\
+                                </ul>\
                             </div>\
                         </div>'
             },

@@ -1,10 +1,25 @@
 'use strict';
-
 var app = app || {};
 
+
 app.PlayerView = Backbone.View.extend({
-    
+
     initialize: function () {
+        this.render();
+    },
+
+    render: function () {
         this.$el.html( TmpEngine.render('player', {phrase: 'Hello!!!'}) );
+        this.initTimeline();
+
+        return this;
+    },
+
+    initTimeline: function () {
+        this.$("#timeline").slider({
+            range: "min",
+            min: 0,
+            max: 100
+        });
     }
 });
