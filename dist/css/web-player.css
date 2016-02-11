@@ -49,17 +49,18 @@
 #webAudioPlayer .wap-footer .wap-controls {
   text-align: left;
   padding: 0;
-  margin: 12px 0 0 37px;
+  margin: 12px 0 0 32px;
 }
 #webAudioPlayer .wap-footer .wap-controls li {
   display: inline-block;
   vertical-align: middle;
+  cursor: pointer;
+  margin-left: 4px;
 }
 #webAudioPlayer .wap-footer .wap-controls .prev,
 #webAudioPlayer .wap-footer .wap-controls .next,
 #webAudioPlayer .wap-footer .wap-controls .play-pause {
   height: 25px;
-  cursor: pointer;
   background: url("../img/player-controls-spryte.png") no-repeat;
 }
 #webAudioPlayer .wap-footer .wap-controls .prev,
@@ -67,29 +68,40 @@
   width: 17px;
 }
 #webAudioPlayer .wap-footer .wap-controls .next {
-  margin-left: 4px;
   background-position: -19px 0;
 }
 #webAudioPlayer .wap-footer .wap-controls .play-pause {
   width: 25px;
-  margin-left: 4px;
   background-position: -36px 0;
 }
 #webAudioPlayer .wap-footer .wap-controls .play-pause.active {
   background-position: -60px 0;
 }
-#webAudioPlayer .wap-footer .wap-controls #timeline {
-  width: 265px;
-  cursor: pointer;
+#webAudioPlayer .wap-footer .wap-controls .timeline {
+  width: 48%;
   margin-left: 10px;
   background: #262c28;
 }
-#webAudioPlayer .wap-footer .wap-controls #timeline,
-#webAudioPlayer .wap-footer .wap-controls #timeline .ui-slider-range {
+#webAudioPlayer .wap-footer .wap-controls .timeline,
+#webAudioPlayer .wap-footer .wap-controls .timeline .ui-slider-range {
   height: 18px;
   border-radius: 5px;
 }
-#webAudioPlayer .wap-footer .wap-controls #timeline .ui-slider-range {
+#webAudioPlayer .wap-footer .wap-controls .timeline .ui-slider-range {
+  background: #d07d3c;
+}
+#webAudioPlayer .wap-footer .wap-controls .volume {
+  width: 60px;
+  height: 8px;
+  border-radius: 3px;
+  background: #262c28;
+}
+#webAudioPlayer .wap-footer .wap-controls .volume,
+#webAudioPlayer .wap-footer .wap-controls .volume .ui-slider-range {
+  height: 8px;
+  border-radius: 3px;
+}
+#webAudioPlayer .wap-footer .wap-controls .volume .ui-slider-range {
   background: #d07d3c;
 }
 #webAudioPlayer .wap-playlist {

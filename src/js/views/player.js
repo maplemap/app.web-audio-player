@@ -11,15 +11,28 @@ app.PlayerView = Backbone.View.extend({
     render: function () {
         this.$el.html( TmpEngine.render('player', {phrase: 'Hello!!!'}) );
         this.initTimeline();
+        this.initVolumeControl();
 
         return this;
     },
 
     initTimeline: function () {
-        this.$("#timeline").slider({
+        this.$(".timeline").slider({
             range: "min",
             min: 0,
             max: 100
+        });
+    },
+
+    initVolumeControl: function () {
+        this.$(".volume").slider({
+            range: "min",
+            min: 0,
+            max: 100,
+            value: 20,
+            slide: function( event, ui ) {
+                //$( "#amount" ).val( ui.value );
+            }
         });
     }
 });

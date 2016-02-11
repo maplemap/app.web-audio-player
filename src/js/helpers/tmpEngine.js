@@ -66,7 +66,8 @@ var TmpEngine = (function () {
                                    <li class="prev"></li>\
                                    <li class="play-pause"></li>\
                                    <li class="next"></li>\
-                                   <li id="timeline"></li>\
+                                   <li class="timeline"></li>\
+                                   <li class="volume" title="volume"></li>\
                                 </ul>\
                             </div>\
                         </div>'

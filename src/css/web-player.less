@@ -12,6 +12,9 @@
 @playlist-bg: #fff;
 @song-even-bg: #ddd8d3;
 @footer-height: 54px;
+@slider-bg: #262c28;
+@slider-handle: #d07d3c;
+@slider-range: #d07d3c;
 
 @font-face {
     font-family: 'Proxima-Nova-Regular';
@@ -72,18 +75,19 @@
     .@{class-prefix}-controls {
       text-align: left;
       padding: 0;
-      margin: 12px 0 0 37px;
+      margin: 12px 0 0 32px;
 
       li {
         display: inline-block;
         vertical-align: middle;
+        cursor: pointer;
+        margin-left: 4px;
       }
 
       .prev,
       .next,
       .play-pause {
         height: 25px;
-        cursor: pointer;
         background: url("../img/player-controls-spryte.png") no-repeat;
       }
       .prev,
@@ -91,12 +95,10 @@
         width: 17px;
       }
       .next {
-        margin-left: 4px;
         background-position: -19px 0;
       }
       .play-pause {
         width: 25px;
-        margin-left: 4px;
         background-position: -36px 0;
 
         &.active {
@@ -104,11 +106,10 @@
         }
       }
 
-      #timeline {
-        width: 265px;
-        cursor: pointer;
+      .timeline {
+        width: 48%;
         margin-left: 10px;
-        background: #262c28;
+        background: @slider-bg;
 
         &,
         .ui-slider-range {
@@ -117,7 +118,24 @@
         }
 
         .ui-slider-range {
-          background: #d07d3c;
+          background: @slider-range;
+        }
+      }
+
+      .volume {
+        width: 60px;
+        height: 8px;
+        border-radius: 3px;
+        background: @slider-bg;
+
+        &,
+        .ui-slider-range {
+          height: 8px;
+          border-radius: 3px;
+        }
+
+        .ui-slider-range {
+          background: @slider-range;
         }
       }
     }
