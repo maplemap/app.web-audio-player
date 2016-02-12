@@ -104,6 +104,26 @@
 #webAudioPlayer .wap-footer .wap-controls .volume .ui-slider-range {
   background: #d07d3c;
 }
+#webAudioPlayer .wap-footer .wap-controls .shuffle,
+#webAudioPlayer .wap-footer .wap-controls .repeat {
+  width: 23px;
+  height: 20px;
+  background: url("../img/playlist-controls-spryte-icons.png");
+}
+#webAudioPlayer .wap-footer .wap-controls .shuffle {
+  margin-left: 15px;
+}
+#webAudioPlayer .wap-footer .wap-controls .shuffle.active,
+#webAudioPlayer .wap-footer .wap-controls .shuffle:hover {
+  background-position: -22px 0;
+}
+#webAudioPlayer .wap-footer .wap-controls .repeat {
+  background-position: -45px 0;
+}
+#webAudioPlayer .wap-footer .wap-controls .repeat.active,
+#webAudioPlayer .wap-footer .wap-controls .repeat:hover {
+  background-position: -69px 0;
+}
 #webAudioPlayer .wap-playlist {
   top: 0;
   left: auto;

@@ -19,7 +19,7 @@ var TmpEngine = (function () {
                             </div>\
                             <div class="'+ settings.classPrefix +'-playlist">\
                                  <ul class="'+ settings.classPrefix +'-tracker">\
-                                    <li class="active">\
+                                    <li>\
                                         <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
                                         <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
                                     </li>\
@@ -68,6 +68,8 @@ var TmpEngine = (function () {
                                    <li class="next"></li>\
                                    <li class="timeline"></li>\
                                    <li class="volume" title="volume"></li>\
+                                   <li class="shuffle"></li>\
+                                   <li class="repeat"></li>\
                                 </ul>\
                             </div>\
                         </div>'

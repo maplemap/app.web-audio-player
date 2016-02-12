@@ -138,6 +138,30 @@
           background: @slider-range;
         }
       }
+
+      .shuffle,
+      .repeat {
+        width: 23px;
+        height: 20px;
+        background: url("../img/playlist-controls-spryte-icons.png");
+      }
+      .shuffle {
+        margin-left: 15px;
+
+        &.active,
+        &:hover {
+          background-position: -22px 0;
+        }
+      }
+
+      .repeat {
+        background-position: -45px 0;
+
+        &.active,
+        &:hover {
+          background-position: -69px 0;
+        }
+      }
     }
   }
 
