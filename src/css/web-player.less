@@ -30,6 +30,9 @@
     font-style: normal;
 }
 
+
+
+
 #@{player-ID} {
   position: relative;
   width: 100%;
@@ -68,16 +71,17 @@
   }
 
   .@{class-prefix}-footer {
-    bottom: -@footer-height;
-    height: @footer-height;
+    bottom: -49px;
+    //height: @footer-height;
     border-bottom-left-radius: @player-border-radius;
+    padding: 12px 0;
     border-bottom-right-radius: @player-border-radius;
     background: @footer-bg;
 
     .@{class-prefix}-controls {
       text-align: left;
       padding: 0;
-      margin: 12px 0 0 32px;
+      margin: 0 0 0 32px;
 
       li {
         display: inline-block;
@@ -202,12 +206,13 @@
 
   .@{class-prefix}-information {
     width: 100 - @playlist-width;
+    padding-top: 30px;
     background: @information-bg;
 
     .@{class-prefix}-album-cover {
       width: 225px;
       height: 225px;
-      margin: 30px auto 0 auto;
+      margin: 0 auto;
       background: url("../img/default-album.png") no-repeat @footer-bg;
       background-size: cover;
 
@@ -295,4 +300,41 @@
   opacity: 1 !important;
   filter: "alpha(opacity=1)" !important;
   -ms-filter: "alpha(opacity=1)" !important;
+}
+
+
+/*** media query ***/
+@media screen and (max-width: 37.5em) {/*600px*/
+  #@{player-ID} {
+    height: auto;
+
+    .@{class-prefix}-information,
+    .@{class-prefix}-playlist {
+      position: static;
+      width: 100%;
+    }
+
+    .@{class-prefix}-information {
+      padding-bottom: 20px;
+      overflow: hidden;
+
+      .@{class-prefix}-album-cover {
+        float: left;
+        width: 100px;
+        height: 100px;
+        margin: 0 20px 0 30px;
+      }
+      .@{class-prefix}-author,
+      .@{class-prefix}-album-name,
+      .@{class-prefix}-track-name {
+        //float: left;
+        width: auto;
+        text-align: left;
+      }
+    }
+
+    .@{class-prefix}-playlist {
+        height: 300px;
+    }
+  }
 }

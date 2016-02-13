@@ -1308,16 +1308,16 @@ yx-axis
   background: url("../img/wap-logo.png") no-repeat;
 }
 #webAudioPlayer .wap-footer {
-  bottom: -54px;
-  height: 54px;
+  bottom: -49px;
   border-bottom-left-radius: 10px;
+  padding: 12px 0;
   border-bottom-right-radius: 10px;
   background: #1b1f1c;
 }
 #webAudioPlayer .wap-footer .wap-controls {
   text-align: left;
   padding: 0;
-  margin: 12px 0 0 32px;
+  margin: 0 0 0 32px;
 }
 #webAudioPlayer .wap-footer .wap-controls li {
   display: inline-block;
@@ -1424,12 +1424,13 @@ yx-axis
 }
 #webAudioPlayer .wap-information {
   width: 52%;
+  padding-top: 30px;
   background: #272e2a;
 }
 #webAudioPlayer .wap-information .wap-album-cover {
   width: 225px;
   height: 225px;
-  margin: 30px auto 0 auto;
+  margin: 0 auto;
   background: url("../img/default-album.png") no-repeat #1b1f1c;
   background-size: cover;
 }
@@ -1504,4 +1505,35 @@ yx-axis
   opacity: 1 !important;
   filter: "alpha(opacity=1)" !important;
   -ms-filter: "alpha(opacity=1)" !important;
+}
+/*** media query ***/
+@media screen and (max-width: 37.5em) {
+  /*600px*/
+  #webAudioPlayer {
+    height: auto;
+  }
+  #webAudioPlayer .wap-information,
+  #webAudioPlayer .wap-playlist {
+    position: static;
+    width: 100%;
+  }
+  #webAudioPlayer .wap-information {
+    padding-bottom: 20px;
+    overflow: hidden;
+  }
+  #webAudioPlayer .wap-information .wap-album-cover {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin: 0 20px 0 30px;
+  }
+  #webAudioPlayer .wap-information .wap-author,
+  #webAudioPlayer .wap-information .wap-album-name,
+  #webAudioPlayer .wap-information .wap-track-name {
+    width: auto;
+    text-align: left;
+  }
+  #webAudioPlayer .wap-playlist {
+    height: 300px;
+  }
 }
