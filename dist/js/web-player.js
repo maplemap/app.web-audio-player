@@ -10,10 +10,15 @@ app.PlayerView = Backbone.View.extend({
 
     render: function () {
         this.$el.html( TmpEngine.render('player', {phrase: 'Hello!!!'}) );
-        this.initTimeline();
-        this.initVolumeControl();
+        this.afterRendering();
 
         return this;
+    },
+
+    afterRendering: function () {
+        this.initTimeline();
+        this.initVolumeControl();
+        this.initPlaylistScroll();
     },
 
     initTimeline: function () {
@@ -34,18 +39,27 @@ app.PlayerView = Backbone.View.extend({
                 //$( "#amount" ).val( ui.value );
             }
         });
+    },
+
+    initPlaylistScroll: function () {
+        console.log(this.$(CLASS_PREFIX + '-playlist'));
+        this.$('.' + CLASS_PREFIX + '-playlist').mCustomScrollbar({
+            theme: "minimal-dark",
+            scrollInertia: 0
+        });
     }
 });
 
 
 
 'use strict';
+var CLASS_PREFIX = 'wap';
 
 var TmpEngine = (function () {
 
     var settings = {
             playerID: 'webAudioPlayer',
-            classPrefix: 'wap'
+            classPrefix: CLASS_PREFIX
         },
         render = function (tmpName, data) {
             data = data || {};
