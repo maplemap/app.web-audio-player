@@ -49,3 +49,7 @@ crashlytics-build.properties
 
 /bower_components
 /node_modules
+
+/logs
+local-access_log
+local-error_log

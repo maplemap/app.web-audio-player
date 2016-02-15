@@ -1278,7 +1278,7 @@ yx-axis
   width: 100%;
   height: 324px;
   max-width: 580px;
-  min-width: 278px;
+  min-width: 320px;
   font-family: Proxima-Nova-Regular, sans-serif;
   margin: 120px auto 108px auto;
   background: #272e2a;
@@ -1309,73 +1309,78 @@ yx-axis
 }
 #webAudioPlayer .wap-footer {
   bottom: -49px;
+  height: 54px;
   border-bottom-left-radius: 10px;
-  padding: 12px 0;
   border-bottom-right-radius: 10px;
   background: #1b1f1c;
 }
-#webAudioPlayer .wap-footer .wap-controls {
+#webAudioPlayer .wap-controls {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  bottom: -34px;
+  width: 100%;
   text-align: left;
   padding: 0;
   margin: 0 0 0 32px;
 }
-#webAudioPlayer .wap-footer .wap-controls li {
+#webAudioPlayer .wap-controls li {
   display: inline-block;
   vertical-align: middle;
   cursor: pointer;
   margin-left: 4px;
 }
-#webAudioPlayer .wap-footer .wap-controls .prev,
-#webAudioPlayer .wap-footer .wap-controls .next,
-#webAudioPlayer .wap-footer .wap-controls .play-pause {
+#webAudioPlayer .wap-controls .prev,
+#webAudioPlayer .wap-controls .next,
+#webAudioPlayer .wap-controls .play-pause {
   height: 25px;
   background: url("../img/player-controls-spryte.png") no-repeat;
 }
-#webAudioPlayer .wap-footer .wap-controls .prev,
-#webAudioPlayer .wap-footer .wap-controls .next {
+#webAudioPlayer .wap-controls .prev,
+#webAudioPlayer .wap-controls .next {
   width: 17px;
 }
-#webAudioPlayer .wap-footer .wap-controls .next {
+#webAudioPlayer .wap-controls .next {
   background-position: -19px 0;
 }
-#webAudioPlayer .wap-footer .wap-controls .play-pause {
+#webAudioPlayer .wap-controls .play-pause {
   width: 25px;
   background-position: -36px 0;
 }
-#webAudioPlayer .wap-footer .wap-controls .play-pause.active {
+#webAudioPlayer .wap-controls .play-pause.active {
   background-position: -60px 0;
 }
-#webAudioPlayer .wap-footer .wap-controls .timeline {
+#webAudioPlayer .wap-controls .timeline {
   width: 48%;
   height: 18px;
   border-radius: 5px;
   margin-left: 10px;
   background: #262c28;
 }
-#webAudioPlayer .wap-footer .wap-controls .volume {
+#webAudioPlayer .wap-controls .volume {
   width: 60px;
   height: 8px;
   border-radius: 3px;
   background: #262c28;
 }
-#webAudioPlayer .wap-footer .wap-controls .shuffle,
-#webAudioPlayer .wap-footer .wap-controls .repeat {
+#webAudioPlayer .wap-controls .shuffle,
+#webAudioPlayer .wap-controls .repeat {
   width: 23px;
   height: 20px;
   background: url("../img/playlist-controls-spryte-icons.png");
 }
-#webAudioPlayer .wap-footer .wap-controls .shuffle {
+#webAudioPlayer .wap-controls .shuffle {
   margin-left: 15px;
 }
-#webAudioPlayer .wap-footer .wap-controls .shuffle.active,
-#webAudioPlayer .wap-footer .wap-controls .shuffle:hover {
+#webAudioPlayer .wap-controls .shuffle.active,
+#webAudioPlayer .wap-controls .shuffle:hover {
   background-position: -22px 0;
 }
-#webAudioPlayer .wap-footer .wap-controls .repeat {
+#webAudioPlayer .wap-controls .repeat {
   background-position: -45px 0;
 }
-#webAudioPlayer .wap-footer .wap-controls .repeat.active,
-#webAudioPlayer .wap-footer .wap-controls .repeat:hover {
+#webAudioPlayer .wap-controls .repeat.active,
+#webAudioPlayer .wap-controls .repeat:hover {
   background-position: -69px 0;
 }
 #webAudioPlayer .wap-playlist {
@@ -1518,8 +1523,8 @@ yx-axis
     width: 100%;
   }
   #webAudioPlayer .wap-information {
-    padding-bottom: 20px;
     overflow: hidden;
+    padding-bottom: 40px;
   }
   #webAudioPlayer .wap-information .wap-album-cover {
     float: left;
@@ -1535,5 +1540,34 @@ yx-axis
   }
   #webAudioPlayer .wap-playlist {
     height: 300px;
+  }
+  #webAudioPlayer .wap-controls {
+    bottom: auto;
+    top: 137px;
+  }
+  #webAudioPlayer .wap-controls .timeline,
+  #webAudioPlayer .wap-controls .volume {
+    background: #1b1f1c;
+  }
+  #webAudioPlayer .wap-controls .shuffle,
+  #webAudioPlayer .wap-controls .repeat {
+    position: absolute;
+    top: -26px;
+    left: 102px;
+  }
+  #webAudioPlayer .wap-controls .repeat {
+    margin-left: 44px;
+  }
+}
+@media screen and (max-width: 26.25em) {
+  /*420px*/
+  #webAudioPlayer .wap-controls .timeline {
+    width: 40%;
+  }
+}
+@media screen and (max-width: 22.5em) {
+  /*360px*/
+  #webAudioPlayer .wap-controls .timeline {
+    width: 35%;
   }
 }

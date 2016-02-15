@@ -62,17 +62,16 @@ var TmpEngine = (function () {
                                     </li>\
                                  </ul>\
                             </div>\
-                            <div class="'+ settings.classPrefix +'-footer">\
-                                <ul class="'+ settings.classPrefix +'-controls">\
-                                   <li class="prev"></li>\
-                                   <li class="play-pause"></li>\
-                                   <li class="next"></li>\
-                                   <li class="timeline"></li>\
-                                   <li class="volume" title="volume"></li>\
-                                   <li class="shuffle"></li>\
-                                   <li class="repeat"></li>\
-                                </ul>\
-                            </div>\
+                            <ul class="'+ settings.classPrefix +'-controls">\
+                               <li class="prev"></li>\
+                               <li class="play-pause"></li>\
+                               <li class="next"></li>\
+                               <li class="timeline"></li>\
+                               <li class="volume" title="volume"></li>\
+                               <li class="shuffle"></li>\
+                               <li class="repeat"></li>\
+                            </ul>\
+                            <div class="'+ settings.classPrefix +'-footer"> </div>\
                         </div>'
             },
 

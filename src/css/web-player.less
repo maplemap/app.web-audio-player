@@ -38,7 +38,7 @@
   width: 100%;
   height: 430px - @header-height - @footer-height + 8px;
   max-width: 580px;
-  min-width: 278px;
+  min-width: 320px;
   font-family: Proxima-Nova-Regular, sans-serif;
   margin: @header-height*2 auto @footer-height*2 auto;
   background: @player-bg;
@@ -72,83 +72,87 @@
 
   .@{class-prefix}-footer {
     bottom: -49px;
-    //height: @footer-height;
+    height: @footer-height;
     border-bottom-left-radius: @player-border-radius;
-    padding: 12px 0;
     border-bottom-right-radius: @player-border-radius;
     background: @footer-bg;
+  }
 
-    .@{class-prefix}-controls {
-      text-align: left;
-      padding: 0;
-      margin: 0 0 0 32px;
+  .@{class-prefix}-controls {
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    bottom: -34px;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    margin: 0 0 0 32px;
 
-      li {
-        display: inline-block;
-        vertical-align: middle;
-        cursor: pointer;
-        margin-left: 4px;
+    li {
+      display: inline-block;
+      vertical-align: middle;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    .prev,
+    .next,
+    .play-pause {
+      height: 25px;
+      background: url("../img/player-controls-spryte.png") no-repeat;
+    }
+    .prev,
+    .next {
+      width: 17px;
+    }
+    .next {
+      background-position: -19px 0;
+    }
+    .play-pause {
+      width: 25px;
+      background-position: -36px 0;
+
+      &.active {
+        background-position: -60px 0;
       }
+    }
 
-      .prev,
-      .next,
-      .play-pause {
-        height: 25px;
-        background: url("../img/player-controls-spryte.png") no-repeat;
-      }
-      .prev,
-      .next {
-        width: 17px;
-      }
-      .next {
-        background-position: -19px 0;
-      }
-      .play-pause {
-        width: 25px;
-        background-position: -36px 0;
+    .timeline {
+      width: 48%;
+      height: 18px;
+      border-radius: 5px;
+      margin-left: 10px;
+      background: @slider-bg;
+    }
 
-        &.active {
-          background-position: -60px 0;
-        }
+    .volume {
+      width: 60px;
+      height: 8px;
+      border-radius: 3px;
+      background: @slider-bg;
+    }
+
+    .shuffle,
+    .repeat {
+      width: 23px;
+      height: 20px;
+      background: url("../img/playlist-controls-spryte-icons.png");
+    }
+    .shuffle {
+      margin-left: 15px;
+
+      &.active,
+      &:hover {
+        background-position: -22px 0;
       }
+    }
 
-      .timeline {
-        width: 48%;
-        height: 18px;
-        border-radius: 5px;
-        margin-left: 10px;
-        background: @slider-bg;
-      }
+    .repeat {
+      background-position: -45px 0;
 
-      .volume {
-        width: 60px;
-        height: 8px;
-        border-radius: 3px;
-        background: @slider-bg;
-      }
-
-      .shuffle,
-      .repeat {
-        width: 23px;
-        height: 20px;
-        background: url("../img/playlist-controls-spryte-icons.png");
-      }
-      .shuffle {
-        margin-left: 15px;
-
-        &.active,
-        &:hover {
-          background-position: -22px 0;
-        }
-      }
-
-      .repeat {
-        background-position: -45px 0;
-
-        &.active,
-        &:hover {
-          background-position: -69px 0;
-        }
+      &.active,
+      &:hover {
+        background-position: -69px 0;
       }
     }
   }
@@ -315,8 +319,8 @@
     }
 
     .@{class-prefix}-information {
-      padding-bottom: 20px;
       overflow: hidden;
+      padding-bottom: 40px;
 
       .@{class-prefix}-album-cover {
         float: left;
@@ -335,6 +339,47 @@
 
     .@{class-prefix}-playlist {
         height: 300px;
+    }
+
+    .@{class-prefix}-controls {
+      bottom: auto;
+      top: 137px;
+
+      .timeline,
+      .volume {
+        background: @footer-bg;
+      }
+      .shuffle,
+      .repeat {
+        position: absolute;
+        top: -26px;
+        left: 102px;
+      }
+      .repeat {
+        margin-left: 44px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 26.25em) {/*420px*/
+  #@{player-ID} {
+    .@{class-prefix}-controls {
+
+      .timeline {
+        width: 40%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 22.5em) {/*360px*/
+  #@{player-ID} {
+    .@{class-prefix}-controls {
+
+      .timeline {
+        width: 35%;
+      }
     }
   }
 }
