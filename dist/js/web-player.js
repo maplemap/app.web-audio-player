@@ -69,39 +69,74 @@ var TmpEngine = (function () {
         Templates = {
             player: function (options) {
                 return '<div id="'+ settings.playerID +'">\
+                            <div class="'+ settings.classPrefix +'-audiobox">\
+                                <audio></audio>\
+                            </div>\
                             <div class="'+ settings.classPrefix +'-playlist">\
                                  <ul class="'+ settings.classPrefix +'-tracker">\
-                                    <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                    <li class="active">\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                     <li>\
-                                        <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                                        <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                     <li>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="track-name">We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
+                                    </li>\
+                                    <li>\
+                                        <span class="track-name">We’ll be coming back We’ll be coming back</span>\
+                                        <span class="track-duration">3:55</span>\
                                     </li>\
                                  </ul>\
                             </div>\
@@ -110,8 +145,8 @@ var TmpEngine = (function () {
 
             track: function (options) {
                 return '<li>\
-                          <span class="'+ settings.classPrefix +'-track-name">We’ll be coming back</span>\
-                          <span class="'+ settings.classPrefix +'-track-duration">3:55</span>\
+                          <span class="track-name">We’ll be coming back</span>\
+                          <span class="track-duration">3:55</span>\
                         </li>'
             },
             
@@ -119,7 +154,7 @@ var TmpEngine = (function () {
                 return '<div class="'+ settings.classPrefix +'-album-cover">\
                             <img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
                         </div>\
-                        <div class="'+ settings.classPrefix +'-track-name">We’ll be coming back</div>\
+                        <div class="track-name">We’ll be coming back</div>\
                         <div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
                         <div class="'+ settings.classPrefix +'-album-name">18 months</div>'
             }
@@ -138,7 +173,7 @@ var TmpEngine = (function () {
 //<div class="'+ settings.classPrefix +'-album-cover">\
 //<img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
 //</div>\
-//<div class="'+ settings.classPrefix +'-track-name">We’ll be coming back</div>\
+//<div class="track-name">We’ll be coming back</div>\
 //<div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
 //<div class="'+ settings.classPrefix +'-album-name">18 months</div>\
 //</div>\

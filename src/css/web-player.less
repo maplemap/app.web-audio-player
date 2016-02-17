@@ -36,18 +36,88 @@
   width: 100%;
   max-width: 350px;
   min-width: 320px;
+  color: @player-main-color;
   font-family: Inconsolata, sans-serif;
+  font-size: 16px;
   margin: 0 auto;
 
+  .@{class-prefix}-audiobox {
+    display: none;
+  }
+
   .@{class-prefix}-playlist {
+    min-height: 250px;
+    max-height: 350px;
+    padding: 5px 3px;
     border: 1px solid @player-main-color;
+    border-radius: 3px;
 
     .@{class-prefix}-tracker {
+      padding: 0;
+      margin: 0;
 
       li {
         color: @player-main-color;
         list-style-type: none;
+        padding: 8px 10px 8px 20px;
+        cursor: pointer;
+
+        &:nth-child(even) {
+          background: #eee;
+        }
+        &:hover {
+          background: #ddd;
+        }
+        &.active:before {
+          content: '\25b6';
+          position: absolute;
+          top: 8px;
+          left: 7px;
+          font-family: 'Entypo', sans-serif;
+          font-size: 15px;
+        }
+
+        .track-name {
+          position: relative;
+          display: inline-block;
+          max-width: 60%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        .track-duration {
+          float: right;
+        }
       }
     }
   }
+}
+
+/*** plugin's styles ***/
+.@{class-prefix}-controls {
+  .volume {
+    .ui-slider-range {
+      height: 8px;
+      border-radius: 3px;
+    }
+  }
+  .timeline {
+    .ui-slider-range {
+      height: 18px;
+      border-radius: 5px;
+    }
+  }
+}
+
+.mCSB_inside>.mCSB_container {
+  margin-right: 0;
+}
+.mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+  background-color: rgba(0,0,0,.75) !important;
+}
+.mCS-autoHide>.mCustomScrollBox>.mCSB_scrollTools, .mCS-autoHide>.mCustomScrollBox~.mCSB_scrollTools {
+  opacity: 1 !important;
+  filter: "alpha(opacity=1)" !important;
+  -ms-filter: "alpha(opacity=1)" !important;
 }
