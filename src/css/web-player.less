@@ -4,6 +4,8 @@
 @class-prefix: wap;
 @player-ID: webAudioPlayer;
 @player-main-color: #333;
+@player-main-border-radius: 3px;
+@playlist-min-height: 250px;
 
 
 @font-face {
@@ -46,11 +48,11 @@
   }
 
   .@{class-prefix}-playlist {
-    min-height: 250px;
+    min-height: @playlist-min-height;
     max-height: 350px;
     padding: 5px 3px;
     border: 1px solid @player-main-color;
-    border-radius: 3px;
+    border-radius: @player-main-border-radius;
 
     .@{class-prefix}-tracker {
       padding: 0;
@@ -59,7 +61,8 @@
       li {
         color: @player-main-color;
         list-style-type: none;
-        padding: 8px 10px 8px 20px;
+        font-size: 14px;
+        padding: 8px 10px 8px 25px;
         cursor: pointer;
 
         &:nth-child(even) {
@@ -75,6 +78,27 @@
           left: 7px;
           font-family: 'Entypo', sans-serif;
           font-size: 15px;
+        }
+
+        &#dropzone {
+          min-height: @playlist-min-height;
+          text-align: center;
+          border: 2px dashed #bbb;
+          border-radius: @player-main-border-radius;
+          padding: 0;
+          margin: 5px;
+
+          &:hover {
+            background: none;
+          }
+
+          span {
+            display: inline-block;
+            margin-top: 100px;
+          }
+          input[type="file"] {
+            display: none;
+          }
         }
 
         .track-name {

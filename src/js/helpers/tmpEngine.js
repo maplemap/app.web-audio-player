@@ -1,10 +1,13 @@
 'use strict';
-var CLASS_PREFIX = 'wap';
+
+
+var PLAYER_ID = 'webAudioPlayer',
+    CLASS_PREFIX = 'wap';
 
 var TmpEngine = (function () {
 
     var settings = {
-            playerID: 'webAudioPlayer',
+            playerID: PLAYER_ID,
             classPrefix: CLASS_PREFIX
         },
         render = function (tmpName, data) {
@@ -20,69 +23,9 @@ var TmpEngine = (function () {
                             </div>\
                             <div class="'+ settings.classPrefix +'-playlist">\
                                  <ul class="'+ settings.classPrefix +'-tracker">\
-                                    <li class="active">\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                     <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
+                                    <li id="dropzone">\
+                                        <span>Drop files here <br>or click to add in playlist.</span>\
+                                        <input type="file" name="files[]">\
                                     </li>\
                                  </ul>\
                             </div>\

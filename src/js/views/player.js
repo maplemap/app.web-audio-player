@@ -19,6 +19,7 @@ app.PlayerView = Backbone.View.extend({
         this.initTimeline();
         this.initVolumeControl();
         this.initPlaylistScroll();
+        this.initFileReader();
     },
 
     initTimeline: function () {
@@ -42,10 +43,13 @@ app.PlayerView = Backbone.View.extend({
     },
 
     initPlaylistScroll: function () {
-        console.log(this.$(CLASS_PREFIX + '-playlist'));
         this.$('.' + CLASS_PREFIX + '-playlist').mCustomScrollbar({
             theme: "minimal-dark",
             scrollInertia: 0
         });
+    },
+
+    initFileReader: function () {
+        FileReader.init('#' + PLAYER_ID + ' #dropzone');
     }
 });

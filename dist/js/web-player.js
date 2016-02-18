@@ -19,6 +19,7 @@ app.PlayerView = Backbone.View.extend({
         this.initTimeline();
         this.initVolumeControl();
         this.initPlaylistScroll();
+        this.initFileReader();
     },
 
     initTimeline: function () {
@@ -42,23 +43,29 @@ app.PlayerView = Backbone.View.extend({
     },
 
     initPlaylistScroll: function () {
-        console.log(this.$(CLASS_PREFIX + '-playlist'));
         this.$('.' + CLASS_PREFIX + '-playlist').mCustomScrollbar({
             theme: "minimal-dark",
             scrollInertia: 0
         });
+    },
+
+    initFileReader: function () {
+        FileReader.init('#' + PLAYER_ID + ' #dropzone');
     }
 });
 
 
 
 'use strict';
-var CLASS_PREFIX = 'wap';
+
+
+var PLAYER_ID = 'webAudioPlayer',
+    CLASS_PREFIX = 'wap';
 
 var TmpEngine = (function () {
 
     var settings = {
-            playerID: 'webAudioPlayer',
+            playerID: PLAYER_ID,
             classPrefix: CLASS_PREFIX
         },
         render = function (tmpName, data) {
@@ -74,69 +81,9 @@ var TmpEngine = (function () {
                             </div>\
                             <div class="'+ settings.classPrefix +'-playlist">\
                                  <ul class="'+ settings.classPrefix +'-tracker">\
-                                    <li class="active">\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                     <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
-                                    </li>\
-                                    <li>\
-                                        <span class="track-name">We’ll be coming back We’ll be coming back</span>\
-                                        <span class="track-duration">3:55</span>\
+                                    <li id="dropzone">\
+                                        <span>Drop files here <br>or click to add in playlist.</span>\
+                                        <input type="file" name="files[]">\
                                     </li>\
                                  </ul>\
                             </div>\
@@ -188,3 +135,39 @@ var TmpEngine = (function () {
 //<li class="repeat"></li>\
 //</ul>\
 //<div class="'+ settings.classPrefix +'-footer"> </div>\
+'use strict';
+
+var FileReader = (function ($) {
+    var settings = {
+
+    },
+    $container = false,
+
+    init = function (element) {
+        $container = $(element);
+
+        initEvents($container);
+    },
+
+    initEvents = function ($container) {
+        var $inputFile = $container.find('input[type="file"]');
+
+        $container.on('click', function (){
+            $inputFile.on('click', function (e) { e.stopPropagation() })
+                      .trigger('click');
+        });
+
+        $inputFile.on('change', fileHandler);
+    },
+
+    fileHandler = function (event) {
+        console.log(event);
+        var files = event.target.files;
+        console.log(files);
+    };
+
+
+    return {
+        init: init
+    }
+})(jQuery);

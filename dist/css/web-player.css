@@ -1307,7 +1307,8 @@ yx-axis
 #webAudioPlayer .wap-playlist .wap-tracker li {
   color: #333;
   list-style-type: none;
-  padding: 8px 10px 8px 20px;
+  font-size: 14px;
+  padding: 8px 10px 8px 25px;
   cursor: pointer;
 }
 #webAudioPlayer .wap-playlist .wap-tracker li:nth-child(even) {
@@ -1323,6 +1324,24 @@ yx-axis
   left: 7px;
   font-family: 'Entypo', sans-serif;
   font-size: 15px;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li#dropzone {
+  min-height: 250px;
+  text-align: center;
+  border: 2px dashed #bbb;
+  border-radius: 3px;
+  padding: 0;
+  margin: 5px;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li#dropzone:hover {
+  background: none;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li#dropzone span {
+  display: inline-block;
+  margin-top: 100px;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li#dropzone input[type="file"] {
+  display: none;
 }
 #webAudioPlayer .wap-playlist .wap-tracker li .track-name {
   position: relative;
