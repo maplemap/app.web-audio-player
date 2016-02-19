@@ -25,7 +25,6 @@ var TmpEngine = (function () {
                                  <ul class="'+ settings.classPrefix +'-tracker">\
                                     <li id="dropzone">\
                                         <span>Drop files here <br>or click to add in playlist.</span>\
-                                        <input type="file" name="files[]">\
                                     </li>\
                                  </ul>\
                             </div>\

@@ -27,8 +27,8 @@ var path = {
                 './src/js/views/player.js',
                 './src/js/views/song.js',
                 './src/js/models/song.js',
-                './src/js/helpers/tmpEngine.js',
-                './src/js/helpers/fileReader.js'
+                './src/js/modules/tmpEngine.js',
+                './src/js/modules/fileCollector.js'
             ],
             dependencies: [
                 './bower_components/jquery/dist/jquery.js',
