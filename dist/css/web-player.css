@@ -1333,6 +1333,10 @@ yx-axis
   padding: 0;
   margin: 5px;
 }
+#webAudioPlayer .wap-playlist .wap-tracker li#dropzone.drag-active {
+  color: rgba(51, 51, 51, 0.3);
+  border: 2px solid #cdcdcd;
+}
 #webAudioPlayer .wap-playlist .wap-tracker li#dropzone:hover {
   background: none;
 }

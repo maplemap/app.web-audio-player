@@ -155,8 +155,10 @@ var FileCollector = (function ($) {
         $fileInput.on('change', Event.changeOfFileInput);
 
         if(settings.drugAndDrop) {
-            $container.on('dragover', Event.dragOverHandler);
-            $container.on('drop', Event.dropHandler);
+            $container.on('dragover', Event.dragOver);
+            $container.on('drop', Event.drop);
+            $container.on('dragenter', Event.drugEnter);
+            $container.on('dragleave', Event.drugLeave);
         }
     },
 
@@ -173,21 +175,30 @@ var FileCollector = (function ($) {
             collectFiles(files);
         },
 
-        dropHandler: function (e) {
+        drop: function (e) {
             e.stopPropagation();
             e.preventDefault();
 
             var files = e.originalEvent.dataTransfer.files;
 
+            $container.removeClass('drag-active');
+
             collectFiles(files);
         },
 
-        dragOverHandler: function (e) {
+        dragOver: function (e) {
             e.stopPropagation();
             e.preventDefault();
 
             e.originalEvent.dataTransfer.dropEffect = "copy";
-            console.log('dfgdfg')
+        },
+
+        drugEnter: function () {
+            $container.addClass('drag-active');
+        },
+
+        drugLeave: function () {
+            $container.removeClass('drag-active');
         }
     },
 
