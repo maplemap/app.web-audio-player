@@ -50,6 +50,8 @@ app.PlayerView = Backbone.View.extend({
     },
 
     initFileReader: function () {
-        FileCollector.init('#' + PLAYER_ID + ' #dropzone');
+        FileCollector.init('#' + PLAYER_ID + ' #dropzone', function (allFiles) {
+            console.log(allFiles);
+        });
     }
 });

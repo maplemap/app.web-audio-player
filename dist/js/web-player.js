@@ -50,7 +50,9 @@ app.PlayerView = Backbone.View.extend({
     },
 
     initFileReader: function () {
-        FileCollector.init('#' + PLAYER_ID + ' #dropzone');
+        FileCollector.init('#' + PLAYER_ID + ' #dropzone', function (allFiles) {
+            console.log(allFiles);
+        });
     }
 });
 
@@ -82,7 +84,7 @@ var TmpEngine = (function () {
                             <div class="'+ settings.classPrefix +'-playlist">\
                                  <ul class="'+ settings.classPrefix +'-tracker">\
                                     <li id="dropzone">\
-                                        <span>Drop files here <br>or click to add in playlist.</span>\
+                                        <span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
                                     </li>\
                                  </ul>\
                             </div>\
@@ -139,16 +141,18 @@ var TmpEngine = (function () {
 var FileCollector = (function ($) {
     var settings = {
         drugAndDrop: true,
+        fileMimeTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
         fileInput: '<input type="file" name="files[]" multiple>'
     },
-    allFiles = [],
     $container = false,
     $fileInput = false,
+    callBack = false,
 
-    init = function (element) {
+    init = function (element, callback) {
         $container = $(element);
         $container.append( settings.fileInput );
         $fileInput = $container.find('input[type="file"]');
+        callBack = callback;
 
 
         $container.on('click', Event.clickOnContainer);
@@ -203,20 +207,17 @@ var FileCollector = (function ($) {
     },
 
     collectFiles = function(files) {
+        var allFiles = [];
         $.each(files, function(i, file) {
-            var temp = {file: file, progressTotal: 0, progressDone: 0, element: null, valid: false};
+            var temp = {file: file, progressTotal: 0, progressDone: 0, valid: false};
 
-            temp.valid = (file.type == 'image/png'
-                || file.type == 'image/jpeg'
-                || file.type == 'image/jpg') && file.size / 1024 / 1024 < 2;
-
-            //temp.element = baseClass.attachFileToView(temp);
-            allFiles.unshift(temp);
-
-            console.log(allFiles);
+            $.each(settings.fileMimeTypes, function (i, type) {
+                if(file.type == type) allFiles.unshift(temp);
+            });
         });
-    };
 
+        callBack(allFiles);
+    };
 
     return {
         init: init
