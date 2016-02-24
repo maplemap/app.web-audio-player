@@ -1,8 +1,8 @@
 'use strict';
 
-var FileCollector = (function ($) {
+var FileUpload = (function ($) {
     var settings = {
-        drugAndDrop: true,
+        drugAndDrop: false,
         fileMimeTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
         fileInput: '<input type="file" name="files[]" multiple>'
     },
@@ -14,6 +14,7 @@ var FileCollector = (function ($) {
         $container = $(element);
         $container.append( settings.fileInput );
         $fileInput = $container.find('input[type="file"]');
+        $fileInput.hide();
         callBack = callback;
 
 
@@ -74,7 +75,11 @@ var FileCollector = (function ($) {
             var temp = {file: file, progressTotal: 0, progressDone: 0, valid: false};
 
             $.each(settings.fileMimeTypes, function (i, type) {
-                if(file.type == type) allFiles.unshift(temp);
+                if(file.type == type) allFiles.unshift({
+                    file: file,
+                    progressTotal: 0,
+                    progressDone: 0
+                });
             });
         });
 
