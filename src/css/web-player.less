@@ -47,14 +47,15 @@
     display: none;
   }
 
-  .@{class-prefix}-playlist {
+  .playlist {
+    position: relative;
     min-height: @playlist-min-height;
     max-height: 350px;
     padding: 5px 3px;
     border: 1px solid @player-main-color;
     border-radius: @player-main-border-radius;
 
-    .@{class-prefix}-tracker {
+    .tracker {
       padding: 0;
       margin: 0;
 
@@ -80,31 +81,28 @@
           font-size: 15px;
         }
 
-        &#dropzone {
-          min-height: @playlist-min-height;
-          text-align: center;
-          border: 2px dashed #bbb;
-          border-radius: @player-main-border-radius;
-          padding: 0;
-          margin: 5px;
-
-          &.drag-active {
-            color: rgba(51, 51, 51, 0.3);
-            border: 2px solid #cdcdcd;
-          }
-
-          &:hover {
-            background: none;
-          }
-
-          span {
-            display: inline-block;
-            margin-top: 100px;
-          }
-          input[type="file"] {
-            display: none;
-          }
-        }
+        //&#dropzone {
+        //  min-height: @playlist-min-height;
+        //  text-align: center;
+        //  border: 2px dashed #bbb;
+        //  border-radius: @player-main-border-radius;
+        //  padding: 0;
+        //  margin: 5px;
+        //
+        //  &.drag-active {
+        //    color: rgba(51, 51, 51, 0.3);
+        //    border: 2px solid #cdcdcd;
+        //  }
+        //
+        //  &:hover {
+        //    background: none;
+        //  }
+        //
+        //  span {
+        //    display: inline-block;
+        //    margin-top: 100px;
+        //  }
+        //}
 
         .track-name {
           position: relative;
@@ -117,6 +115,74 @@
 
         .track-duration {
           float: right;
+        }
+      }
+    }
+
+    .modal-window {
+      position: absolute;
+      z-index: 10;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      padding: 0;
+      margin: 0;
+      background: #fff;
+        -webkit-transition: .3s height;
+        -moz-transition: .3s height;
+        -ms-transition: .3s height;
+        -o-transition: .3s height;
+      transition: .3s height;
+
+      &.active {
+        height: 100%;
+      }
+
+      .cancel {
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        font-family: 'Entypo', sans-serif;
+        font-size: 15px;
+
+        &:before {
+          content: '\2716';
+        }
+      }
+    }
+  }
+
+  .@{class-prefix}-tools {
+    position: relative;
+    z-index: 11;
+    text-align: left;
+    border: 1px solid @player-main-color;
+    border-radius: @player-main-border-radius;
+    padding: 0 8px;
+    margin: 2px 0 0 0;
+    background: #fff;
+
+    li {
+      display: inline-block;
+      list-style-type: none;
+      font-family: 'Entypo', sans-serif;
+      font-size: 14px;
+      padding: 5px 2px;
+      cursor: pointer;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &.get-files {
+        &:before {
+          content: '\e711';
+        }
+      }
+      &.upload-files {
+        &:before {
+          content: '\1f4e4'
         }
       }
     }
