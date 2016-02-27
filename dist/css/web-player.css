@@ -1293,31 +1293,32 @@ yx-axis
 #webAudioPlayer .wap-audiobox {
   display: none;
 }
-#webAudioPlayer .wap-playlist {
+#webAudioPlayer .playlist {
+  position: relative;
   min-height: 250px;
   max-height: 350px;
   padding: 5px 3px;
   border: 1px solid #333;
   border-radius: 3px;
 }
-#webAudioPlayer .wap-playlist .wap-tracker {
+#webAudioPlayer .playlist .tracker {
   padding: 0;
   margin: 0;
 }
-#webAudioPlayer .wap-playlist .wap-tracker li {
+#webAudioPlayer .playlist .tracker li {
   color: #333;
   list-style-type: none;
   font-size: 14px;
   padding: 8px 10px 8px 25px;
   cursor: pointer;
 }
-#webAudioPlayer .wap-playlist .wap-tracker li:nth-child(even) {
+#webAudioPlayer .playlist .tracker li:nth-child(even) {
   background: #eee;
 }
-#webAudioPlayer .wap-playlist .wap-tracker li:hover {
+#webAudioPlayer .playlist .tracker li:hover {
   background: #ddd;
 }
-#webAudioPlayer .wap-playlist .wap-tracker li.active:before {
+#webAudioPlayer .playlist .tracker li.active:before {
   content: '\25b6';
   position: absolute;
   top: 8px;
@@ -1325,29 +1326,7 @@ yx-axis
   font-family: 'Entypo', sans-serif;
   font-size: 15px;
 }
-#webAudioPlayer .wap-playlist .wap-tracker li#dropzone {
-  min-height: 250px;
-  text-align: center;
-  border: 2px dashed #bbb;
-  border-radius: 3px;
-  padding: 0;
-  margin: 5px;
-}
-#webAudioPlayer .wap-playlist .wap-tracker li#dropzone.drag-active {
-  color: rgba(51, 51, 51, 0.3);
-  border: 2px solid #cdcdcd;
-}
-#webAudioPlayer .wap-playlist .wap-tracker li#dropzone:hover {
-  background: none;
-}
-#webAudioPlayer .wap-playlist .wap-tracker li#dropzone span {
-  display: inline-block;
-  margin-top: 100px;
-}
-#webAudioPlayer .wap-playlist .wap-tracker li#dropzone input[type="file"] {
-  display: none;
-}
-#webAudioPlayer .wap-playlist .wap-tracker li .track-name {
+#webAudioPlayer .playlist .tracker li .track-name {
   position: relative;
   display: inline-block;
   max-width: 60%;
@@ -1355,8 +1334,64 @@ yx-axis
   text-overflow: ellipsis;
   overflow: hidden;
 }
-#webAudioPlayer .wap-playlist .wap-tracker li .track-duration {
+#webAudioPlayer .playlist .tracker li .track-duration {
   float: right;
+}
+#webAudioPlayer .playlist .modal-window {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  -webkit-transition: .3s height;
+  -moz-transition: .3s height;
+  -ms-transition: .3s height;
+  -o-transition: .3s height;
+  transition: .3s height;
+}
+#webAudioPlayer .playlist .modal-window.active {
+  height: 100%;
+}
+#webAudioPlayer .playlist .modal-window .cancel {
+  position: absolute;
+  top: 5px;
+  right: 1px;
+  font-family: 'Entypo', sans-serif;
+  font-size: 15px;
+}
+#webAudioPlayer .playlist .modal-window .cancel:before {
+  content: '\2716';
+}
+#webAudioPlayer .wap-tools {
+  position: relative;
+  z-index: 11;
+  text-align: left;
+  border: 1px solid #333;
+  border-radius: 3px;
+  padding: 0 8px;
+  margin: 2px 0 0 0;
+  background: #fff;
+}
+#webAudioPlayer .wap-tools li {
+  display: inline-block;
+  list-style-type: none;
+  font-family: 'Entypo', sans-serif;
+  font-size: 14px;
+  padding: 5px 2px;
+  cursor: pointer;
+}
+#webAudioPlayer .wap-tools li:first-child {
+  margin-left: 0;
+}
+#webAudioPlayer .wap-tools li.get-files:before {
+  content: '\e711';
+}
+#webAudioPlayer .wap-tools li.upload-files:before {
+  content: '\1f4e4';
 }
 /*** plugin's styles ***/
 .wap-controls .volume .ui-slider-range {
