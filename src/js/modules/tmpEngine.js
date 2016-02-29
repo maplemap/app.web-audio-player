@@ -16,26 +16,25 @@ var TmpEngine = (function () {
         },
 
         Templates = {
-            player: function (options) {
+            player: function (data) {
                 return '<div id="'+ settings.playerID +'">\
                             <div class="'+ settings.classPrefix +'-audiobox">\
                                 <audio></audio>\
                             </div>\
-                            <div class="'+ settings.classPrefix +'-playlist">\
-                                 <ul class="'+ settings.classPrefix +'-tracker">\
-                                    <li id="dropzone">\
-                                        <span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
-                                    </li>\
-                                 </ul>\
+                            <div class="playlist current">\
+                                 <ul class="tracker"></ul>\
+                                 <div class="modal-window"></div>\
                             </div>\
+                            <ul class="'+ settings.classPrefix +'-tools">\
+                                <li class="get-files" title="get files from server"></li>\
+                                <li class="upload-files" title="upload files"></li>\
+                            </ul>\
                         </div>'
             },
 
-            track: function (options) {
-                return '<li>\
-                          <span class="track-name">We’ll be coming back</span>\
-                          <span class="track-duration">3:55</span>\
-                        </li>'
+            track: function (data) {
+                return '<span class="track-name">' + data.name + '</span>\
+                        <span class="track-duration">' + data.duration + '</span>'
             },
             
             information: function (options) {
@@ -45,6 +44,10 @@ var TmpEngine = (function () {
                         <div class="track-name">We’ll be coming back</div>\
                         <div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
                         <div class="'+ settings.classPrefix +'-album-name">18 months</div>'
+            },
+
+            fileList: function () {
+                return '<ul class="file-list"></ul>'
             }
         };
 
@@ -76,3 +79,7 @@ var TmpEngine = (function () {
 //<li class="repeat"></li>\
 //</ul>\
 //<div class="'+ settings.classPrefix +'-footer"> </div>\
+
+//<li id="dropzone">\
+//<span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
+//</li>\
