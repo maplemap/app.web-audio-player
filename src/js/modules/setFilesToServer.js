@@ -1,6 +1,6 @@
 'use strict';
 
-var FileUpload = (function ($) {
+var FilesUpload = (function ($) {
     var settings = {
         drugAndDrop: false,
         fileMimeTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
@@ -75,11 +75,7 @@ var FileUpload = (function ($) {
             var temp = {file: file, progressTotal: 0, progressDone: 0, valid: false};
 
             $.each(settings.fileMimeTypes, function (i, type) {
-                if(file.type == type) allFiles.unshift({
-                    file: file,
-                    progressTotal: 0,
-                    progressDone: 0
-                });
+                if(file.type == type) allFiles.unshift(temp);
             });
         });
 
