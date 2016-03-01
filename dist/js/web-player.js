@@ -8,7 +8,7 @@ app.TrackView = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.html( TmpEngine.render('track', this.model.toJSON()) );
+        this.$el.html( app.TmpEngine.render('track', this.model.toJSON()) );
 
         return this;
     }
@@ -45,12 +45,12 @@ app.PlayerView = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.$el.html( TmpEngine.render('player') );
+        this.$el.html( app.TmpEngine.render('player') );
 
         //this.listenTo(app.Tracks, 'all', this.render);
         this.listenTo(app.Tracks, 'add', this.addOne);
 
-        this.$player = this.$('#' + PLAYER_ID);
+        this.$player = this.$('#' + app.PLAYER_ID);
         this.$playlist = this.$player.find('.playlist');
         this.$tracker = this.$playlist.find('.tracker');
 
@@ -85,7 +85,7 @@ app.PlayerView = Backbone.View.extend({
     initFileUpload: function () {
         var that = this;
 
-        FilesUpload.init('#' + PLAYER_ID + ' .upload-files', function (allFiles) {
+        app.UploadFiles.init('#' + app.PLAYER_ID + ' .upload-files', function (allFiles) {
             $.each(tracks, function (i, track) {
                 that.addOneToCollection(track);
             })
@@ -103,7 +103,7 @@ app.PlayerView = Backbone.View.extend({
         //this.initTimeline();
         //this.initVolumeControl();
         this.initPlaylistScroll();
-        FilesDownload.init(this.$player);
+        app.UploadFiles.init(this.$player);
         //this.initFileCollector();
     },
 
@@ -166,15 +166,16 @@ app.PlaylistView = Backbone.View.extend({
 });
 'use strict';
 
+var app = app || {};
 
-var PLAYER_ID = 'webAudioPlayer',
-    CLASS_PREFIX = 'wap';
+app.PLAYER_ID = 'webAudioPlayer';
+app.CLASS_PREFIX = 'wap';
 
-var TmpEngine = (function () {
+app.TmpEngine = (function () {
 
     var settings = {
-            playerID: PLAYER_ID,
-            classPrefix: CLASS_PREFIX
+            playerID: app.PLAYER_ID,
+            classPrefix: app.CLASS_PREFIX
         },
         render = function (tmpName, data) {
             data = data || {};
@@ -251,7 +252,9 @@ var TmpEngine = (function () {
 //</li>\
 'use strict';
 
-var FilesUpload = (function ($) {
+var app = app || {};
+
+app.UploadFiles = (function ($) {
     var settings = {
         drugAndDrop: false,
         fileMimeTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
@@ -340,7 +343,9 @@ var FilesUpload = (function ($) {
 })(jQuery);
 'use strict';
 
-var FilesDownload = (function () {
+var app = app || {};
+
+app.GetFiles = (function () {
     var settings = {
         urlServer: 'http://php-file-server.local/index.php'
     },

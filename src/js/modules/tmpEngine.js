@@ -1,14 +1,15 @@
 'use strict';
 
+var app = app || {};
 
-var PLAYER_ID = 'webAudioPlayer',
-    CLASS_PREFIX = 'wap';
+app.PLAYER_ID = 'webAudioPlayer';
+app.CLASS_PREFIX = 'wap';
 
-var TmpEngine = (function () {
+app.TmpEngine = (function () {
 
     var settings = {
-            playerID: PLAYER_ID,
-            classPrefix: CLASS_PREFIX
+            playerID: app.PLAYER_ID,
+            classPrefix: app.CLASS_PREFIX
         },
         render = function (tmpName, data) {
             data = data || {};

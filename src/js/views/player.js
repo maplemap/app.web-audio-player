@@ -8,12 +8,12 @@ app.PlayerView = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.$el.html( TmpEngine.render('player') );
+        this.$el.html( app.TmpEngine.render('player') );
 
         //this.listenTo(app.Tracks, 'all', this.render);
         this.listenTo(app.Tracks, 'add', this.addOne);
 
-        this.$player = this.$('#' + PLAYER_ID);
+        this.$player = this.$('#' + app.PLAYER_ID);
         this.$playlist = this.$player.find('.playlist');
         this.$tracker = this.$playlist.find('.tracker');
 
@@ -48,7 +48,7 @@ app.PlayerView = Backbone.View.extend({
     initFileUpload: function () {
         var that = this;
 
-        FilesUpload.init('#' + PLAYER_ID + ' .upload-files', function (allFiles) {
+        app.UploadFiles.init('#' + app.PLAYER_ID + ' .upload-files', function (allFiles) {
             $.each(tracks, function (i, track) {
                 that.addOneToCollection(track);
             })
@@ -66,7 +66,7 @@ app.PlayerView = Backbone.View.extend({
         //this.initTimeline();
         //this.initVolumeControl();
         this.initPlaylistScroll();
-        FilesDownload.init(this.$player);
+        app.UploadFiles.init(this.$player);
         //this.initFileCollector();
     },
 

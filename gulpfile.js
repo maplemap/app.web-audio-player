@@ -30,8 +30,8 @@ var path = {
                 './src/js/views/player.js',
                 './src/js/views/playlist.js',
                 './src/js/modules/tmpEngine.js',
-                './src/js/modules/setFilesToServer.js',
-                './src/js/modules/getFilesFromServer.js',
+                './src/js/modules/uploadFiles.js',
+                './src/js/modules/getFiles.js',
                 './src/js/modules/ID3Tags.js',
                 './src/js/plugins/id3-minimized.js'
             ],
@@ -62,7 +62,7 @@ gulp.task('js:build', function(){
     gulp.src(path.src.js.webPlayer)
         .pipe(concat('web-player.js'))
         .pipe(gulp.dest(path.build.js))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(rename({suffix: ".min"}))
         .pipe(gulp.dest(path.build.js))
 });

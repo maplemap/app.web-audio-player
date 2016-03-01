@@ -1,6 +1,8 @@
 'use strict';
 
-var FilesUpload = (function ($) {
+var app = app || {};
+
+app.UploadFiles = (function ($) {
     var settings = {
         drugAndDrop: false,
         fileMimeTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],

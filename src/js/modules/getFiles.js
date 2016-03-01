@@ -1,6 +1,8 @@
 'use strict';
 
-var FilesDownload = (function () {
+var app = app || {};
+
+app.GetFiles = (function () {
     var settings = {
         urlServer: 'http://php-file-server.local/index.php'
     },

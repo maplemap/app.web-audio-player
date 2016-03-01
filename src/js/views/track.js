@@ -8,7 +8,7 @@ app.TrackView = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.html( TmpEngine.render('track', this.model.toJSON()) );
+        this.$el.html( app.TmpEngine.render('track', this.model.toJSON()) );
 
         return this;
     }
