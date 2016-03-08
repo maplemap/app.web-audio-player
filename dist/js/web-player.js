@@ -47,7 +47,6 @@ app.PlayerView = Backbone.View.extend({
     initialize: function () {
         this.$el.html( app.TmpEngine.render('player') );
 
-        //this.listenTo(app.Tracks, 'all', this.render);
         this.listenTo(app.Tracks, 'add', this.addOne);
 
         this.$player = this.$('#' + app.PLAYER_ID);
@@ -139,31 +138,6 @@ app.PlayerView = Backbone.View.extend({
     }
 });
 
-var app = app || {};
-
-app.PlaylistView = Backbone.View.extend({
-
-    initialize: function () {
-        this.$el.html( TmpEngine.render('playlist') );
-
-        this.collection = new app.TrackList(tracks);
-        //this.render();
-    },
-
-    render: function () {
-        var that = this;
-        _.each(this.collection.models, function (item) {
-            that.renderTrack(item);
-        }, this);
-    },
-
-    renderTrack: function (item) {
-        var trackView = new app.TrackView({
-            model: item
-        });
-        this.$tracker.append( trackView.render().el );
-    }
-});
 'use strict';
 
 var app = app || {};

@@ -10,7 +10,6 @@ app.PlayerView = Backbone.View.extend({
     initialize: function () {
         this.$el.html( app.TmpEngine.render('player') );
 
-        //this.listenTo(app.Tracks, 'all', this.render);
         this.listenTo(app.Tracks, 'add', this.addOne);
 
         this.$player = this.$('#' + app.PLAYER_ID);
