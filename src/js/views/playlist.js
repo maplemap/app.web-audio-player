@@ -1,25 +1,21 @@
-var app = app || {};
+'use strict';
 
-app.PlaylistView = Backbone.View.extend({
+App.Views.Playlist = Backbone.View.extend({
+    className: 'playlist',
+
 
     initialize: function () {
-        this.$el.html( TmpEngine.render('playlist') );
-
-        this.collection = new app.TrackList(tracks);
-        //this.render();
+        this.render();
     },
 
     render: function () {
-        var that = this;
-        _.each(this.collection.models, function (item) {
-            that.renderTrack(item);
-        }, this);
+        return this;
     },
 
-    renderTrack: function (item) {
-        var trackView = new app.TrackView({
-            model: item
+    initPlaylistScroll: function () {
+        this.$playlist.mCustomScrollbar({
+            theme: "minimal-dark",
+            scrollInertia: 0
         });
-        this.$tracker.append( trackView.render().el );
     }
 });

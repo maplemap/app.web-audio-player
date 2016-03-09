@@ -1366,7 +1366,7 @@ yx-axis
 #webAudioPlayer .playlist .modal-window .cancel:before {
   content: '\2716';
 }
-#webAudioPlayer .wap-tools {
+#webAudioPlayer .tools {
   position: relative;
   z-index: 11;
   text-align: left;
@@ -1376,7 +1376,7 @@ yx-axis
   margin: 2px 0 0 0;
   background: #fff;
 }
-#webAudioPlayer .wap-tools li {
+#webAudioPlayer .tools li {
   display: inline-block;
   list-style-type: none;
   font-family: 'Entypo', sans-serif;
@@ -1384,13 +1384,13 @@ yx-axis
   padding: 5px 2px;
   cursor: pointer;
 }
-#webAudioPlayer .wap-tools li:first-child {
+#webAudioPlayer .tools li:first-child {
   margin-left: 0;
 }
-#webAudioPlayer .wap-tools li.get-files:before {
+#webAudioPlayer .tools li.get-files:before {
   content: '\e711';
 }
-#webAudioPlayer .wap-tools li.upload-files:before {
+#webAudioPlayer .tools li.upload-files:before {
   content: '\1f4e4';
 }
 /*** plugin's styles ***/

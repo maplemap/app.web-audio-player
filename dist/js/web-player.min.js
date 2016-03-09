@@ -1,3 +1,13 @@
+'use strict';
+
+var App = {
+    Models: {},
+    Collections: {},
+    Views: {}
+};
+
+App.PLAYER_ID = 'webAudioPlayer';
+App.CLASS_PREFIX = 'wap';
 var app = app || {};
 
 app.TrackView = Backbone.View.extend({
@@ -36,75 +46,82 @@ app.TrackList = Backbone.Collection.extend({
 
 app.Tracks = new app.TrackList();
 'use strict';
-var app = app || {};
 
-app.PlayerView = Backbone.View.extend({
-
-    events: {
-
-    },
+App.Views.Player = Backbone.View.extend({
+    id: App.PLAYER_ID,
 
     initialize: function () {
-        this.$el.html( app.TmpEngine.render('player') );
+        this.playlistView = new App.Views.Playlist();
+        this.toolsView = new App.Views.Tools();
 
-        this.listenTo(app.Tracks, 'add', this.addOne);
+        this.render();
 
-        this.$player = this.$('#' + app.PLAYER_ID);
-        this.$playlist = this.$player.find('.playlist');
-        this.$tracker = this.$playlist.find('.tracker');
-
-        this.afterRendering();
-
-        app.Tracks.fetch();
+        //new app.ToolsView({
+        //    el: '#' + this.id
+        //});
+        //this.$el.html( app.TmpEngine.render('player') );
+        //
+        //this.listenTo(app.Tracks, 'add', this.addOne);
+        //
+        //this.$player = this.$('#' + app.PLAYER_ID);
+        //this.$playlist = this.$player.find('.playlist');
+        //this.$tracker = this.$playlist.find('.tracker');
+        //
+        //this.afterRendering();
+        //
+        //app.Tracks.fetch();
     },
-
+    //
     render: function () {
+        this.$el.append( this.playlistView.$el );
+        this.$el.append( this.toolsView.$el );
 
-    },
-
-    addOne: function (track) {
-        var view = new app.TrackView({
-            model: track
-        });
-        track.save();
-        this.$tracker.append( view.render().el );
-    },
-
-    addOneToCollection: function (track) {
-        app.Tracks.add(track);
-    },
-
-    renderList: function (event) {
-        var that = this;
-        app.Tracks.each(function (model, indx) {
-            that.addOne(model);
-        });
-    },
-
-    initFileUpload: function () {
-        var that = this;
-
-        app.UploadFiles.init('#' + app.PLAYER_ID + ' .upload-files', function (allFiles) {
-            $.each(tracks, function (i, track) {
-                that.addOneToCollection(track);
-            })
-        });
-    },
-
-    renderTrack: function (item) {
-        var trackView = new app.TrackView({
-            model: item
-        });
-        this.$tracker.append( trackView.render().el );
-    },
-
-    afterRendering: function () {
-        //this.initTimeline();
-        //this.initVolumeControl();
-        this.initPlaylistScroll();
-        app.UploadFiles.init(this.$player);
-        //this.initFileCollector();
-    },
+        return this;
+    }
+    //
+    //addOne: function (track) {
+    //    var view = new app.TrackView({
+    //        model: track
+    //    });
+    //    track.save();
+    //    this.$tracker.append( view.render().el );
+    //},
+    //
+    //addOneToCollection: function (track) {
+    //    app.Tracks.add(track);
+    //},
+    //
+    //renderList: function (event) {
+    //    var that = this;
+    //    app.Tracks.each(function (model, indx) {
+    //        that.addOne(model);
+    //    });
+    //},
+    //
+    //initFileUpload: function () {
+    //    var that = this;
+    //
+    //    app.UploadFiles.init('#' + app.PLAYER_ID + ' .upload-files', function (allFiles) {
+    //        $.each(tracks, function (i, track) {
+    //            that.addOneToCollection(track);
+    //        })
+    //    });
+    //},
+    //
+    //renderTrack: function (item) {
+    //    var trackView = new app.TrackView({
+    //        model: item
+    //    });
+    //    this.$tracker.append( trackView.render().el );
+    //},
+    //
+    //afterRendering: function () {
+    //    //this.initTimeline();
+    //    //this.initVolumeControl();
+    //    this.initPlaylistScroll();
+    //    app.UploadFiles.init(this.$player);
+    //    //this.initFileCollector();
+    //},
 
     //initTimeline: function () {
     //    this.$(".timeline").slider({
@@ -126,65 +143,102 @@ app.PlayerView = Backbone.View.extend({
     //    });
     //},
 
+    //initPlaylistScroll: function () {
+    //    this.$playlist.mCustomScrollbar({
+    //        theme: "minimal-dark",
+    //        scrollInertia: 0
+    //    });
+    //},
+    //
+    //getFilesFromServer: function () {
+    //
+    //}
+});
+
+'use strict';
+
+App.Views.Playlist = Backbone.View.extend({
+    className: 'playlist',
+
+
+    initialize: function () {
+        this.render();
+    },
+
+    render: function () {
+        return this;
+    },
+
     initPlaylistScroll: function () {
         this.$playlist.mCustomScrollbar({
             theme: "minimal-dark",
             scrollInertia: 0
         });
+    }
+});
+'use strict';
+
+App.Views.Tools = Backbone.View.extend({
+
+    tagName: 'ul',
+    className: 'tools',
+    
+    events: {
+        'click .upload-files': 'upload'  
+    },
+    
+    initialize: function () {
+        this.render();
     },
 
-    getFilesFromServer: function () {
+    render: function () {
+        this.$el.append( App.TmpEngine.render('instruments') );
 
+        return this;
     }
 });
 
 'use strict';
 
-var app = app || {};
+App.TmpEngine = (function () {
 
-app.PLAYER_ID = 'webAudioPlayer';
-app.CLASS_PREFIX = 'wap';
-
-app.TmpEngine = (function () {
-
-    var settings = {
-            playerID: app.PLAYER_ID,
-            classPrefix: app.CLASS_PREFIX
-        },
-        render = function (tmpName, data) {
+    var render = function (tmpName, data) {
             data = data || {};
             if( Templates[tmpName] ) return Templates[tmpName](data);
         },
 
         Templates = {
-            player: function (data) {
-                return '<div id="'+ settings.playerID +'">\
-                            <div class="'+ settings.classPrefix +'-audiobox">\
-                                <audio></audio>\
-                            </div>\
-                            <div class="playlist current">\
-                                 <ul class="tracker"></ul>\
-                                 <div class="modal-window"></div>\
-                            </div>\
-                            <ul class="'+ settings.classPrefix +'-tools">\
-                                <li class="get-files" title="get files from server"></li>\
-                                <li class="upload-files" title="upload files"></li>\
-                            </ul>\
-                        </div>'
+
+            audiobox: function (data) {
+                return '<div class="'+ App.CLASS_PREFIX +'-audiobox">\
+                            <audio></audio>\
+                        </div>';
+            },
+
+            playlist: function (data) {
+                  return '<div class="playlist current">\
+                            <ul class="tracker"></ul>\
+                            <div class="modal-window"></div>\
+                          </div>'
             },
 
             track: function (data) {
                 return '<span class="track-name">' + data.name + '</span>\
                         <span class="track-duration">' + data.duration + '</span>'
             },
+
+            instruments: function () {
+                return '<li class="get-files" title="get files from server"></li>\
+                        <li class="upload-files" title="upload files"></li>'
+            },
             
             information: function (options) {
-                return '<div class="'+ settings.classPrefix +'-album-cover">\
+                return '<div class="'+ App.CLASS_PREFIX +'-album-cover">\
                             <img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
                         </div>\
                         <div class="track-name">We’ll be coming back</div>\
-                        <div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
-                        <div class="'+ settings.classPrefix +'-album-name">18 months</div>'
+                        <div class="'+ App.CLASS_PREFIX +'-author">Calvin Harris</div>\
+                        <div class="'+ App.CLASS_PREFIX +'-album-name">18 months</div>'
             },
 
             fileList: function () {
@@ -422,3 +476,4 @@ q,"UTF-8");break;case "uint8":k=b.F(v);break;case "jpeg":case "png":k={format:"i
 "\u00a9lyr":["lyrics"],"\u00a9cmt":["comment"],tmpo:["tempo"],cpil:["compilation"],disk:["disc"]},u:function(a,b){a.i([0,7],function(){h(a,0,a.l(),b)})},v:function(a){var b={};f(b,a,0,a.l());return b}};l.f=c},{}],9:[function(g,l){l.f={J:function(h,f,c){var a=0,b=1,g=0;c=Math.min(c||h.length,h.length);254==h[0]&&255==h[1]?(f=!0,a=2):255==h[0]&&254==h[1]&&(f=!1,a=2);f&&(b=0,g=1);f=[];for(var d=0;a<c;d++){var e=h[a+b],l=(e<<8)+h[a+g],a=a+2;if(0==l)break;else 216>e||224<=e?f[d]=String.fromCharCode(l):
 (e=(h[a+b]<<8)+h[a+g],a+=2,f[d]=String.fromCharCode(l,e))}h=new String(f.join(""));h.j=a;return h},K:function(h,f){var c=0;f=Math.min(f||h.length,h.length);239==h[0]&&187==h[1]&&191==h[2]&&(c=3);for(var a=[],b=0;c<f;b++){var g=h[c++];if(0==g)break;else if(128>g)a[b]=String.fromCharCode(g);else if(194<=g&&224>g){var d=h[c++];a[b]=String.fromCharCode(((g&31)<<6)+(d&63))}else if(224<=g&&240>g){var d=h[c++],e=h[c++];a[b]=String.fromCharCode(((g&255)<<12)+((d&63)<<6)+(e&63))}else if(240<=g&&245>g){var d=
 h[c++],e=h[c++],l=h[c++],g=((g&7)<<18)+((d&63)<<12)+((e&63)<<6)+(l&63)-65536;a[b]=String.fromCharCode((g>>10)+55296,(g&1023)+56320)}}a=new String(a.join(""));a.j=c;return a},I:function(g,f){var c=[];f=f||g.length;for(var a=0;a<f;){var b=g[a++];if(0==b)break;c[a-1]=String.fromCharCode(b)}c=new String(c.join(""));c.j=a;return c}}},{}]},{},[4])(4)});
+

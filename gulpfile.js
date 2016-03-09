@@ -24,16 +24,19 @@ var path = {
     src: { //path of source
         js: {
             webPlayer: [
+                './src/js/config.js',
                 './src/js/views/track.js',
                 './src/js/models/track.js',
                 './src/js/collections/track.js',
                 './src/js/views/player.js',
                 './src/js/views/playlist.js',
+                './src/js/views/tools.js',
                 './src/js/modules/tmpEngine.js',
                 './src/js/modules/uploadFiles.js',
                 './src/js/modules/getFiles.js',
                 './src/js/modules/ID3Tags.js',
-                './src/js/plugins/id3-minimized.js'
+                './src/js/plugins/id3-minimized.js',
+                './src/js/app.js'
             ],
             dependencies: [
                 './bower_components/jquery/dist/jquery.js',

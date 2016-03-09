@@ -24,9 +24,9 @@
     var app = app || {};
 
     $(function() {
-        new app.PlayerView({
-            el: '#widget'
-        });
+        var playerView = new App.Views.Player();
+
+        $('#widget').append( playerView.$el );
     });
 </script>
 </body>
