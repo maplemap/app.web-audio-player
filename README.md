@@ -1,19 +1,14 @@
 #Web Audio Player
 
 ### Usage
-
-first of all
-
-``$ bower i``
-
-``$ npm i``
-
-``$ gulp build``
+- ``$ bower i``
+- ``$ npm i``
+- ``$ gulp build``
 
 and than run ``index.html`` in ``test/`` folder
 
 ### Config
-If you want to change id name or class prefix of application, you can do it in such files:
+If you want to change id name or class prefixes of application, you can do it in such files:
  - ``/src/js/config.js``
  
  ```js
