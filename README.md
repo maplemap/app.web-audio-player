@@ -1,6 +1,6 @@
 #Web Audio Player
 
-## Usage
+### Usage
 
 first of all
 
@@ -10,4 +10,20 @@ first of all
 
 ``$ gulp build``
 
-and than run ``index.html`` in ``test/``
+and than run ``index.html`` in ``test/`` folder
+
+### Config
+If you want to change id name or class prefix of application, you can do it in such files:
+ - ``/src/js/config.js``
+ 
+ ```js
+    App.PLAYER_ID = 'webAudioPlayer';
+    App.CLASS_PREFIX = 'wap';
+ ```
+ 
+ - ``/src/css/web-player.less``
+ 
+ ```less
+    @player-ID: webAudioPlayer;
+    @class-prefix: wap;
+ ```
