@@ -1,7 +1,8 @@
 'use strict';
 
-App.Views.Playlist = Backbone.View.extend({
-    className: App.CLASS_PREFIX + '-playlist',
+App.Views.Tracker = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.CLASS_PREFIX + '-tracker',
 
     initialize: function () {
         //this.$el.append( App.TmpEngine.render('track') );
@@ -14,12 +15,5 @@ App.Views.Playlist = Backbone.View.extend({
         //this.$el.append( tracker );
 
         return this;
-    },
-
-    initPlaylistScroll: function () {
-        this.$playlist.mCustomScrollbar({
-            theme: "minimal-dark",
-            scrollInertia: 0
-        });
     }
 });
