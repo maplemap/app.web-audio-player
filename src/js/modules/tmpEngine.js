@@ -17,6 +17,7 @@ App.TmpEngine = (function () {
 
             track: function (data) {
                 return '<span class="track-name">' + data.name + '</span>\
+                        <span class="track-delete" title="delete track"></span>\
                         <span class="track-duration">' + data.duration + '</span>'
             },
 

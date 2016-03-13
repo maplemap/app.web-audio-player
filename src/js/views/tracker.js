@@ -23,12 +23,12 @@ App.Views.Tracker = Backbone.View.extend({
         return this;
     },
 
-    addOne: function (track) {
+    addOne: function (model) {
         var view = new App.Views.Track({
-            model: track
+            model: model
         });
 
-        track.save();
+        model.save();
         this.$el.append( view.render().el );
     },
 

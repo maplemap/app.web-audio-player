@@ -151,29 +151,52 @@
   margin: 0;
 }
 #webAudioPlayer .wap-playlist .wap-tracker li {
+  position: relative;
   color: #333;
   list-style-type: none;
   font-size: 14px;
-  padding: 8px 10px 8px 25px;
+  padding: 8px 5px 8px 20px;
   cursor: pointer;
 }
 #webAudioPlayer .wap-playlist .wap-tracker li:nth-child(even) {
   background: #eee;
 }
-#webAudioPlayer .wap-playlist .wap-tracker li:hover {
-  background: #ddd;
-}
 #webAudioPlayer .wap-playlist .wap-tracker li.active:before {
   content: '\25b6';
   position: absolute;
-  top: 8px;
+  top: 10px;
   left: 7px;
   font-family: 'Entypo', sans-serif;
-  font-size: 15px;
+  font-size: 13px;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li:hover,
+#webAudioPlayer .wap-playlist .wap-tracker li.active {
+  background: #ddd;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li span {
+  display: inline-block;
+  vertical-align: middle;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li .track-delete {
+  float: right;
+  width: 8px;
+  height: 15px;
+  text-align: center;
+  line-height: 18px;
+  margin-left: 5px;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li .track-delete:before {
+  display: none;
+  content: '\2715';
+  font-family: 'Entypo', sans-serif;
+  font-size: 13px;
+  vertical-align: middle;
+}
+#webAudioPlayer .wap-playlist .wap-tracker li:hover .track-delete:before {
+  display: block;
 }
 #webAudioPlayer .wap-playlist .wap-tracker li .track-name {
   position: relative;
-  display: inline-block;
   max-width: 60%;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -28,6 +28,7 @@ App.TmpEngine = (function () {
 
             track: function (data) {
                 return '<span class="track-name">' + data.name + '</span>\
+                        <span class="track-delete" title="delete track"></span>\
                         <span class="track-duration">' + data.duration + '</span>'
             },
 
@@ -87,23 +88,35 @@ App.TmpEngine = (function () {
 App.Views.Track = Backbone.View.extend({
     tagName: 'li',
 
+    events: {
+        'click .track-delete': 'destroy'
+    },
+
     initialize: function () {
         this.listenTo(this. model, 'change', this.render);
+        this.model.on('destroy', this.remove, this);
     },
 
     render: function () {
         this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
 
         return this;
+    },
+
+    remove: function () {
+      this.$el.remove();
+    },
+
+    destroy: function () {
+        this.model.destroy();
     }
 });
 'use strict';
 
 App.Models.Track = Backbone.Model.extend({
     defaults: {
-        author: '',
-        album: '',
-        name: ''
+        trackname: '',
+        duration: ''
     }
 });
 'use strict';
@@ -215,12 +228,12 @@ App.Views.Tracker = Backbone.View.extend({
         return this;
     },
 
-    addOne: function (track) {
+    addOne: function (model) {
         var view = new App.Views.Track({
-            model: track
+            model: model
         });
 
-        track.save();
+        model.save();
         this.$el.append( view.render().el );
     },
 

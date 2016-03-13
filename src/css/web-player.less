@@ -8,6 +8,8 @@
 @player-main-border-radius: 3px;
 @playlist-min-height: 250px;
 
+@track-active-hover-bg: #ddd;
+
 
 @font-face {
     font-family: 'Inconsolata';
@@ -61,25 +63,67 @@
       margin: 0;
 
       li {
+        position: relative;
         color: @player-main-color;
         list-style-type: none;
         font-size: 14px;
-        padding: 8px 10px 8px 25px;
+        padding: 8px 5px 8px 20px;
         cursor: pointer;
 
         &:nth-child(even) {
           background: #eee;
         }
-        &:hover {
-          background: #ddd;
-        }
         &.active:before {
           content: '\25b6';
           position: absolute;
-          top: 8px;
+          top: 10px;
           left: 7px;
           font-family: 'Entypo', sans-serif;
-          font-size: 15px;
+          font-size: 13px;
+        }
+        &:hover,
+        &.active {
+          background: @track-active-hover-bg;
+        }
+
+        span {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .track-delete {
+          float: right;
+          width: 8px;
+          height: 15px;
+          text-align: center;
+          line-height: 18px;
+          margin-left: 5px;
+
+          &:before {
+            display: none;
+            content: '\2715';
+            font-family: 'Entypo', sans-serif;
+            font-size: 13px;
+            vertical-align: middle;
+          }
+        }
+
+        &:hover {
+          .track-delete:before {
+            display: block;
+          }
+        }
+
+        .track-name {
+          position: relative;
+          max-width: 60%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        .track-duration {
+          float: right;
         }
 
         //&#dropzone {
@@ -104,19 +148,6 @@
         //    margin-top: 100px;
         //  }
         //}
-
-        .track-name {
-          position: relative;
-          display: inline-block;
-          max-width: 60%;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-
-        .track-duration {
-          float: right;
-        }
       }
     }
 
