@@ -1,11 +1,10 @@
 'use strict';
 
-var app = app || {};
 
-app.TrackList = Backbone.Collection.extend({
-    model: app.Track,
+App.Collections.Tracks = Backbone.Collection.extend({
+    model: App.Models.Track,
     localStorage: new Backbone.LocalStorage('web-player')
 
 });
 
-app.Tracks = new app.TrackList();
+App.Tracks = new App.Collections.Tracks();

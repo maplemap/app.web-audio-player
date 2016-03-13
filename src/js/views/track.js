@@ -1,6 +1,6 @@
-var app = app || {};
+'use strict';
 
-app.TrackView = Backbone.View.extend({
+App.Views.Track = Backbone.View.extend({
     tagName: 'li',
 
     initialize: function () {
@@ -8,7 +8,7 @@ app.TrackView = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.html( app.TmpEngine.render('track', this.model.toJSON()) );
+        this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
 
         return this;
     }

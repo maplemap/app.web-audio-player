@@ -27,8 +27,8 @@ App.TmpEngine = (function () {
             },
 
             track: function (data) {
-                return '<li><span class="track-name">' + data.name + '</span>\
-                        <span class="track-duration">' + data.duration + '</span></li>'
+                return '<span class="track-name">' + data.name + '</span>\
+                        <span class="track-duration">' + data.duration + '</span>'
             },
 
             instruments: function () {
@@ -82,9 +82,9 @@ App.TmpEngine = (function () {
 //<li id="dropzone">\
 //<span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
 //</li>\
-var app = app || {};
+'use strict';
 
-app.TrackView = Backbone.View.extend({
+App.Views.Track = Backbone.View.extend({
     tagName: 'li',
 
     initialize: function () {
@@ -92,16 +92,14 @@ app.TrackView = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.html( app.TmpEngine.render('track', this.model.toJSON()) );
+        this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
 
         return this;
     }
 });
 'use strict';
 
-var app = app || {};
-
-app.Track = Backbone.Model.extend({
+App.Models.Track = Backbone.Model.extend({
     defaults: {
         author: '',
         album: '',
@@ -110,15 +108,14 @@ app.Track = Backbone.Model.extend({
 });
 'use strict';
 
-var app = app || {};
 
-app.TrackList = Backbone.Collection.extend({
-    model: app.Track,
+App.Collections.Tracks = Backbone.Collection.extend({
+    model: App.Models.Track,
     localStorage: new Backbone.LocalStorage('web-player')
 
 });
 
-app.Tracks = new app.TrackList();
+App.Tracks = new App.Collections.Tracks();
 'use strict';
 
 App.Views.Player = Backbone.View.extend({
@@ -130,23 +127,7 @@ App.Views.Player = Backbone.View.extend({
         this.audioboxTmp = App.TmpEngine.getTemplate('audiobox');
 
         this.render();
-
-        //new app.ToolsView({
-        //    el: '#' + this.id
-        //});
-        //this.$el.html( app.TmpEngine.render('player') );
-        //
-        //this.listenTo(app.Tracks, 'add', this.addOne);
-        //
-        //this.$player = this.$('#' + app.PLAYER_ID);
-        //this.$playlist = this.$player.find('.playlist');
-        //this.$tracker = this.$playlist.find('.tracker');
-        //
-        //this.afterRendering();
-        //
-        //app.Tracks.fetch();
     },
-    //
     render: function () {
         this.$el.append( this.audioboxTmp );
         this.$el.append( this.playlistView.$el );
@@ -154,26 +135,6 @@ App.Views.Player = Backbone.View.extend({
 
         return this;
     }
-    //
-    //addOne: function (track) {
-    //    var view = new app.TrackView({
-    //        model: track
-    //    });
-    //    track.save();
-    //    this.$tracker.append( view.render().el );
-    //},
-    //
-    //addOneToCollection: function (track) {
-    //    app.Tracks.add(track);
-    //},
-    //
-    //renderList: function (event) {
-    //    var that = this;
-    //    app.Tracks.each(function (model, indx) {
-    //        that.addOne(model);
-    //    });
-    //},
-    //
     //initFileUpload: function () {
     //    var that = this;
     //
@@ -182,21 +143,6 @@ App.Views.Player = Backbone.View.extend({
     //            that.addOneToCollection(track);
     //        })
     //    });
-    //},
-    //
-    //renderTrack: function (item) {
-    //    var trackView = new app.TrackView({
-    //        model: item
-    //    });
-    //    this.$tracker.append( trackView.render().el );
-    //},
-    //
-    //afterRendering: function () {
-    //    //this.initTimeline();
-    //    //this.initVolumeControl();
-    //    this.initPlaylistScroll();
-    //    app.UploadFiles.init(this.$player);
-    //    //this.initFileCollector();
     //},
 
     //initTimeline: function () {
@@ -217,17 +163,6 @@ App.Views.Player = Backbone.View.extend({
     //            //$( "#amount" ).val( ui.value );
     //        }
     //    });
-    //},
-
-    //initPlaylistScroll: function () {
-    //    this.$playlist.mCustomScrollbar({
-    //        theme: "minimal-dark",
-    //        scrollInertia: 0
-    //    });
-    //},
-    //
-    //getFilesFromServer: function () {
-    //
     //}
 });
 
@@ -243,15 +178,15 @@ App.Views.Playlist = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.append( this.trackerView.$el );
+        this.$el.append( this.trackerView.render().el );
+        this.initPlaylistScroll();
 
         return this;
     },
 
     initPlaylistScroll: function () {
-        this.$playlist.mCustomScrollbar({
-            theme: "minimal-dark",
-            scrollInertia: 0
+        this.$el.perfectScrollbar({
+            minScrollbarLength: 50
         });
     }
 });
@@ -262,16 +197,42 @@ App.Views.Tracker = Backbone.View.extend({
     className: App.CLASS_PREFIX + '-tracker',
 
     initialize: function () {
-        //this.$el.append( App.TmpEngine.render('track') );
+        this.listenTo(App.Tracks, 'add', this.addOne);
 
-        this.render();
+        App.Tracks.fetch();
     },
 
     render: function () {
         //var tracker = App.TmpEngine.render('tracker');
         //this.$el.append( tracker );
 
+        var that = this;
+
+        //$.each(tracks, function (i, track) {
+        //    that.addOneToCollection(track);
+        //});
+
         return this;
+    },
+
+    addOne: function (track) {
+        var view = new App.Views.Track({
+            model: track
+        });
+
+        track.save();
+        this.$el.append( view.render().el );
+    },
+
+    addOneToCollection: function (track) {
+        App.Tracks.add(track);
+    },
+
+    renderList: function (event) {
+        var that = this;
+        App.Tracks.each(function (model, indx) {
+            that.addOne(model);
+        });
     }
 });
 'use strict';

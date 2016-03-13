@@ -10,7 +10,8 @@ App.Views.Playlist = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.append( this.trackerView.$el );
+        this.$el.append( this.trackerView.render().el );
+        this.initPlaylistScroll();
 
         return this;
     },

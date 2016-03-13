@@ -16,8 +16,8 @@ App.TmpEngine = (function () {
             },
 
             track: function (data) {
-                return '<li><span class="track-name">' + data.name + '</span>\
-                        <span class="track-duration">' + data.duration + '</span></li>'
+                return '<span class="track-name">' + data.name + '</span>\
+                        <span class="track-duration">' + data.duration + '</span>'
             },
 
             instruments: function () {
