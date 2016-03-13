@@ -26,6 +26,12 @@ App.TmpEngine = (function () {
                         </div>';
             },
 
+            playlistInfo: function (data) {
+                return '<li class="amount-duration"><span>'+ data.duration +'</span></li>\
+                        <li class="amount-tracks"><span>'+ data.tracks +'</span></li>\
+                        <li class="delete-tracks">delete all</li>'
+            },
+
             track: function (data) {
                 return '<span class="track-name">' + data.name + '</span>\
                         <span class="track-delete" title="delete track"></span>\
@@ -124,8 +130,29 @@ App.Models.Track = Backbone.Model.extend({
 
 App.Collections.Tracks = Backbone.Collection.extend({
     model: App.Models.Track,
-    localStorage: new Backbone.LocalStorage('web-player')
+    localStorage: new Backbone.LocalStorage('web-player'),
 
+    getTotalTime: function () {
+        var totalSeconds = 0,
+            hours, minutes, seconds, time;
+
+        this.each(function (obj, index) {
+            var timeArray = obj.get('duration').split(':');
+            totalSeconds += parseInt(timeArray[0], 10) * 60 + parseInt(timeArray[1], 10);
+        });
+
+        hours   = Math.floor(totalSeconds / 3600);
+        minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
+        seconds = totalSeconds - (hours * 3600) - (minutes * 60);
+
+        if (hours   < 10) {hours   = '0' + hours;}
+        if (minutes < 10) {minutes = '0' + minutes;}
+        if (seconds < 10) {seconds = '0' + seconds;}
+
+        time = hours + ':' + minutes + ':' + seconds;
+
+        return time;
+    }
 });
 
 App.Tracks = new App.Collections.Tracks();
@@ -186,11 +213,13 @@ App.Views.Playlist = Backbone.View.extend({
 
     initialize: function () {
         this.trackerView = new App.Views.Tracker();
+        this.playlistInfoView = new App.Views.PlaylistInfo();
 
         this.render();
     },
 
     render: function () {
+        this.$el.append( this.playlistInfoView.render().el );
         this.$el.append( this.trackerView.render().el );
         this.initPlaylistScroll();
 
@@ -201,6 +230,27 @@ App.Views.Playlist = Backbone.View.extend({
         this.$el.perfectScrollbar({
             minScrollbarLength: 50
         });
+    }
+});
+'use strict';
+
+App.Views.PlaylistInfo = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.CLASS_PREFIX + '-playlist-info',
+
+    initialize: function () {
+        this.listenTo(App.Tracks, 'all', this.render);
+    },
+
+    render: function () {
+        var data = {
+            tracks: App.Tracks.length,
+            duration: App.Tracks.getTotalTime()
+        };
+
+        this.$el.html( App.TmpEngine.getTemplate('playlistInfo', data) );
+
+        return this;
     }
 });
 'use strict';

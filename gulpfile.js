@@ -31,6 +31,7 @@ var path = {
                 './src/js/collections/track.js',
                 './src/js/views/player.js',
                 './src/js/views/playlist.js',
+                './src/js/views/playlist-info.js',
                 './src/js/views/tracker.js',
                 './src/js/views/tools.js',
                 './src/js/modules/uploadFiles.js',

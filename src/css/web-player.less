@@ -58,6 +58,27 @@
     border: 1px solid @player-main-color;
     border-radius: @player-main-border-radius;
 
+    .@{class-prefix}-playlist-info {
+      opacity: .5;
+      border-bottom: 1px solid rgba(51, 51, 51, 0.19);
+      padding: 0 10px 5px 20px;
+      margin: 0 auto;
+
+      li {
+        display: inline-block;
+        font-size: 10px;
+
+        &.amount-tracks {
+          margin-left: 5px;
+        }
+        &.delete-tracks {
+          float: right;
+          cursor: pointer;
+          margin-top: 5px;
+        }
+      }
+    }
+
     .@{class-prefix}-tracker {
       padding: 0;
       margin: 0;
@@ -81,8 +102,7 @@
           font-family: 'Entypo', sans-serif;
           font-size: 13px;
         }
-        &:hover,
-        &.active {
+        &:hover{
           background: @track-active-hover-bg;
         }
 
@@ -242,7 +262,7 @@
 
     & > .ps-scrollbar-y {
       width: 5px;
-      min-height: 50px;
+      //min-height: 50px;
     }
   }
 }
