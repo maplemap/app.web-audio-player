@@ -16,9 +16,8 @@ App.Views.Playlist = Backbone.View.extend({
     },
 
     initPlaylistScroll: function () {
-        this.$playlist.mCustomScrollbar({
-            theme: "minimal-dark",
-            scrollInertia: 0
+        this.$el.perfectScrollbar({
+            minScrollbarLength: 50
         });
     }
 });

@@ -1,4 +1,4 @@
-@import (inline) "../../bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
+@import (inline) "../../bower_components/perfect-scrollbar/css/perfect-scrollbar.css";
 
 
 @player-ID: webAudioPlayer;
@@ -188,32 +188,30 @@
       }
     }
   }
-}
 
-/*** plugin's styles ***/
-.@{class-prefix}-controls {
-  .volume {
-    .ui-slider-range {
-      height: 8px;
-      border-radius: 3px;
+  /*** plugin's styles ***/
+  .@{class-prefix}-controls {
+    .volume {
+      .ui-slider-range {
+        height: 8px;
+        border-radius: 3px;
+      }
+    }
+    .timeline {
+      .ui-slider-range {
+        height: 18px;
+        border-radius: 5px;
+      }
     }
   }
-  .timeline {
-    .ui-slider-range {
-      height: 18px;
-      border-radius: 5px;
+
+  .ps-container > .ps-scrollbar-y-rail {
+    display: block;
+    opacity: .6;
+
+    & > .ps-scrollbar-y {
+      width: 5px;
+      min-height: 50px;
     }
   }
-}
-
-.mCSB_inside>.mCSB_container {
-  margin-right: 0;
-}
-.mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-  background-color: rgba(0,0,0,.75) !important;
-}
-.mCS-autoHide>.mCustomScrollBox>.mCSB_scrollTools, .mCS-autoHide>.mCustomScrollBox~.mCSB_scrollTools {
-  opacity: 1 !important;
-  filter: "alpha(opacity=1)" !important;
-  -ms-filter: "alpha(opacity=1)" !important;
 }

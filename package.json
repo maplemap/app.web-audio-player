@@ -25,6 +25,5 @@
     "gulp-watch": "*",
     "imagemin-pngquant": "*",
     "rimraf": "*"
-  },
-  "dependencies": {}
+  }
 }
