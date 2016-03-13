@@ -2,8 +2,6 @@
 
 ### Usage
 
-first of all
-
 ``$ bower i``
 
 ``$ npm i``

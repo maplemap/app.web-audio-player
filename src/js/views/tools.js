@@ -3,7 +3,7 @@
 App.Views.Tools = Backbone.View.extend({
 
     tagName: 'ul',
-    className: 'tools',
+    className: App.CLASS_PREFIX + '-tools',
     
     events: {
         'click .upload-files': 'upload'  
@@ -14,7 +14,7 @@ App.Views.Tools = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.append( App.TmpEngine.render('instruments') );
+        this.$el.append( App.TmpEngine.getTemplate('instruments') );
 
         return this;
     }

@@ -2,29 +2,22 @@
 
 App.TmpEngine = (function () {
 
-    var render = function (tmpName, data) {
+    var getTemplate = function (tmpName, data) {
             data = data || {};
             if( Templates[tmpName] ) return Templates[tmpName](data);
         },
 
         Templates = {
 
-            audiobox: function (data) {
+            audiobox: function () {
                 return '<div class="'+ App.CLASS_PREFIX +'-audiobox">\
                             <audio></audio>\
                         </div>';
             },
 
-            playlist: function (data) {
-                  return '<div class="playlist current">\
-                            <ul class="tracker"></ul>\
-                            <div class="modal-window"></div>\
-                          </div>'
-            },
-
             track: function (data) {
-                return '<span class="track-name">' + data.name + '</span>\
-                        <span class="track-duration">' + data.duration + '</span>'
+                return '<li><span class="track-name">' + data.name + '</span>\
+                        <span class="track-duration">' + data.duration + '</span></li>'
             },
 
             instruments: function () {
@@ -47,7 +40,7 @@ App.TmpEngine = (function () {
         };
 
     return {
-        render: render
+        getTemplate: getTemplate
     }
 
 }());

@@ -6,8 +6,82 @@ var App = {
     Views: {}
 };
 
+//constants
 App.PLAYER_ID = 'webAudioPlayer';
 App.CLASS_PREFIX = 'wap';
+'use strict';
+
+App.TmpEngine = (function () {
+
+    var getTemplate = function (tmpName, data) {
+            data = data || {};
+            if( Templates[tmpName] ) return Templates[tmpName](data);
+        },
+
+        Templates = {
+
+            audiobox: function () {
+                return '<div class="'+ App.CLASS_PREFIX +'-audiobox">\
+                            <audio></audio>\
+                        </div>';
+            },
+
+            track: function (data) {
+                return '<li><span class="track-name">' + data.name + '</span>\
+                        <span class="track-duration">' + data.duration + '</span></li>'
+            },
+
+            instruments: function () {
+                return '<li class="get-files" title="get files from server"></li>\
+                        <li class="upload-files" title="upload files"></li>'
+            },
+            
+            information: function (options) {
+                return '<div class="'+ App.CLASS_PREFIX +'-album-cover">\
+                            <img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
+                        </div>\
+                        <div class="track-name">We’ll be coming back</div>\
+                        <div class="'+ App.CLASS_PREFIX +'-author">Calvin Harris</div>\
+                        <div class="'+ App.CLASS_PREFIX +'-album-name">18 months</div>'
+            },
+
+            fileList: function () {
+                return '<ul class="file-list"></ul>'
+            }
+        };
+
+    return {
+        getTemplate: getTemplate
+    }
+
+}());
+
+//<div class="'+ settings.classPrefix +'-header">\
+//<span class="'+ settings.classPrefix +'-logo"></span>\
+//</div>\
+//<div class="'+ settings.classPrefix +'-information">\
+//<div class="'+ settings.classPrefix +'-album-cover">\
+//<img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
+//</div>\
+//<div class="track-name">We’ll be coming back</div>\
+//<div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
+//<div class="'+ settings.classPrefix +'-album-name">18 months</div>\
+//</div>\
+
+//<ul class="'+ settings.classPrefix +'-controls">\
+//<li class="prev"></li>\
+//<li class="play-pause"></li>\
+//<li class="next"></li>\
+//<li class="timeline"></li>\
+//<li class="volume" title="volume"></li>\
+//<li class="shuffle"></li>\
+//<li class="repeat"></li>\
+//</ul>\
+//<div class="'+ settings.classPrefix +'-footer"> </div>\
+
+//<li id="dropzone">\
+//<span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
+//</li>\
 var app = app || {};
 
 app.TrackView = Backbone.View.extend({
@@ -51,8 +125,9 @@ App.Views.Player = Backbone.View.extend({
     id: App.PLAYER_ID,
 
     initialize: function () {
-        this.playlistView = new App.Views.Playlist();
         this.toolsView = new App.Views.Tools();
+        this.playlistView = new App.Views.Playlist;
+        this.audioboxTmp = App.TmpEngine.getTemplate('audiobox');
 
         this.render();
 
@@ -73,6 +148,7 @@ App.Views.Player = Backbone.View.extend({
     },
     //
     render: function () {
+        this.$el.append( this.audioboxTmp );
         this.$el.append( this.playlistView.$el );
         this.$el.append( this.toolsView.$el );
 
@@ -158,14 +234,17 @@ App.Views.Player = Backbone.View.extend({
 'use strict';
 
 App.Views.Playlist = Backbone.View.extend({
-    className: 'playlist',
-
+    className: App.CLASS_PREFIX + '-playlist',
 
     initialize: function () {
+        this.trackerView = new App.Views.Tracker();
+
         this.render();
     },
 
     render: function () {
+        this.$el.append( this.trackerView.$el );
+
         return this;
     },
 
@@ -178,10 +257,29 @@ App.Views.Playlist = Backbone.View.extend({
 });
 'use strict';
 
+App.Views.Tracker = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.CLASS_PREFIX + '-tracker',
+
+    initialize: function () {
+        //this.$el.append( App.TmpEngine.render('track') );
+
+        this.render();
+    },
+
+    render: function () {
+        //var tracker = App.TmpEngine.render('tracker');
+        //this.$el.append( tracker );
+
+        return this;
+    }
+});
+'use strict';
+
 App.Views.Tools = Backbone.View.extend({
 
     tagName: 'ul',
-    className: 'tools',
+    className: App.CLASS_PREFIX + '-tools',
     
     events: {
         'click .upload-files': 'upload'  
@@ -192,92 +290,12 @@ App.Views.Tools = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.append( App.TmpEngine.render('instruments') );
+        this.$el.append( App.TmpEngine.getTemplate('instruments') );
 
         return this;
     }
 });
 
-'use strict';
-
-App.TmpEngine = (function () {
-
-    var render = function (tmpName, data) {
-            data = data || {};
-            if( Templates[tmpName] ) return Templates[tmpName](data);
-        },
-
-        Templates = {
-
-            audiobox: function (data) {
-                return '<div class="'+ App.CLASS_PREFIX +'-audiobox">\
-                            <audio></audio>\
-                        </div>';
-            },
-
-            playlist: function (data) {
-                  return '<div class="playlist current">\
-                            <ul class="tracker"></ul>\
-                            <div class="modal-window"></div>\
-                          </div>'
-            },
-
-            track: function (data) {
-                return '<span class="track-name">' + data.name + '</span>\
-                        <span class="track-duration">' + data.duration + '</span>'
-            },
-
-            instruments: function () {
-                return '<li class="get-files" title="get files from server"></li>\
-                        <li class="upload-files" title="upload files"></li>'
-            },
-            
-            information: function (options) {
-                return '<div class="'+ App.CLASS_PREFIX +'-album-cover">\
-                            <img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
-                        </div>\
-                        <div class="track-name">We’ll be coming back</div>\
-                        <div class="'+ App.CLASS_PREFIX +'-author">Calvin Harris</div>\
-                        <div class="'+ App.CLASS_PREFIX +'-album-name">18 months</div>'
-            },
-
-            fileList: function () {
-                return '<ul class="file-list"></ul>'
-            }
-        };
-
-    return {
-        render: render
-    }
-
-}());
-
-//<div class="'+ settings.classPrefix +'-header">\
-//<span class="'+ settings.classPrefix +'-logo"></span>\
-//</div>\
-//<div class="'+ settings.classPrefix +'-information">\
-//<div class="'+ settings.classPrefix +'-album-cover">\
-//<img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
-//</div>\
-//<div class="track-name">We’ll be coming back</div>\
-//<div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
-//<div class="'+ settings.classPrefix +'-album-name">18 months</div>\
-//</div>\
-
-//<ul class="'+ settings.classPrefix +'-controls">\
-//<li class="prev"></li>\
-//<li class="play-pause"></li>\
-//<li class="next"></li>\
-//<li class="timeline"></li>\
-//<li class="volume" title="volume"></li>\
-//<li class="shuffle"></li>\
-//<li class="repeat"></li>\
-//</ul>\
-//<div class="'+ settings.classPrefix +'-footer"> </div>\
-
-//<li id="dropzone">\
-//<span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
-//</li>\
 'use strict';
 
 var app = app || {};

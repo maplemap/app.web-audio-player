@@ -6,5 +6,6 @@ var App = {
     Views: {}
 };
 
+//constants
 App.PLAYER_ID = 'webAudioPlayer';
 App.CLASS_PREFIX = 'wap';

@@ -25,13 +25,14 @@ var path = {
         js: {
             webPlayer: [
                 './src/js/config.js',
+                './src/js/modules/tmpEngine.js',
                 './src/js/views/track.js',
                 './src/js/models/track.js',
                 './src/js/collections/track.js',
                 './src/js/views/player.js',
                 './src/js/views/playlist.js',
+                './src/js/views/tracker.js',
                 './src/js/views/tools.js',
-                './src/js/modules/tmpEngine.js',
                 './src/js/modules/uploadFiles.js',
                 './src/js/modules/getFiles.js',
                 './src/js/modules/ID3Tags.js',

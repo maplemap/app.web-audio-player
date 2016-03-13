@@ -4,8 +4,9 @@ App.Views.Player = Backbone.View.extend({
     id: App.PLAYER_ID,
 
     initialize: function () {
-        this.playlistView = new App.Views.Playlist();
         this.toolsView = new App.Views.Tools();
+        this.playlistView = new App.Views.Playlist;
+        this.audioboxTmp = App.TmpEngine.getTemplate('audiobox');
 
         this.render();
 
@@ -26,6 +27,7 @@ App.Views.Player = Backbone.View.extend({
     },
     //
     render: function () {
+        this.$el.append( this.audioboxTmp );
         this.$el.append( this.playlistView.$el );
         this.$el.append( this.toolsView.$el );
 
