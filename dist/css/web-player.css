@@ -147,6 +147,10 @@
   border-radius: 3px;
 }
 #webAudioPlayer .wap-playlist .wap-playlist-info {
+  position: absolute;
+  width: 90%;
+  top: 0;
+  left: 0;
   opacity: .5;
   border-bottom: 1px solid rgba(51, 51, 51, 0.19);
   padding: 0 10px 5px 20px;
@@ -166,7 +170,7 @@
 }
 #webAudioPlayer .wap-playlist .wap-tracker {
   padding: 0;
-  margin: 0;
+  margin: 15px 0 0 0;
 }
 #webAudioPlayer .wap-playlist .wap-tracker li {
   position: relative;

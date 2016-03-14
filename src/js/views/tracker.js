@@ -16,9 +16,9 @@ App.Views.Tracker = Backbone.View.extend({
 
         var that = this;
 
-        //$.each(tracks, function (i, track) {
-        //    that.addOneToCollection(track);
-        //});
+        $.each(tracks, function (i, track) {
+            that.addOneToCollection(track);
+        });
 
         return this;
     },
