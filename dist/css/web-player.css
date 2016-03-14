@@ -143,6 +143,7 @@
   min-height: 250px;
   max-height: 350px;
   padding: 5px 3px;
+  overflow: hidden;
   border: 1px solid #333;
   border-radius: 3px;
 }
@@ -151,7 +152,7 @@
   width: 90%;
   top: 0;
   left: 0;
-  opacity: .5;
+  opacity: .8;
   border-bottom: 1px solid rgba(51, 51, 51, 0.19);
   padding: 0 10px 5px 20px;
   margin: 0 auto;
@@ -169,6 +170,9 @@
   margin-top: 5px;
 }
 #webAudioPlayer .wap-playlist .wap-tracker {
+  position: relative;
+  min-height: 250px;
+  max-height: 340px;
   padding: 0;
   margin: 15px 0 0 0;
 }
@@ -177,7 +181,7 @@
   color: #333;
   list-style-type: none;
   font-size: 14px;
-  padding: 8px 5px 8px 20px;
+  padding: 8px 8px 8px 20px;
   cursor: pointer;
 }
 #webAudioPlayer .wap-playlist .wap-tracker li:nth-child(even) {
@@ -269,7 +273,7 @@
   display: inline-block;
   list-style-type: none;
   font-family: 'Entypo', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   padding: 5px 2px;
   cursor: pointer;
 }
