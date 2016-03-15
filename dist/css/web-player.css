@@ -263,6 +263,7 @@
   position: relative;
   z-index: 11;
   text-align: left;
+  overflow: hidden;
   border: 1px solid #333;
   border-radius: 3px;
   padding: 0 8px;
@@ -273,17 +274,20 @@
   display: inline-block;
   list-style-type: none;
   font-family: 'Entypo', sans-serif;
-  font-size: 12px;
-  padding: 5px 2px;
+  font-size: 17px;
   cursor: pointer;
 }
 #webAudioPlayer .wap-tools li:first-child {
   margin-left: 0;
 }
-#webAudioPlayer .wap-tools li.get-files:before {
-  content: '\e711';
+#webAudioPlayer .wap-tools li.upload-files {
+  float: right;
+  margin-right: 7px;
 }
 #webAudioPlayer .wap-tools li.upload-files:before {
+  content: '\e711';
+}
+#webAudioPlayer .wap-tools li.get-files:before {
   content: '\1f4e4';
 }
 #webAudioPlayer .wap-controls .volume .ui-slider-range {

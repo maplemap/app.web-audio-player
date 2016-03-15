@@ -27,9 +27,8 @@ App.TmpEngine = (function () {
                         <span class="track-duration">' + data.duration + '</span>'
             },
 
-            instruments: function () {
-                return '<li class="get-files" title="get files from server"></li>\
-                        <li class="upload-files" title="upload files"></li>'
+            tools: function () {
+                return '<li class="upload-files" title="upload files to server"></li>'
             },
             
             information: function (options) {
@@ -78,3 +77,6 @@ App.TmpEngine = (function () {
 //<li id="dropzone">\
 //<span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
 //</li>\
+
+
+//<li class="get-files" title="get files from server"></li>

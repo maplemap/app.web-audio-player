@@ -14,7 +14,7 @@ App.Views.Tools = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.append( App.TmpEngine.getTemplate('instruments') );
+        this.$el.append( App.TmpEngine.getTemplate('tools') );
 
         return this;
     }

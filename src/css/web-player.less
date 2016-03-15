@@ -218,6 +218,7 @@
     position: relative;
     z-index: 11;
     text-align: left;
+    overflow: hidden;
     border: 1px solid @player-main-color;
     border-radius: @player-main-border-radius;
     padding: 0 8px;
@@ -228,20 +229,22 @@
       display: inline-block;
       list-style-type: none;
       font-family: 'Entypo', sans-serif;
-      font-size: 12px;
-      padding: 5px 2px;
+      font-size: 17px;
       cursor: pointer;
 
       &:first-child {
         margin-left: 0;
       }
 
-      &.get-files {
+      &.upload-files {
+        float: right;
+        margin-right: 7px;
+
         &:before {
           content: '\e711';
         }
       }
-      &.upload-files {
+      &.get-files {
         &:before {
           content: '\1f4e4'
         }
