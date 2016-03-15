@@ -221,15 +221,8 @@ App.Views.Playlist = Backbone.View.extend({
     render: function () {
         this.$el.append( this.playlistInfoView.render().el );
         this.$el.append( this.trackerView.render().el );
-        this.initPlaylistScroll();
 
         return this;
-    },
-
-    initPlaylistScroll: function () {
-        this.$el.perfectScrollbar({
-            minScrollbarLength: 50
-        });
     }
 });
 'use strict';
@@ -283,6 +276,8 @@ App.Views.Tracker = Backbone.View.extend({
             that.addOneToCollection(track);
         });
 
+        this.initTrackerScroll();
+
         return this;
     },
 
@@ -303,6 +298,12 @@ App.Views.Tracker = Backbone.View.extend({
         var that = this;
         App.Tracks.each(function (model, indx) {
             that.addOne(model);
+        });
+    },
+
+    initTrackerScroll: function () {
+        this.$el.perfectScrollbar({
+            minScrollbarLength: 50
         });
     }
 });
