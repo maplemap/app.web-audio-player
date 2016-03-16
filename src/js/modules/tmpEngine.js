@@ -17,8 +17,8 @@ App.TmpEngine = (function () {
 
             playlistInfo: function (data) {
                 return '<li class="amount-duration"><span>'+ data.duration +'</span></li>\
-                        <li class="amount-tracks"><span>'+ data.tracks +'</span></li>\
-                        <li class="delete-tracks">delete all</li>'
+                        <li class="tracks-amount"><span>'+ data.tracks +'</span></li>\
+                        <li class="tracks-delete">delete all</li>'
             },
 
             track: function (data) {
@@ -42,6 +42,13 @@ App.TmpEngine = (function () {
 
             fileList: function () {
                 return '<ul class="file-list"></ul>'
+            },
+            
+            modalWindow: function () {
+                return '<div class="'+ App.CLASS_PREFIX +'-modal-window">\
+                            <span class="cancel" title="cancel"></span>\
+                            <div class="modal-content">\
+                        </div>'
             }
         };
 

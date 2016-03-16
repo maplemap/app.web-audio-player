@@ -25,6 +25,11 @@ App.Collections.Tracks = Backbone.Collection.extend({
         time = hours + ':' + minutes + ':' + seconds;
 
         return time;
+    },
+
+    destroyAllCollection: function () {
+        console.log('asdasd');
+        _.invoke( this.toArray(), 'destroy' );
     }
 });
 

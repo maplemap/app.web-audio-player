@@ -5,7 +5,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     className: App.CLASS_PREFIX + '-playlist-info',
 
     events: {
-        'click .delete-tracks': 'destroyAllCollection'
+        'click .tracks-delete': 'destroyAllCollection'
     },
 
     initialize: function () {
@@ -24,6 +24,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     },
 
     destroyAllCollection: function () {
-        _.invoke(App.Tracks.toArray(), 'destroy');
+        App.Tracks.destroyAllCollection();
+        //ToDo: Add process of destroying
     }
 });

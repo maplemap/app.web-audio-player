@@ -3,7 +3,9 @@
 var App = {
     Models: {},
     Collections: {},
-    Views: {}
+    Views: {},
+    Events: _.extend({}, Backbone.Events),
+    Helper: {}
 };
 
 //constants
@@ -28,8 +30,8 @@ App.TmpEngine = (function () {
 
             playlistInfo: function (data) {
                 return '<li class="amount-duration"><span>'+ data.duration +'</span></li>\
-                        <li class="amount-tracks"><span>'+ data.tracks +'</span></li>\
-                        <li class="delete-tracks">delete all</li>'
+                        <li class="tracks-amount"><span>'+ data.tracks +'</span></li>\
+                        <li class="tracks-delete">delete all</li>'
             },
 
             track: function (data) {
@@ -53,6 +55,13 @@ App.TmpEngine = (function () {
 
             fileList: function () {
                 return '<ul class="file-list"></ul>'
+            },
+            
+            modalWindow: function () {
+                return '<div class="'+ App.CLASS_PREFIX +'-modal-window">\
+                            <span class="cancel" title="cancel"></span>\
+                            <div class="modal-content">\
+                        </div>'
             }
         };
 
@@ -154,6 +163,11 @@ App.Collections.Tracks = Backbone.Collection.extend({
         time = hours + ':' + minutes + ':' + seconds;
 
         return time;
+    },
+
+    destroyAllCollection: function () {
+        console.log('asdasd');
+        _.invoke( this.toArray(), 'destroy' );
     }
 });
 
@@ -214,8 +228,12 @@ App.Views.Playlist = Backbone.View.extend({
     className: App.CLASS_PREFIX + '-playlist',
 
     initialize: function () {
+        App.Events.on('enable-upload-window', this.enableUploadWindow, this);
+        App.Events.on('disable-modal-window', this.disableModalWindow, this);
+
         this.trackerView = new App.Views.Tracker();
         this.playlistInfoView = new App.Views.PlaylistInfo();
+        this.$modalWindow = $( App.TmpEngine.getTemplate('modalWindow') );
 
         this.render();
     },
@@ -223,8 +241,31 @@ App.Views.Playlist = Backbone.View.extend({
     render: function () {
         this.$el.append( this.playlistInfoView.render().el );
         this.$el.append( this.trackerView.render().el );
+        this.$el.append( this.$modalWindow );
 
         return this;
+    },
+
+    enableModalWindow: function (content) {
+        var that = this;
+
+        this.$modalWindow.addClass('active');
+        this.$modalWindow.find('.cancel').on('click', function (e) {
+            e.stopPropagation();
+            App.Events.trigger('disable-modal-window');
+        });
+
+        this.$modalWindow.find('.modal-content').html(content);
+    },
+
+    disableModalWindow : function () {
+        this.$modalWindow.removeClass('active');
+        this.$modalWindow.find('.cancel').off('click');
+        this.$modalWindow.find('.modal-content').html('');
+    },
+
+    enableUploadWindow: function () {
+        this.enableModalWindow('asdasdasd')
     }
 });
 'use strict';
@@ -234,7 +275,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     className: App.CLASS_PREFIX + '-playlist-info',
 
     events: {
-        'click .delete-tracks': 'destroyAllCollection'
+        'click .tracks-delete': 'destroyAllCollection'
     },
 
     initialize: function () {
@@ -253,7 +294,8 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     },
 
     destroyAllCollection: function () {
-        _.invoke(App.Tracks.toArray(), 'destroy');
+        App.Tracks.destroyAllCollection();
+        //ToDo: Add process of destroying
     }
 });
 'use strict';
@@ -317,17 +359,37 @@ App.Views.Tools = Backbone.View.extend({
     className: App.CLASS_PREFIX + '-tools',
     
     events: {
-        'click .upload-files': 'upload'  
+        'click .upload-files': 'addUploadFilesEvents'
     },
     
     initialize: function () {
+        App.Events.on('enable-upload-window', this.enableUploadWindow, this);
+        App.Events.on('disable-modal-window', this.disableUploadWindow, this);
+
+        this.$tools = $( App.TmpEngine.getTemplate('tools') );
+
         this.render();
     },
 
     render: function () {
-        this.$el.append( App.TmpEngine.getTemplate('tools') );
+        this.$el.append( this.$tools );
+        this.$uploadFiles = this.$el.find('.upload-files');
 
         return this;
+    },
+
+    addUploadFilesEvents: function (e) {
+        var event = ( $(e.target).hasClass('active') ) ? 'disable-modal-window' : 'enable-upload-window';
+
+        App.Events.trigger( event );
+    },
+
+    enableUploadWindow: function () {
+        this.$uploadFiles.addClass('active');
+    },
+
+    disableUploadWindow: function () {
+        this.$uploadFiles.removeClass('active');
     }
 });
 
@@ -530,3 +592,8 @@ q,"UTF-8");break;case "uint8":k=b.F(v);break;case "jpeg":case "png":k={format:"i
 (e=(h[a+b]<<8)+h[a+g],a+=2,f[d]=String.fromCharCode(l,e))}h=new String(f.join(""));h.j=a;return h},K:function(h,f){var c=0;f=Math.min(f||h.length,h.length);239==h[0]&&187==h[1]&&191==h[2]&&(c=3);for(var a=[],b=0;c<f;b++){var g=h[c++];if(0==g)break;else if(128>g)a[b]=String.fromCharCode(g);else if(194<=g&&224>g){var d=h[c++];a[b]=String.fromCharCode(((g&31)<<6)+(d&63))}else if(224<=g&&240>g){var d=h[c++],e=h[c++];a[b]=String.fromCharCode(((g&255)<<12)+((d&63)<<6)+(e&63))}else if(240<=g&&245>g){var d=
 h[c++],e=h[c++],l=h[c++],g=((g&7)<<18)+((d&63)<<12)+((e&63)<<6)+(l&63)-65536;a[b]=String.fromCharCode((g>>10)+55296,(g&1023)+56320)}}a=new String(a.join(""));a.j=c;return a},I:function(g,f){var c=[];f=f||g.length;for(var a=0;a<f;){var b=g[a++];if(0==b)break;c[a-1]=String.fromCharCode(b)}c=new String(c.join(""));c.j=a;return c}}},{}]},{},[4])(4)});
 
+'use strict';
+
+App.Helper = {
+
+};
