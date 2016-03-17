@@ -37,10 +37,14 @@ App.Views.Playlist = Backbone.View.extend({
     disableModalWindow : function () {
         this.$modalWindow.removeClass('active');
         this.$modalWindow.find('.cancel').off('click');
-        this.$modalWindow.find('.modal-content').html('');
+        //this.$modalWindow.find('.modal-content').html('');
     },
 
     enableUploadWindow: function () {
-        this.enableModalWindow('asdasdasd')
+        if(!this.$fileUploader) {
+            this.$fileUploader = new App.Views.FileUploader();
+        }
+
+        this.enableModalWindow( this.$fileUploader.render().el );
     }
 });

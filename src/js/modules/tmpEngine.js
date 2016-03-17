@@ -49,6 +49,13 @@ App.TmpEngine = (function () {
                             <span class="cancel" title="cancel"></span>\
                             <div class="modal-content">\
                         </div>'
+            },
+
+            dropZone: function () {
+                return '<li class="'+ App.CLASS_PREFIX +'-dropzone">\
+                            <span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
+                            <input type="file" name="files[]" multiple>\
+                        </li>'
             }
         };
 
@@ -81,9 +88,7 @@ App.TmpEngine = (function () {
 //</ul>\
 //<div class="'+ settings.classPrefix +'-footer"> </div>\
 
-//<li id="dropzone">\
-//<span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
-//</li>\
+
 
 
 //<li class="get-files" title="get files from server"></li>

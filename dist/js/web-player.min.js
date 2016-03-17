@@ -5,7 +5,6 @@ var App = {
     Collections: {},
     Views: {},
     Events: _.extend({}, Backbone.Events),
-    Helper: {}
 };
 
 //constants
@@ -62,6 +61,13 @@ App.TmpEngine = (function () {
                             <span class="cancel" title="cancel"></span>\
                             <div class="modal-content">\
                         </div>'
+            },
+
+            dropZone: function () {
+                return '<li class="'+ App.CLASS_PREFIX +'-dropzone">\
+                            <span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
+                            <input type="file" name="files[]" multiple>\
+                        </li>'
             }
         };
 
@@ -94,9 +100,7 @@ App.TmpEngine = (function () {
 //</ul>\
 //<div class="'+ settings.classPrefix +'-footer"> </div>\
 
-//<li id="dropzone">\
-//<span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
-//</li>\
+
 
 
 //<li class="get-files" title="get files from server"></li>
@@ -261,11 +265,15 @@ App.Views.Playlist = Backbone.View.extend({
     disableModalWindow : function () {
         this.$modalWindow.removeClass('active');
         this.$modalWindow.find('.cancel').off('click');
-        this.$modalWindow.find('.modal-content').html('');
+        //this.$modalWindow.find('.modal-content').html('');
     },
 
     enableUploadWindow: function () {
-        this.enableModalWindow('asdasdasd')
+        if(!this.$fileUploader) {
+            this.$fileUploader = new App.Views.FileUploader();
+        }
+
+        this.enableModalWindow( this.$fileUploader.render().el );
     }
 });
 'use strict';
@@ -294,8 +302,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     },
 
     destroyAllCollection: function () {
-        App.Tracks.destroyAllCollection();
-        //ToDo: Add process of destroying
+        App.Tracks.destroyAllCollection(); //ToDo: Add load process of destroying
     }
 });
 'use strict';
@@ -395,95 +402,20 @@ App.Views.Tools = Backbone.View.extend({
 
 'use strict';
 
-var app = app || {};
+App.Views.FileUploader = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.CLASS_PREFIX + '-file-uploader',
 
-app.UploadFiles = (function ($) {
-    var settings = {
-        drugAndDrop: false,
-        fileMimeTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
-        fileInput: '<input type="file" name="files[]" multiple>'
-    },
-    $container = false,
-    $fileInput = false,
-    callBack = false,
-
-    init = function (element, callback) {
-        $container = $(element);
-        $container.append( settings.fileInput );
-        $fileInput = $container.find('input[type="file"]');
-        $fileInput.hide();
-        callBack = callback;
-
-
-        $container.on('click', Event.clickOnContainer);
-        $fileInput.on('change', Event.changeOfFileInput);
-
-        if(settings.drugAndDrop) {
-            $container.on('dragover', Event.dragOver);
-            $container.on('drop', Event.drop);
-            $container.on('dragenter', Event.drugEnter);
-            $container.on('dragleave', Event.drugLeave);
-        }
+    initialize: function () {
+        this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
     },
 
-    Event = {
+    render: function () {
+        this.$el.html( this.$dropZone );
 
-        clickOnContainer: function () {
-            $fileInput.on('click', function (e) { e.stopPropagation() })
-                .trigger('click');
-        },
-
-        changeOfFileInput: function (e) {
-            var files = e.target.files;
-
-            collectFiles(files);
-        },
-
-        drop: function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            var files = e.originalEvent.dataTransfer.files;
-
-            $container.removeClass('drag-active');
-
-            collectFiles(files);
-        },
-
-        dragOver: function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            e.originalEvent.dataTransfer.dropEffect = "copy";
-        },
-
-        drugEnter: function () {
-            $container.addClass('drag-active');
-        },
-
-        drugLeave: function () {
-            $container.removeClass('drag-active');
-        }
-    },
-
-    collectFiles = function(files) {
-        var allFiles = [];
-        $.each(files, function(i, file) {
-            var temp = {file: file, progressTotal: 0, progressDone: 0, valid: false};
-
-            $.each(settings.fileMimeTypes, function (i, type) {
-                if(file.type == type) allFiles.unshift(temp);
-            });
-        });
-
-        callBack(allFiles);
-    };
-
-    return {
-        init: init
+        return this;
     }
-
-})(jQuery);
+});
 'use strict';
 
 var app = app || {};

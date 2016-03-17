@@ -5,7 +5,6 @@ var App = {
     Collections: {},
     Views: {},
     Events: _.extend({}, Backbone.Events),
-    Helper: {}
 };
 
 //constants
