@@ -182,14 +182,20 @@
 #webAudioPlayer .wap-file-uploader li.wap-dropzone {
   height: 92%;
   text-align: center;
-  border: 2px dashed #bbb;
+  border: 1px dashed #bbb;
   border-radius: 3px;
   padding: 0;
+  cursor: pointer;
   margin: 11px;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
 }
 #webAudioPlayer .wap-file-uploader li.wap-dropzone.drag-active {
-  color: rgba(51, 51, 51, 0.3);
-  border: 2px solid #cdcdcd;
+  color: rgba(51, 51, 51, 0.2);
+  border: 1px dashed #777;
 }
 #webAudioPlayer .wap-file-uploader li.wap-dropzone:hover {
   background: none;
@@ -216,7 +222,7 @@
   top: 0;
   left: 0;
   opacity: .8;
-  border-bottom: 1px solid rgba(51, 51, 51, 0.19);
+  border-bottom: 1px solid rgba(51, 51, 51, 0.2);
   padding: 0 10px 5px 20px;
   margin: 0 auto;
 }

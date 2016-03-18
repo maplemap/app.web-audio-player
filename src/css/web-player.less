@@ -5,6 +5,7 @@
 @class-prefix: wap;
 
 @player-main-color: #333;
+@player-low-color: rgba(51, 51, 51, 0.2);
 @player-main-border-radius: 3px;
 @playlist-min-height: 250px;
 @playlist-max-height: 350px;
@@ -99,16 +100,22 @@
       list-style-type: none;
 
       &.@{class-prefix}-dropzone {
-          height: 92%;
-          text-align: center;
-          border: 2px dashed #bbb;
-          border-radius: @player-main-border-radius;
-          padding: 0;
-          margin: 11px;
+        height: 92%;
+        text-align: center;
+        border: 1px dashed #bbb;
+        border-radius: @player-main-border-radius;
+        padding: 0;
+        cursor: pointer;
+        margin: 11px;
+        -webkit-transition: all .3s;
+        -moz-transition: all .3s;
+        -ms-transition: all .3s;
+        -o-transition: all .3s;
+        transition: all .3s;
 
           &.drag-active {
-            color: rgba(51, 51, 51, 0.3);
-            border: 2px solid #cdcdcd;
+            color: @player-low-color;
+            border: 1px dashed #777;
           }
 
           &:hover {
@@ -142,7 +149,7 @@
       top: 0;
       left: 0;
       opacity: .8;
-      border-bottom: 1px solid rgba(51, 51, 51, 0.19);
+      border-bottom: 1px solid @player-low-color;
       padding: 0 10px 5px 20px;
       margin: 0 auto;
 
