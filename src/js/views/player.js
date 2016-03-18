@@ -1,7 +1,7 @@
 'use strict';
 
 App.Views.Player = Backbone.View.extend({
-    id: App.PLAYER_ID,
+    id: App.Settings.playerID,
 
     initialize: function () {
         this.toolsView = new App.Views.Tools();

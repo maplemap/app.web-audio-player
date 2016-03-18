@@ -2,7 +2,7 @@
 
 App.Views.FileUploader = Backbone.View.extend({
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-file-uploader',
+    className: App.Settings.classPrefix + '-file-uploader',
 
     events: {
         'click [class*="-dropzone"]': 'clickDropzone',

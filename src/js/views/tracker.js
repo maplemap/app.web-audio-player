@@ -2,7 +2,7 @@
 
 App.Views.Tracker = Backbone.View.extend({
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-tracker',
+    className: App.Settings.classPrefix + '-tracker',
 
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);

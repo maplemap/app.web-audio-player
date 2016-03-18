@@ -8,8 +8,6 @@ var App = {
 };
 
 //settings
-App.PLAYER_ID = 'webAudioPlayer';
-App.CLASS_PREFIX = 'wap';
 App.Settings = {
     playerID: 'webAudioPlayer',
     classPrefix: 'wap',
@@ -27,7 +25,7 @@ App.TmpEngine = (function () {
         Templates = {
 
             audiobox: function () {
-                return '<div class="'+ App.CLASS_PREFIX +'-audiobox">\
+                return '<div class="'+ App.Settings.classPrefix +'-audiobox">\
                             <audio></audio>\
                         </div>';
             },
@@ -49,12 +47,12 @@ App.TmpEngine = (function () {
             },
             
             information: function (options) {
-                return '<div class="'+ App.CLASS_PREFIX +'-album-cover">\
+                return '<div class="'+ App.Settings.classPrefix +'-album-cover">\
                             <img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
                         </div>\
                         <div class="track-name">We’ll be coming back</div>\
-                        <div class="'+ App.CLASS_PREFIX +'-author">Calvin Harris</div>\
-                        <div class="'+ App.CLASS_PREFIX +'-album-name">18 months</div>'
+                        <div class="'+ App.Settings.classPrefix +'-author">Calvin Harris</div>\
+                        <div class="'+ App.Settings.classPrefix +'-album-name">18 months</div>'
             },
 
             fileList: function () {
@@ -62,14 +60,14 @@ App.TmpEngine = (function () {
             },
             
             modalWindow: function () {
-                return '<div class="'+ App.CLASS_PREFIX +'-modal-window">\
+                return '<div class="'+ App.Settings.classPrefix +'-modal-window">\
                             <span class="cancel" title="cancel"></span>\
                             <div class="modal-content">\
                         </div>'
             },
 
             dropZone: function () {
-                return '<li class="'+ App.CLASS_PREFIX +'-dropzone">\
+                return '<li class="'+ App.Settings.classPrefix +'-dropzone">\
                             <span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
                             <input type="file" name="files[]" multiple>\
                         </li>'
@@ -184,7 +182,7 @@ App.Tracks = new App.Collections.Tracks();
 'use strict';
 
 App.Views.Player = Backbone.View.extend({
-    id: App.PLAYER_ID,
+    id: App.Settings.playerID,
 
     initialize: function () {
         this.toolsView = new App.Views.Tools();
@@ -234,7 +232,7 @@ App.Views.Player = Backbone.View.extend({
 'use strict';
 
 App.Views.Playlist = Backbone.View.extend({
-    className: App.CLASS_PREFIX + '-playlist',
+    className: App.Settings.classPrefix + '-playlist',
 
     initialize: function () {
         App.Events.on('enable-upload-window', this.enableUploadWindow, this);
@@ -285,7 +283,7 @@ App.Views.Playlist = Backbone.View.extend({
 
 App.Views.PlaylistInfo = Backbone.View.extend({
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-playlist-info',
+    className: App.Settings.classPrefix + '-playlist-info',
 
     events: {
         'click .tracks-delete': 'destroyAllCollection'
@@ -314,7 +312,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
 
 App.Views.Tracker = Backbone.View.extend({
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-tracker',
+    className: App.Settings.classPrefix + '-tracker',
 
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);
@@ -368,7 +366,7 @@ App.Views.Tracker = Backbone.View.extend({
 App.Views.Tools = Backbone.View.extend({
 
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-tools',
+    className: App.Settings.classPrefix + '-tools',
     
     events: {
         'click .upload-files': 'addUploadFilesEvents'
@@ -409,7 +407,7 @@ App.Views.Tools = Backbone.View.extend({
 
 App.Views.FileUploader = Backbone.View.extend({
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-file-uploader',
+    className: App.Settings.classPrefix + '-file-uploader',
 
     events: {
         'click [class*="-dropzone"]': 'clickDropzone',

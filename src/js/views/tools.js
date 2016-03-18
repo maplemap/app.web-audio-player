@@ -3,7 +3,7 @@
 App.Views.Tools = Backbone.View.extend({
 
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-tools',
+    className: App.Settings.classPrefix + '-tools',
     
     events: {
         'click .upload-files': 'addUploadFilesEvents'

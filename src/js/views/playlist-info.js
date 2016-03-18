@@ -2,7 +2,7 @@
 
 App.Views.PlaylistInfo = Backbone.View.extend({
     tagName: 'ul',
-    className: App.CLASS_PREFIX + '-playlist-info',
+    className: App.Settings.classPrefix + '-playlist-info',
 
     events: {
         'click .tracks-delete': 'destroyAllCollection'

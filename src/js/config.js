@@ -4,9 +4,12 @@ var App = {
     Models: {},
     Collections: {},
     Views: {},
-    Events: _.extend({}, Backbone.Events),
+    Events: _.extend({}, Backbone.Events)
 };
 
-//constants
-App.PLAYER_ID = 'webAudioPlayer';
-App.CLASS_PREFIX = 'wap';
+//settings
+App.Settings = {
+    playerID: 'webAudioPlayer',
+    classPrefix: 'wap',
+    uploadFileTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave']
+};

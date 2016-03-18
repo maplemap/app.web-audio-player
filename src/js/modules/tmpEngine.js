@@ -10,7 +10,7 @@ App.TmpEngine = (function () {
         Templates = {
 
             audiobox: function () {
-                return '<div class="'+ App.CLASS_PREFIX +'-audiobox">\
+                return '<div class="'+ App.Settings.classPrefix +'-audiobox">\
                             <audio></audio>\
                         </div>';
             },
@@ -32,12 +32,12 @@ App.TmpEngine = (function () {
             },
             
             information: function (options) {
-                return '<div class="'+ App.CLASS_PREFIX +'-album-cover">\
+                return '<div class="'+ App.Settings.classPrefix +'-album-cover">\
                             <img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
                         </div>\
                         <div class="track-name">We’ll be coming back</div>\
-                        <div class="'+ App.CLASS_PREFIX +'-author">Calvin Harris</div>\
-                        <div class="'+ App.CLASS_PREFIX +'-album-name">18 months</div>'
+                        <div class="'+ App.Settings.classPrefix +'-author">Calvin Harris</div>\
+                        <div class="'+ App.Settings.classPrefix +'-album-name">18 months</div>'
             },
 
             fileList: function () {
@@ -45,14 +45,14 @@ App.TmpEngine = (function () {
             },
             
             modalWindow: function () {
-                return '<div class="'+ App.CLASS_PREFIX +'-modal-window">\
+                return '<div class="'+ App.Settings.classPrefix +'-modal-window">\
                             <span class="cancel" title="cancel"></span>\
                             <div class="modal-content">\
                         </div>'
             },
 
             dropZone: function () {
-                return '<li class="'+ App.CLASS_PREFIX +'-dropzone">\
+                return '<li class="'+ App.Settings.classPrefix +'-dropzone">\
                             <span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
                             <input type="file" name="files[]" multiple>\
                         </li>'

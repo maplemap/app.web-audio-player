@@ -1,7 +1,7 @@
 'use strict';
 
 App.Views.Playlist = Backbone.View.extend({
-    className: App.CLASS_PREFIX + '-playlist',
+    className: App.Settings.classPrefix + '-playlist',
 
     initialize: function () {
         App.Events.on('enable-upload-window', this.enableUploadWindow, this);
