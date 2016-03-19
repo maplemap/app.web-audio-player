@@ -41,9 +41,11 @@ App.Views.Playlist = Backbone.View.extend({
     },
 
     enableUploadWindow: function () {
-        if(!this.$fileUploader) {
-            this.$fileUploader = new App.Views.FileUploader();
-        }
+        //if(!this.$fileUploader) {
+        //    console.log('new');
+        //    this.$fileUploader = new App.Views.FileUploader();
+        //}
+        this.$fileUploader = new App.Views.FileUploader();
 
         this.enableModalWindow( this.$fileUploader.render().el );
     }

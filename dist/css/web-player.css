@@ -200,7 +200,8 @@
 #webAudioPlayer .wap-file-uploader li.wap-dropzone:hover {
   background: none;
 }
-#webAudioPlayer .wap-file-uploader li.wap-dropzone span {
+#webAudioPlayer .wap-file-uploader li.wap-dropzone:before {
+  content: '';
   display: inline-block;
   margin-top: 100px;
 }

@@ -68,7 +68,7 @@ App.TmpEngine = (function () {
 
             dropZone: function () {
                 return '<li class="'+ App.Settings.classPrefix +'-dropzone">\
-                            <span>Drop files(mp3, wav) here <br>or click to load on server.</span>\
+                            Drop files(mp3, wav) here <br>or click to load on server.\
                             <input type="file" name="files[]" multiple>\
                         </li>'
             }
@@ -272,9 +272,11 @@ App.Views.Playlist = Backbone.View.extend({
     },
 
     enableUploadWindow: function () {
-        if(!this.$fileUploader) {
-            this.$fileUploader = new App.Views.FileUploader();
-        }
+        //if(!this.$fileUploader) {
+        //    console.log('new');
+        //    this.$fileUploader = new App.Views.FileUploader();
+        //}
+        this.$fileUploader = new App.Views.FileUploader();
 
         this.enableModalWindow( this.$fileUploader.render().el );
     }
@@ -411,6 +413,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     events: {
         'click [class*="-dropzone"]': 'clickDropzone',
+        'change input[type="file"]': 'changeFileInput',
         'dragover [class*="-dropzone"]': 'dragOverDropzone',
         'drop [class*="-dropzone"]': 'dropDropzone',
         'dragenter [class*="-dropzone"]': 'drugEnterDropzone',
@@ -429,7 +432,13 @@ App.Views.FileUploader = Backbone.View.extend({
 
     clickDropzone: function (e) {
         $(e.target).find('input[type="file"]').on('click', function (e) { e.stopPropagation() })
-            .trigger('click');
+                   .trigger('click');
+    },
+
+    changeFileInput: function (e) {
+        var files = e.target.files;
+
+        this.collectUploadFiles(files);
     },
 
     dragOverDropzone: function (e) {
@@ -444,7 +453,7 @@ App.Views.FileUploader = Backbone.View.extend({
         e.preventDefault();
 
         var files = e.originalEvent.dataTransfer.files;
-        console.log(files);
+        this.collectUploadFiles(files);
 
         $(e.target).removeClass('drag-active');
     },
@@ -455,6 +464,23 @@ App.Views.FileUploader = Backbone.View.extend({
 
     drugLeaveDropzone: function (e) {
         $(e.target).removeClass('drag-active');
+    },
+
+    collectUploadFiles: function(files) {
+        var allFiles = [];
+
+        $.each(files, function(i, file) {
+            var tempFile = {file: file, progressTotal: 0, progressDone: 0, valid: false};
+
+            $.each( App.Settings.uploadFileTypes, function (i, type) {
+                if(file.type === type) {
+                    tempFile.valid = true;
+                    allFiles.unshift( tempFile );
+                }
+            });
+        });
+
+        console.log( allFiles );
     }
 });
 'use strict';
