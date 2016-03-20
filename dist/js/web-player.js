@@ -480,9 +480,49 @@ App.Views.FileUploader = Backbone.View.extend({
             });
         });
 
-        console.log( allFiles );
+        this.fileUpload( allFiles[0]['file'] );
+    },
+
+    fileUpload: function (file) {
+        console.log(file);
+        var data = new FormData();
+        data.append('file', file);
+
+        $.ajax({
+            url: '/server/php/upload.php?files',
+            type: 'POST',
+            data: data,
+            cache: false,
+            dataType: 'text',
+            contentType: false,
+            processData: false,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+
+                xhr.upload.addEventListener("progress", function(e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = e.loaded / e.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        console.log(percentComplete);
+
+                        if (percentComplete === 100) {
+
+                        }
+                    }
+                }, false);
+
+                return xhr;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+            },
+            success: function(response){
+                console.log(response); // display response from the PHP script, if any
+            }
+        });
     }
 });
+
 'use strict';
 
 var app = app || {};
