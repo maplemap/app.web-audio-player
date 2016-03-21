@@ -35,7 +35,13 @@
   font-style: normal;
 }
 
-
+.transition(@setting: all, @time) {
+  -webkit-transition:@setting @time ;
+  -moz-transition: @setting @time ;
+  -ms-transition: @setting @time ;
+  -o-transition: @setting @time ;
+  transition: @setting @time ;
+}
 
 
 #@{player-ID} {
@@ -62,11 +68,7 @@
     padding: 0;
     margin: 0;
     background: #fff;
-    -webkit-transition: .2s height;
-    -moz-transition: .2s height;
-    -ms-transition: .2s height;
-    -o-transition: .2s height;
-    transition: .2s height;
+    .transition(height, .2s);
 
     &.active {
       height: 100%;
@@ -74,6 +76,7 @@
 
     .cancel {
       position: absolute;
+      z-index: 20;
       top: 4px;
       right: 4px;
       font-family: 'Entypo', sans-serif;
@@ -87,47 +90,52 @@
 
     .modal-content {
       height: 100%;
-      //padding: 17px 5px 3px 5px;
+      padding: 13px 11px;
+
     }
+  }
+
+  .@{class-prefix}-file-list {
+    padding: 0;
+    margin: 20px 0 0 0;
   }
 
   .@{class-prefix}-file-uploader {
     height: 100%;
     padding: 0;
     margin: 0;
+    .transition(margin, .3s);
 
-    li {
-      list-style-type: none;
+    .@{class-prefix}-dropzone {
+      position: relative;
+      z-index: 5;
+      top: 0;
+      height: 92%;
+      text-align: center;
+      border: 1px dashed #bbb;
+      border-radius: @player-main-border-radius;
+      padding: 0;
+      cursor: pointer;
+      //margin: 11px;
 
-      &.@{class-prefix}-dropzone {
-        height: 92%;
-        text-align: center;
-        border: 1px dashed #bbb;
-        border-radius: @player-main-border-radius;
-        padding: 0;
-        cursor: pointer;
-        margin: 11px;
-        -webkit-transition: all .3s;
-        -moz-transition: all .3s;
-        -ms-transition: all .3s;
-        -o-transition: all .3s;
-        transition: all .3s;
-
-          &.drag-active {
-            color: @player-low-color;
-            border: 1px dashed #777;
-          }
-
-          &:hover {
-            background: none;
-          }
-
-          &:before {
-            content: '';
-            display: inline-block;
-            margin-top: 100px;
-          }
+      &.drag-active {
+        color: @player-low-color;
+        border: 1px dashed #777;
       }
+
+      &:hover {
+        background: none;
+      }
+
+      &:before {
+        content: '';
+        display: inline-block;
+        margin-top: 100px;
+      }
+    }
+
+    &.upload-process {
+      margin: -108% 0 0;
     }
   }
 

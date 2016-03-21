@@ -24,6 +24,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     },
 
     destroyAllCollection: function () {
+        console.log('ToDo: Add load process of destroying');
         App.Tracks.destroyAllCollection(); //ToDo: Add load process of destroying
     }
 });

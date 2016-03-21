@@ -148,17 +148,18 @@
   padding: 0;
   margin: 0;
   background: #fff;
-  -webkit-transition: .2s height;
-  -moz-transition: .2s height;
-  -ms-transition: .2s height;
-  -o-transition: .2s height;
-  transition: .2s height;
+  -webkit-transition: height 0.2s;
+  -moz-transition: height 0.2s;
+  -ms-transition: height 0.2s;
+  -o-transition: height 0.2s;
+  transition: height 0.2s;
 }
 #webAudioPlayer .wap-modal-window.active {
   height: 100%;
 }
 #webAudioPlayer .wap-modal-window .cancel {
   position: absolute;
+  z-index: 20;
   top: 4px;
   right: 4px;
   font-family: 'Entypo', sans-serif;
@@ -170,40 +171,47 @@
 }
 #webAudioPlayer .wap-modal-window .modal-content {
   height: 100%;
+  padding: 13px 11px;
+}
+#webAudioPlayer .wap-file-list {
+  padding: 0;
+  margin: 20px 0 0 0;
 }
 #webAudioPlayer .wap-file-uploader {
   height: 100%;
   padding: 0;
   margin: 0;
+  -webkit-transition: margin 0.3s;
+  -moz-transition: margin 0.3s;
+  -ms-transition: margin 0.3s;
+  -o-transition: margin 0.3s;
+  transition: margin 0.3s;
 }
-#webAudioPlayer .wap-file-uploader li {
-  list-style-type: none;
-}
-#webAudioPlayer .wap-file-uploader li.wap-dropzone {
+#webAudioPlayer .wap-file-uploader .wap-dropzone {
+  position: relative;
+  z-index: 5;
+  top: 0;
   height: 92%;
   text-align: center;
   border: 1px dashed #bbb;
   border-radius: 3px;
   padding: 0;
   cursor: pointer;
-  margin: 11px;
-  -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  -ms-transition: all .3s;
-  -o-transition: all .3s;
-  transition: all .3s;
 }
-#webAudioPlayer .wap-file-uploader li.wap-dropzone.drag-active {
+#webAudioPlayer .wap-file-uploader .wap-dropzone.drag-active {
   color: rgba(51, 51, 51, 0.2);
   border: 1px dashed #777;
 }
-#webAudioPlayer .wap-file-uploader li.wap-dropzone:hover {
+#webAudioPlayer .wap-file-uploader .wap-dropzone:hover {
   background: none;
 }
-#webAudioPlayer .wap-file-uploader li.wap-dropzone:before {
+#webAudioPlayer .wap-file-uploader .wap-dropzone:before {
   content: '';
   display: inline-block;
   margin-top: 100px;
+}
+#webAudioPlayer .wap-file-uploader.upload-process {
+  margin: -108% 0 0;
 }
 #webAudioPlayer .wap-playlist {
   position: relative;

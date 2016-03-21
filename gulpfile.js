@@ -35,7 +35,7 @@ var path = {
                 './src/js/views/tracker.js',
                 './src/js/views/tools.js',
                 './src/js/views/fileUploader.js',
-                //'./src/js/modules/uploadFiles.js',
+                './src/js/views/file.js',
                 './src/js/modules/getFiles.js',
                 './src/js/modules/ID3Tags.js',
                 './src/js/plugins/id3-minimized.js',

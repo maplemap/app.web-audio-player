@@ -28,7 +28,6 @@ App.Collections.Tracks = Backbone.Collection.extend({
     },
 
     destroyAllCollection: function () {
-        console.log('asdasd');
         _.invoke( this.toArray(), 'destroy' );
     }
 });

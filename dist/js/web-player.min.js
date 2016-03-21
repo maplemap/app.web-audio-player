@@ -56,7 +56,13 @@ App.TmpEngine = (function () {
             },
 
             fileList: function () {
-                return '<ul class="file-list"></ul>'
+                return '<ul class="' + App.Settings.classPrefix + '-file-list"></ul>'
+            },
+
+            file: function (data) {
+                return '<li class="' + App.Settings.classPrefix + '-upload-file">\
+                            + data.name +\
+                        </li>'
             },
             
             modalWindow: function () {
@@ -67,10 +73,10 @@ App.TmpEngine = (function () {
             },
 
             dropZone: function () {
-                return '<li class="'+ App.Settings.classPrefix +'-dropzone">\
+                return '<div class="'+ App.Settings.classPrefix +'-dropzone">\
                             Drop files(mp3, wav) here <br>or click to load on server.\
                             <input type="file" name="files[]" multiple>\
-                        </li>'
+                        </div>'
             }
         };
 
@@ -173,7 +179,6 @@ App.Collections.Tracks = Backbone.Collection.extend({
     },
 
     destroyAllCollection: function () {
-        console.log('asdasd');
         _.invoke( this.toArray(), 'destroy' );
     }
 });
@@ -268,7 +273,7 @@ App.Views.Playlist = Backbone.View.extend({
     disableModalWindow : function () {
         this.$modalWindow.removeClass('active');
         this.$modalWindow.find('.cancel').off('click');
-        //this.$modalWindow.find('.modal-content').html('');
+        this.$modalWindow.find('.modal-content').html('');
     },
 
     enableUploadWindow: function () {
@@ -307,6 +312,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     },
 
     destroyAllCollection: function () {
+        console.log('ToDo: Add load process of destroying');
         App.Tracks.destroyAllCollection(); //ToDo: Add load process of destroying
     }
 });
@@ -323,9 +329,6 @@ App.Views.Tracker = Backbone.View.extend({
     },
 
     render: function () {
-        //var tracker = App.TmpEngine.render('tracker');
-        //this.$el.append( tracker );
-
         var that = this;
 
         $.each(tracks, function (i, track) {
@@ -408,7 +411,6 @@ App.Views.Tools = Backbone.View.extend({
 'use strict';
 
 App.Views.FileUploader = Backbone.View.extend({
-    tagName: 'ul',
     className: App.Settings.classPrefix + '-file-uploader',
 
     events: {
@@ -422,10 +424,12 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
+        this.$fileList = $( App.TmpEngine.getTemplate('fileList') );
     },
 
     render: function () {
-        this.$el.html( this.$dropZone );
+        this.$el.append( this.$dropZone );
+        this.$el.append( this.$fileList );
 
         return this;
     },
@@ -467,10 +471,17 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     collectUploadFiles: function(files) {
-        var allFiles = [];
+        this.$el.addClass('upload-process');
+
+        var that = this,
+            allFiles = [],
+            view = new App.Views.File();
 
         $.each(files, function(i, file) {
             var tempFile = {file: file, progressTotal: 0, progressDone: 0, valid: false};
+
+            console.log(file.name);
+            that.$fileList.append( new App.Views.File().render({name: file.name}).el );
 
             $.each( App.Settings.uploadFileTypes, function (i, type) {
                 if(file.type === type) {
@@ -480,7 +491,7 @@ App.Views.FileUploader = Backbone.View.extend({
             });
         });
 
-        this.fileUpload( allFiles[0]['file'] );
+        this.fileUpload(files[0]);
     },
 
     fileUpload: function (file) {
@@ -523,6 +534,35 @@ App.Views.FileUploader = Backbone.View.extend({
     }
 });
 
+'use strict';
+
+App.Views.File = Backbone.View.extend({
+    tagName: 'li',
+
+    events: {
+        //'click .track-delete': 'destroy'
+    },
+
+    initialize: function () {
+        //this.listenTo(this. model, 'change', this.render);
+        //this.model.on('destroy', this.remove, this);
+    },
+
+    render: function (data) {
+        //this.$el.html( App.TmpEngine.getTemplate('file', this.model.toJSON()) );
+        this.$el.html( data.name );
+
+        return this;
+    },
+
+    remove: function () {
+        //this.$el.remove();
+    },
+
+    destroy: function () {
+        //this.model.destroy();
+    }
+});
 'use strict';
 
 var app = app || {};

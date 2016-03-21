@@ -41,7 +41,13 @@ App.TmpEngine = (function () {
             },
 
             fileList: function () {
-                return '<ul class="file-list"></ul>'
+                return '<ul class="' + App.Settings.classPrefix + '-file-list"></ul>'
+            },
+
+            file: function (data) {
+                return '<li class="' + App.Settings.classPrefix + '-upload-file">\
+                            + data.name +\
+                        </li>'
             },
             
             modalWindow: function () {
@@ -52,10 +58,10 @@ App.TmpEngine = (function () {
             },
 
             dropZone: function () {
-                return '<li class="'+ App.Settings.classPrefix +'-dropzone">\
+                return '<div class="'+ App.Settings.classPrefix +'-dropzone">\
                             Drop files(mp3, wav) here <br>or click to load on server.\
                             <input type="file" name="files[]" multiple>\
-                        </li>'
+                        </div>'
             }
         };
 

@@ -11,9 +11,6 @@ App.Views.Tracker = Backbone.View.extend({
     },
 
     render: function () {
-        //var tracker = App.TmpEngine.render('tracker');
-        //this.$el.append( tracker );
-
         var that = this;
 
         $.each(tracks, function (i, track) {

@@ -1,7 +1,6 @@
 'use strict';
 
 App.Views.FileUploader = Backbone.View.extend({
-    tagName: 'ul',
     className: App.Settings.classPrefix + '-file-uploader',
 
     events: {
@@ -15,10 +14,12 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
+        this.$fileList = $( App.TmpEngine.getTemplate('fileList') );
     },
 
     render: function () {
-        this.$el.html( this.$dropZone );
+        this.$el.append( this.$dropZone );
+        this.$el.append( this.$fileList );
 
         return this;
     },
@@ -60,10 +61,17 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     collectUploadFiles: function(files) {
-        var allFiles = [];
+        this.$el.addClass('upload-process');
+
+        var that = this,
+            allFiles = [],
+            view = new App.Views.File();
 
         $.each(files, function(i, file) {
             var tempFile = {file: file, progressTotal: 0, progressDone: 0, valid: false};
+
+            console.log(file.name);
+            that.$fileList.append( new App.Views.File().render({name: file.name}).el );
 
             $.each( App.Settings.uploadFileTypes, function (i, type) {
                 if(file.type === type) {
@@ -73,7 +81,7 @@ App.Views.FileUploader = Backbone.View.extend({
             });
         });
 
-        this.fileUpload( allFiles[0]['file'] );
+        this.fileUpload(files[0]);
     },
 
     fileUpload: function (file) {
