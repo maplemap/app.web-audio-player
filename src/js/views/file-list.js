@@ -1,38 +1,35 @@
 'use strict';
 
-App.Views.Tracker = Backbone.View.extend({
+App.Views.FileList = Backbone.View.extend({
     tagName: 'ul',
-    className: App.Settings.classPrefix + '-tracker',
+    className: App.Settings.classPrefix + '-file-list',
 
     initialize: function () {
-        this.listenTo(App.Tracks, 'add', this.addOne);
-
-        App.Tracks.fetch();
+        this.listenTo(App.UploadFiles, 'add', this.addOne);
     },
 
     render: function () {
         var that = this;
 
-        $.each(tracks, function (i, track) {
-            that.addOneToCollection(track);
-        });
+        //$.each(tracks, function (i, track) {
+        //    that.addOneToCollection(track);
+        //});
 
-        this.initTrackerScroll();
+        this.initFileListScroll();
 
         return this;
     },
 
     addOne: function (model) {
-        var view = new App.Views.Track({
+        var view = new App.Views.File({
             model: model
         });
 
-        model.save();
         this.$el.append( view.render().el );
     },
 
-    addOneToCollection: function (track) {
-        App.Tracks.add(track);
+    addOneToCollection: function (model) {
+        App.UploadFiles.add(model);
     },
 
     renderList: function (event) {
@@ -42,7 +39,7 @@ App.Views.Tracker = Backbone.View.extend({
         });
     },
 
-    initTrackerScroll: function () {
+    initFileListScroll: function () {
         this.$el.perfectScrollbar({
             minScrollbarLength: 50
         });

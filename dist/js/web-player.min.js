@@ -37,9 +37,9 @@ App.TmpEngine = (function () {
             },
 
             track: function (data) {
-                return '<span class="track-name">' + data.name + '</span>\
-                        <span class="track-delete" title="delete track"></span>\
-                        <span class="track-duration">' + data.duration + '</span>'
+                return '<span class="name">' + data.name + '</span>\
+                        <span class="delete" title="delete track"></span>\
+                        <span class="duration">' + data.duration + '</span>'
             },
 
             tools: function () {
@@ -59,17 +59,21 @@ App.TmpEngine = (function () {
                 return '<ul class="' + App.Settings.classPrefix + '-file-list"></ul>'
             },
 
+            fileListInfo: function (data) {
+                return '<ul class="'+ App.Settings.classPrefix +'-file-list-info">\
+                            <li class="upload">Upload</li>\
+                            <li class="cancel">Cancel</li>\
+                        <ul>'
+            },
+
             file: function (data) {
-                return '<li class="' + App.Settings.classPrefix + '-upload-file">\
-                            + data.name +\
-                        </li>'
+                return '<span class="name">' + data.name + '</span>\
+                        <span class="delete" title="delete file"></span>'
             },
             
             modalWindow: function () {
-                return '<div class="'+ App.Settings.classPrefix +'-modal-window">\
-                            <span class="cancel" title="cancel"></span>\
-                            <div class="modal-content">\
-                        </div>'
+                return '<span class="close" title="close"></span>\
+                        <div class="modal-content">'
             },
 
             dropZone: function () {
@@ -119,7 +123,7 @@ App.Views.Track = Backbone.View.extend({
     tagName: 'li',
 
     events: {
-        'click .track-delete': 'destroy'
+        'click .delete': 'destroy'
     },
 
     initialize: function () {
@@ -145,8 +149,15 @@ App.Views.Track = Backbone.View.extend({
 
 App.Models.Track = Backbone.Model.extend({
     defaults: {
-        trackname: '',
+        name: '',
         duration: ''
+    }
+});
+'use strict';
+
+App.Models.File = Backbone.Model.extend({
+    defaults: {
+        filename: ''
     }
 });
 'use strict';
@@ -184,6 +195,15 @@ App.Collections.Tracks = Backbone.Collection.extend({
 });
 
 App.Tracks = new App.Collections.Tracks();
+'use strict';
+
+
+App.Collections.UploadFiles = Backbone.Collection.extend({
+    model: App.Models.File
+    //localStorage: new Backbone.LocalStorage('web-player'),
+});
+
+App.UploadFiles = new App.Collections.UploadFiles();
 'use strict';
 
 App.Views.Player = Backbone.View.extend({
@@ -240,12 +260,12 @@ App.Views.Playlist = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playlist',
 
     initialize: function () {
-        App.Events.on('enable-upload-window', this.enableUploadWindow, this);
-        App.Events.on('disable-modal-window', this.disableModalWindow, this);
+        //App.Events.on('enable-upload-window', this.enableUploadWindow, this);
+        //App.Events.on('disable-modal-window', this.disableModalWindow, this);
 
-        this.trackerView = new App.Views.Tracker();
+        this.trackerView = new App.Views.TrackList();
         this.playlistInfoView = new App.Views.PlaylistInfo();
-        this.$modalWindow = $( App.TmpEngine.getTemplate('modalWindow') );
+        this.modalWindow = ( new App.Views.ModalWindow() );
 
         this.render();
     },
@@ -253,38 +273,45 @@ App.Views.Playlist = Backbone.View.extend({
     render: function () {
         this.$el.append( this.playlistInfoView.render().el );
         this.$el.append( this.trackerView.render().el );
-        this.$el.append( this.$modalWindow );
+        this.$el.append( this.modalWindow.render().el );
+
+        App.Events.on('start-upload-process', this.startUploadProcess, this);
+        App.Events.on('finish-upload-process', this.finishUploadProcess, this);
 
         return this;
     },
 
-    enableModalWindow: function (content) {
-        var that = this;
-
-        this.$modalWindow.addClass('active');
-        this.$modalWindow.find('.cancel').on('click', function (e) {
-            e.stopPropagation();
-            App.Events.trigger('disable-modal-window');
-        });
-
-        this.$modalWindow.find('.modal-content').html(content);
+    startUploadProcess: function () {
+        this.$el.addClass('upload-process');
     },
 
-    disableModalWindow : function () {
-        this.$modalWindow.removeClass('active');
-        this.$modalWindow.find('.cancel').off('click');
-        this.$modalWindow.find('.modal-content').html('');
-    },
-
-    enableUploadWindow: function () {
-        //if(!this.$fileUploader) {
-        //    console.log('new');
-        //    this.$fileUploader = new App.Views.FileUploader();
-        //}
-        this.$fileUploader = new App.Views.FileUploader();
-
-        this.enableModalWindow( this.$fileUploader.render().el );
+    finishUploadProcess: function () {
+        this.$el.removeClass('upload-process');
     }
+
+    //enableModalWindow: function (content) {
+    //    var that = this;
+    //
+    //    this.$modalWindow.addClass('active');
+    //    this.$modalWindow.find('.cancel').on('click', function (e) {
+    //        e.stopPropagation();
+    //        App.Events.trigger('disable-modal-window');
+    //    });
+    //
+    //    this.$modalWindow.find('.modal-content').html(content);
+    //},
+    //
+    //disableModalWindow : function () {
+    //    this.$modalWindow.removeClass('active');
+    //    this.$modalWindow.find('.cancel').off('click');
+    //    this.$modalWindow.find('.modal-content').html('');
+    //},
+    //
+    //enableUploadWindow: function () {
+    //    this.$fileUploader = new App.Views.FileUploader();
+    //
+    //    this.enableModalWindow( this.$fileUploader.render().el );
+    //}
 });
 'use strict';
 
@@ -318,9 +345,54 @@ App.Views.PlaylistInfo = Backbone.View.extend({
 });
 'use strict';
 
-App.Views.Tracker = Backbone.View.extend({
+App.Views.ModalWindow = Backbone.View.extend({
+    className: App.Settings.classPrefix + '-modal-window',
+    template: $( App.TmpEngine.getTemplate('modalWindow') ),
+
+    initialize: function () {
+        App.Events.on('enable-upload-window', this.enableUploadWindow, this);
+        App.Events.on('disable-modal-window', this.disable, this);
+
+        this.render();
+    },
+
+    render: function () {
+        this.$el.append( this.template );
+        this.$closeButton = this.$el.find('.close');
+        this.$modalContent = this.$el.find('.modal-content');
+
+        return this;
+    },
+
+    enable: function (content) {
+        this.$el.addClass('active');
+        this.$closeButton.on('click', function (e) {
+            e.stopPropagation();
+            App.Events.trigger('disable-modal-window');
+        });
+
+        this.$modalContent.html(content);
+    },
+
+    disable: function () {
+        this.$el.removeClass('active');
+        this.$closeButton.off('click');
+        this.$modalContent.html('');
+
+        App.Events.trigger('finish-upload-process');
+    },
+
+    enableUploadWindow: function () {
+        this.$fileUploader = new App.Views.FileUploader();
+
+        this.enable( this.$fileUploader.render().el );
+    }
+});
+'use strict';
+
+App.Views.TrackList = Backbone.View.extend({
     tagName: 'ul',
-    className: App.Settings.classPrefix + '-tracker',
+    className: App.Settings.classPrefix + '-track-list',
 
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);
@@ -424,12 +496,16 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
-        this.$fileList = $( App.TmpEngine.getTemplate('fileList') );
+        this.$fileListInfo = $( App.TmpEngine.getTemplate('fileListInfo') );
+        this.fileList = new App.Views.FileList();
+
+        App.Events.on('start-upload-process', this.startuploadProcess, this);
     },
 
     render: function () {
         this.$el.append( this.$dropZone );
-        this.$el.append( this.$fileList );
+        this.$el.append( this.$fileListInfo );
+        this.$el.append( this.fileList.render().el );
 
         return this;
     },
@@ -471,27 +547,40 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     collectUploadFiles: function(files) {
-        this.$el.addClass('upload-process');
+        App.Events.trigger('start-upload-process');
 
         var that = this,
-            allFiles = [],
-            view = new App.Views.File();
+            uploadFiles = [];
 
         $.each(files, function(i, file) {
-            var tempFile = {file: file, progressTotal: 0, progressDone: 0, valid: false};
+            var fileModel = {file: file, name: file.name, progressTotal: 0, progressDone: 0};
 
-            console.log(file.name);
-            that.$fileList.append( new App.Views.File().render({name: file.name}).el );
-
-            $.each( App.Settings.uploadFileTypes, function (i, type) {
-                if(file.type === type) {
-                    tempFile.valid = true;
-                    allFiles.unshift( tempFile );
-                }
+            that.fileValidate(file.type, function (validate) {
+                if(validate) that.fileList.addOneToCollection(fileModel);
             });
         });
 
-        this.fileUpload(files[0]);
+        //console.log(uploadFiles.length);
+
+        //this.fileUpload(files[0]);
+    },
+
+    fileValidate: function (filetype, callback) {
+        var validate = false;
+
+        $.each( App.Settings.uploadFileTypes, function (i, type) {
+            if(filetype === type) validate = true;
+        });
+
+        if (typeof callback === 'function') callback(validate);
+    },
+
+    queueUpload: function () {
+
+    },
+
+    startuploadProcess: function () {
+        this.$el.addClass('upload-process');
     },
 
     fileUpload: function (file) {
@@ -536,31 +625,77 @@ App.Views.FileUploader = Backbone.View.extend({
 
 'use strict';
 
+App.Views.FileList = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.Settings.classPrefix + '-file-list',
+
+    initialize: function () {
+        this.listenTo(App.UploadFiles, 'add', this.addOne);
+    },
+
+    render: function () {
+        var that = this;
+
+        //$.each(tracks, function (i, track) {
+        //    that.addOneToCollection(track);
+        //});
+
+        this.initFileListScroll();
+
+        return this;
+    },
+
+    addOne: function (model) {
+        var view = new App.Views.File({
+            model: model
+        });
+
+        this.$el.append( view.render().el );
+    },
+
+    addOneToCollection: function (model) {
+        App.UploadFiles.add(model);
+    },
+
+    renderList: function (event) {
+        var that = this;
+        App.Tracks.each(function (model, indx) {
+            that.addOne(model);
+        });
+    },
+
+    initFileListScroll: function () {
+        this.$el.perfectScrollbar({
+            minScrollbarLength: 50
+        });
+    }
+});
+'use strict';
+
 App.Views.File = Backbone.View.extend({
     tagName: 'li',
 
     events: {
-        //'click .track-delete': 'destroy'
+        'click .delete': 'destroy'
     },
 
     initialize: function () {
         //this.listenTo(this. model, 'change', this.render);
-        //this.model.on('destroy', this.remove, this);
+        this.model.on('destroy', this.remove, this);
     },
 
-    render: function (data) {
-        //this.$el.html( App.TmpEngine.getTemplate('file', this.model.toJSON()) );
-        this.$el.html( data.name );
+    render: function () {
+        this.$el.html( App.TmpEngine.getTemplate('file', this.model.toJSON()) );
 
         return this;
     },
 
     remove: function () {
-        //this.$el.remove();
+        this.$el.remove();
     },
 
     destroy: function () {
-        //this.model.destroy();
+        this.model.destroy();
     }
 });
 'use strict';

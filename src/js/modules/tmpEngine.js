@@ -22,9 +22,9 @@ App.TmpEngine = (function () {
             },
 
             track: function (data) {
-                return '<span class="track-name">' + data.name + '</span>\
-                        <span class="track-delete" title="delete track"></span>\
-                        <span class="track-duration">' + data.duration + '</span>'
+                return '<span class="name">' + data.name + '</span>\
+                        <span class="delete" title="delete track"></span>\
+                        <span class="duration">' + data.duration + '</span>'
             },
 
             tools: function () {
@@ -44,17 +44,21 @@ App.TmpEngine = (function () {
                 return '<ul class="' + App.Settings.classPrefix + '-file-list"></ul>'
             },
 
+            fileListInfo: function (data) {
+                return '<ul class="'+ App.Settings.classPrefix +'-file-list-info">\
+                            <li class="upload">Upload</li>\
+                            <li class="cancel">Cancel</li>\
+                        <ul>'
+            },
+
             file: function (data) {
-                return '<li class="' + App.Settings.classPrefix + '-upload-file">\
-                            + data.name +\
-                        </li>'
+                return '<span class="name">' + data.name + '</span>\
+                        <span class="delete" title="delete file"></span>'
             },
             
             modalWindow: function () {
-                return '<div class="'+ App.Settings.classPrefix +'-modal-window">\
-                            <span class="cancel" title="cancel"></span>\
-                            <div class="modal-content">\
-                        </div>'
+                return '<span class="close" title="close"></span>\
+                        <div class="modal-content">'
             },
 
             dropZone: function () {

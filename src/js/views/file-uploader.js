@@ -14,12 +14,16 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
-        this.$fileList = $( App.TmpEngine.getTemplate('fileList') );
+        this.$fileListInfo = $( App.TmpEngine.getTemplate('fileListInfo') );
+        this.fileList = new App.Views.FileList();
+
+        App.Events.on('start-upload-process', this.startuploadProcess, this);
     },
 
     render: function () {
         this.$el.append( this.$dropZone );
-        this.$el.append( this.$fileList );
+        this.$el.append( this.$fileListInfo );
+        this.$el.append( this.fileList.render().el );
 
         return this;
     },
@@ -61,27 +65,40 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     collectUploadFiles: function(files) {
-        this.$el.addClass('upload-process');
+        App.Events.trigger('start-upload-process');
 
         var that = this,
-            allFiles = [],
-            view = new App.Views.File();
+            uploadFiles = [];
 
         $.each(files, function(i, file) {
-            var tempFile = {file: file, progressTotal: 0, progressDone: 0, valid: false};
+            var fileModel = {file: file, name: file.name, progressTotal: 0, progressDone: 0};
 
-            console.log(file.name);
-            that.$fileList.append( new App.Views.File().render({name: file.name}).el );
-
-            $.each( App.Settings.uploadFileTypes, function (i, type) {
-                if(file.type === type) {
-                    tempFile.valid = true;
-                    allFiles.unshift( tempFile );
-                }
+            that.fileValidate(file.type, function (validate) {
+                if(validate) that.fileList.addOneToCollection(fileModel);
             });
         });
 
-        this.fileUpload(files[0]);
+        //console.log(uploadFiles.length);
+
+        //this.fileUpload(files[0]);
+    },
+
+    fileValidate: function (filetype, callback) {
+        var validate = false;
+
+        $.each( App.Settings.uploadFileTypes, function (i, type) {
+            if(filetype === type) validate = true;
+        });
+
+        if (typeof callback === 'function') callback(validate);
+    },
+
+    queueUpload: function () {
+
+    },
+
+    startuploadProcess: function () {
+        this.$el.addClass('upload-process');
     },
 
     fileUpload: function (file) {

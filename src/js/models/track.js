@@ -2,7 +2,7 @@
 
 App.Models.Track = Backbone.Model.extend({
     defaults: {
-        trackname: '',
+        name: '',
         duration: ''
     }
 });

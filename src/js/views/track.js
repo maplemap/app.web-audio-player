@@ -4,7 +4,7 @@ App.Views.Track = Backbone.View.extend({
     tagName: 'li',
 
     events: {
-        'click .track-delete': 'destroy'
+        'click .delete': 'destroy'
     },
 
     initialize: function () {
