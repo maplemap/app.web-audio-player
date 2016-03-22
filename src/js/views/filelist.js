@@ -6,15 +6,10 @@ App.Views.FileList = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(App.UploadFiles, 'add', this.addOne);
+        App.Events.on('disable-modal-window', this.disableFileList, this);
     },
 
     render: function () {
-        var that = this;
-
-        //$.each(tracks, function (i, track) {
-        //    that.addOneToCollection(track);
-        //});
-
         this.initFileListScroll();
 
         return this;
@@ -37,6 +32,10 @@ App.Views.FileList = Backbone.View.extend({
         App.Tracks.each(function (model, indx) {
             that.addOne(model);
         });
+    },
+
+    disableFileList: function () {
+        App.Events.trigger('hide-filelist');
     },
 
     initFileListScroll: function () {

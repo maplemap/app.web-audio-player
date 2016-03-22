@@ -5,13 +5,12 @@ App.Views.FileListInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-fileList-info',
 
     events: {
-        'click .cancel': 'cancelUpload',
         'click .upload': 'startUpload'
     },
 
     initialize: function () {
         this.listenTo(App.UploadFiles, 'all', this.render);
-        App.Events.on('disable-modal-window', this.destroyAllCollection(), this);
+        App.Events.on('disable-modal-window', this.destroyAllCollection, this);
     },
 
     render: function () {
@@ -23,12 +22,12 @@ App.Views.FileListInfo = Backbone.View.extend({
         return this;
     },
 
-    cancelUpload: function () {
-        App.Events.trigger('disable-modal-window');
-    },
+    //backToDropzone: function () {
+    //    App.Events.trigger('hide-filelist');
+    //},
 
     startUpload: function () {
-
+        App.Events.trigger('start-upload');
     },
 
     destroyAllCollection: function () {

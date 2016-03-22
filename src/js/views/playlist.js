@@ -19,18 +19,18 @@ App.Views.Playlist = Backbone.View.extend({
         this.$el.append( this.trackerView.render().el );
         this.$el.append( this.modalWindow.render().el );
 
-        App.Events.on('start-upload-process', this.startUploadProcess, this);
-        App.Events.on('finish-upload-process', this.finishUploadProcess, this);
+        App.Events.on('show-filelist', this.showFilelist, this);
+        App.Events.on('hide-filelist', this.hideFilelist, this);
 
         return this;
     },
 
-    startUploadProcess: function () {
-        this.$el.addClass('upload-process');
+    showFilelist: function () {
+        this.$el.addClass('show-filelist');
     },
 
-    finishUploadProcess: function () {
-        this.$el.removeClass('upload-process');
+    hideFilelist: function () {
+        this.$el.removeClass('show-filelist');
     }
 
     //enableModalWindow: function (content) {

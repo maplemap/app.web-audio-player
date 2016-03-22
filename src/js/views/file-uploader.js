@@ -17,7 +17,9 @@ App.Views.FileUploader = Backbone.View.extend({
         this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
 
-        App.Events.on('start-upload-process', this.startuploadProcess, this);
+        App.Events.on('show-filelist', this.showFilelist, this);
+        App.Events.on('hide-filelist', this.hideFilelist, this);
+        App.Events.on('start-upload', this.queueUpload, this);
     },
 
     render: function () {
@@ -65,25 +67,20 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     collectUploadFiles: function(files) {
-        App.Events.trigger('start-upload-process');
+        App.Events.trigger('show-filelist');
 
-        var that = this,
-            uploadFiles = [];
+        var that = this;
 
         $.each(files, function(i, file) {
             var fileModel = {file: file, name: file.name, progressTotal: 0, progressDone: 0};
 
-            that.fileValidate(file.type, function (validate) {
+            that.validateFile(file.type, function (validate) {
                 if(validate) that.fileList.addOneToCollection(fileModel);
             });
         });
-
-        //console.log(uploadFiles.length);
-
-        //this.fileUpload(files[0]);
     },
 
-    fileValidate: function (filetype, callback) {
+    validateFile: function (filetype, callback) {
         var validate = false;
 
         $.each( App.Settings.uploadFileTypes, function (i, type) {
@@ -94,11 +91,17 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     queueUpload: function () {
-
+        if(App.UploadFiles.length) {
+            App.UploadFiles.toJSON();
+        }
     },
 
-    startuploadProcess: function () {
-        this.$el.addClass('upload-process');
+    showFilelist: function () {
+        this.$el.addClass('show-filelist');
+    },
+
+    hideFilelist: function () {
+        this.$el.removeClass('show-filelist');
     },
 
     fileUpload: function (file) {
