@@ -135,6 +135,12 @@
   margin: 0 auto;
   /*** plugin's styles ***/
 }
+#webAudioPlayer button {
+  border: none;
+  background: none;
+  outline: none;
+  cursor: pointer;
+}
 #webAudioPlayer .wap-audiobox,
 #webAudioPlayer input[type="file"] {
   display: none;
@@ -249,7 +255,7 @@
   top: 0;
   max-height: 90%;
   min-height: 250px;
-  margin: 0;
+  margin: 2px 0 0 0;
   -webkit-transition: top 0.3s;
   -moz-transition: top 0.3s;
   -ms-transition: top 0.3s;
@@ -289,7 +295,7 @@
   position: relative;
   top: 0;
   text-align: center;
-  opacity: 1;
+  padding: 0 10px 5px 10px;
   -webkit-transition: top 0.3s;
   -moz-transition: top 0.3s;
   -ms-transition: top 0.3s;
@@ -298,17 +304,20 @@
 }
 #webAudioPlayer .wap-fileList-info li {
   font-size: 11px;
-  cursor: pointer;
+}
+#webAudioPlayer .wap-fileList-info li button {
   opacity: .8;
-  margin: 0 8px;
+}
+#webAudioPlayer .wap-fileList-info li button:hover {
+  color: #333;
+  opacity: 1;
+}
+#webAudioPlayer .wap-fileList-info li.back {
+  margin-left: 10px;
 }
 #webAudioPlayer .wap-fileList-info li.amount {
   float: left;
   margin-top: 4px;
-}
-#webAudioPlayer .wap-fileList-info li:hover {
-  color: #333;
-  opacity: 1;
 }
 #webAudioPlayer .wap-file-uploader {
   height: 100%;
@@ -344,9 +353,9 @@
   display: inline-block;
   margin-top: 100px;
 }
-#webAudioPlayer .wap-file-uploader.upload-process .wap-dropzone,
-#webAudioPlayer .wap-file-uploader.upload-process .wap-fileList,
-#webAudioPlayer .wap-file-uploader.upload-process .wap-fileList-info {
+#webAudioPlayer .wap-file-uploader.show-filelist .wap-dropzone,
+#webAudioPlayer .wap-file-uploader.show-filelist .wap-fileList,
+#webAudioPlayer .wap-file-uploader.show-filelist .wap-fileList-info {
   top: -355px;
 }
 #webAudioPlayer .wap-playlist {
@@ -358,7 +367,7 @@
   border: 1px solid #333;
   border-radius: 3px;
 }
-#webAudioPlayer .wap-playlist.upload-process {
+#webAudioPlayer .wap-playlist.show-filelist {
   min-height: 350px;
 }
 #webAudioPlayer .wap-playlist .wap-modal-window {

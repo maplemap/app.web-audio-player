@@ -54,6 +54,13 @@
   font-size: 14px;
   margin: 0 auto;
 
+  button {
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+  }
+
   .@{class-prefix}-audiobox,
   input[type="file"]{
     display: none;
@@ -171,7 +178,7 @@
     top: 0;
     max-height: 90%;
     min-height: @playlist-min-height;
-    margin: 0;
+    margin: 2px 0 0 0;
     .transition(top, .3s);
 
     li {
@@ -209,23 +216,26 @@
     position: relative;
     top: 0;
     text-align: center;
-    opacity: 1;
+    padding: 0 10px 5px 10px;
     .transition(top, .3s);
 
     li {
       font-size: 11px;
-      cursor: pointer;
-      opacity: .8;
-      margin: 0 8px;
 
+      button {
+        opacity: .8;
+
+        &:hover {
+          color: @player-main-color;
+          opacity: 1;
+        }
+      }
+      &.back {
+        margin-left: 10px;
+      }
       &.amount {
         float: left;
         margin-top: 4px;
-      }
-
-      &:hover {
-        color: @player-main-color;
-        opacity: 1;
       }
     }
   }
@@ -264,7 +274,7 @@
       }
     }
 
-    &.upload-process {
+    &.show-filelist {
       .@{class-prefix}-dropzone,
       .@{class-prefix}-fileList,
       .@{class-prefix}-fileList-info {
@@ -282,7 +292,7 @@
     border: 1px solid @player-main-color;
     border-radius: @player-main-border-radius;
 
-    &.upload-process {
+    &.show-filelist {
       min-height: @playlist-max-height;
     }
 

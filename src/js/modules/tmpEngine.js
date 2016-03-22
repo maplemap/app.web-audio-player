@@ -22,7 +22,7 @@ App.TmpEngine = (function () {
             },
 
             track: function (data) {
-                return '<span class="name">' + data.name + '</span>\
+                return '<span class="name" title="' + data.name + '">' + data.name + '</span>\
                         <span class="delete" title="delete track"></span>\
                         <span class="duration">' + data.duration + '</span>'
             },
@@ -46,12 +46,12 @@ App.TmpEngine = (function () {
 
             fileListInfo: function (data) {
                 return '<li class="amount"><span>'+ data.amount +'</span></li>\
-                        <li class="upload">Upload</li>\
-                        <li class="cancel">Cancel</li>'
+                        <li><button class="upload">Upload</button></li>\
+                        <!-- <li class="back">Back</li> -->'
             },
 
             file: function (data) {
-                return '<span class="name">' + data.name + '</span>\
+                return '<span class="name" title="' + data.name + '">' + data.name + '</span>\
                         <span class="delete" title="delete file"></span>'
             },
             
