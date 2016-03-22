@@ -275,8 +275,8 @@
   display: inline-block;
   font-size: 10px;
 }
-#webAudioPlayer .wap-playlist-info li.tracks-amount,
-#webAudioPlayer .wap-fileList-info li.tracks-amount {
+#webAudioPlayer .wap-playlist-info li.amount,
+#webAudioPlayer .wap-fileList-info li.amount {
   margin-left: 5px;
 }
 #webAudioPlayer .wap-playlist-info li.tracks-delete,
@@ -302,6 +302,10 @@
   opacity: .8;
   margin: 0 8px;
 }
+#webAudioPlayer .wap-fileList-info li.amount {
+  float: left;
+  margin-top: 4px;
+}
 #webAudioPlayer .wap-fileList-info li:hover {
   color: #333;
   opacity: 1;
@@ -321,7 +325,7 @@
   border-radius: 3px;
   padding: 0;
   cursor: pointer;
-  margin: 10px 4px 20px 4px;
+  margin: 10px 4px 15px 4px;
   -webkit-transition: top 0.3s;
   -moz-transition: top 0.3s;
   -ms-transition: top 0.3s;

@@ -10,11 +10,15 @@ App.Views.FileListInfo = Backbone.View.extend({
     },
 
     initialize: function () {
-
+        this.listenTo(App.UploadFiles, 'all', this.render);
+        App.Events.on('disable-modal-window', this.destroyAllCollection(), this);
     },
 
     render: function () {
-        this.$el.html( App.TmpEngine.getTemplate('fileListInfo') );
+        var data = {
+            amount: App.UploadFiles.length
+        };
+        this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
 
         return this;
     },
@@ -25,5 +29,9 @@ App.Views.FileListInfo = Backbone.View.extend({
 
     startUpload: function () {
 
+    },
+
+    destroyAllCollection: function () {
+        App.UploadFiles.destroyAllCollection();
     }
 });

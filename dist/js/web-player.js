@@ -31,8 +31,8 @@ App.TmpEngine = (function () {
             },
 
             playlistInfo: function (data) {
-                return '<li class="amount-duration"><span>'+ data.duration +'</span></li>\
-                        <li class="tracks-amount"><span>'+ data.tracks +'</span></li>\
+                return '<li class="duration"><span>'+ data.duration +'</span></li>\
+                        <li class="amount"><span>'+ data.amount +'</span></li>\
                         <li class="tracks-delete">delete all</li>'
             },
 
@@ -60,7 +60,8 @@ App.TmpEngine = (function () {
             },
 
             fileListInfo: function (data) {
-                return '<li class="upload">Upload</li>\
+                return '<li class="amount"><span>'+ data.amount +'</span></li>\
+                        <li class="upload">Upload</li>\
                         <li class="cancel">Cancel</li>'
             },
 
@@ -197,8 +198,12 @@ App.Tracks = new App.Collections.Tracks();
 
 
 App.Collections.UploadFiles = Backbone.Collection.extend({
-    model: App.Models.File
+    model: App.Models.File,
     //localStorage: new Backbone.LocalStorage('web-player'),
+
+    destroyAllCollection: function () {
+        _.invoke( this.toArray(), 'destroy' );
+    }
 });
 
 App.UploadFiles = new App.Collections.UploadFiles();
@@ -327,7 +332,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
 
     render: function () {
         var data = {
-            tracks: App.Tracks.length,
+            amount: App.Tracks.length,
             duration: App.Tracks.getTotalTime()
         };
 
@@ -680,11 +685,15 @@ App.Views.FileListInfo = Backbone.View.extend({
     },
 
     initialize: function () {
-
+        this.listenTo(App.UploadFiles, 'all', this.render);
+        App.Events.on('disable-modal-window', this.destroyAllCollection(), this);
     },
 
     render: function () {
-        this.$el.html( App.TmpEngine.getTemplate('fileListInfo') );
+        var data = {
+            amount: App.UploadFiles.length
+        };
+        this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
 
         return this;
     },
@@ -695,6 +704,10 @@ App.Views.FileListInfo = Backbone.View.extend({
 
     startUpload: function () {
 
+    },
+
+    destroyAllCollection: function () {
+        App.UploadFiles.destroyAllCollection();
     }
 });
 'use strict';

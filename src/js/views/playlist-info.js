@@ -14,7 +14,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
 
     render: function () {
         var data = {
-            tracks: App.Tracks.length,
+            amount: App.Tracks.length,
             duration: App.Tracks.getTotalTime()
         };
 

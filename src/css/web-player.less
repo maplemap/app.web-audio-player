@@ -194,7 +194,7 @@
       display: inline-block;
       font-size: 10px;
 
-      &.tracks-amount {
+      &.amount {
         margin-left: 5px;
       }
       &.tracks-delete {
@@ -218,6 +218,11 @@
       opacity: .8;
       margin: 0 8px;
 
+      &.amount {
+        float: left;
+        margin-top: 4px;
+      }
+
       &:hover {
         color: @player-main-color;
         opacity: 1;
@@ -240,7 +245,7 @@
       border-radius: @player-main-border-radius;
       padding: 0;
       cursor: pointer;
-      margin: 10px 4px 20px 4px;
+      margin: 10px 4px 15px 4px;
       .transition(top, .3s);
 
       &.drag-active {

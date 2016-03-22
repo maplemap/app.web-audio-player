@@ -16,8 +16,8 @@ App.TmpEngine = (function () {
             },
 
             playlistInfo: function (data) {
-                return '<li class="amount-duration"><span>'+ data.duration +'</span></li>\
-                        <li class="tracks-amount"><span>'+ data.tracks +'</span></li>\
+                return '<li class="duration"><span>'+ data.duration +'</span></li>\
+                        <li class="amount"><span>'+ data.amount +'</span></li>\
                         <li class="tracks-delete">delete all</li>'
             },
 
@@ -45,7 +45,8 @@ App.TmpEngine = (function () {
             },
 
             fileListInfo: function (data) {
-                return '<li class="upload">Upload</li>\
+                return '<li class="amount"><span>'+ data.amount +'</span></li>\
+                        <li class="upload">Upload</li>\
                         <li class="cancel">Cancel</li>'
             },
 
