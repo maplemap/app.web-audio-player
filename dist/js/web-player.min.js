@@ -60,10 +60,8 @@ App.TmpEngine = (function () {
             },
 
             fileListInfo: function (data) {
-                return '<ul class="'+ App.Settings.classPrefix +'-file-list-info">\
-                            <li class="upload">Upload</li>\
-                            <li class="cancel">Cancel</li>\
-                        <ul>'
+                return '<li class="upload">Upload</li>\
+                        <li class="cancel">Cancel</li>'
             },
 
             file: function (data) {
@@ -496,7 +494,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
-        this.$fileListInfo = $( App.TmpEngine.getTemplate('fileListInfo') );
+        this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
 
         App.Events.on('start-upload-process', this.startuploadProcess, this);
@@ -504,7 +502,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     render: function () {
         this.$el.append( this.$dropZone );
-        this.$el.append( this.$fileListInfo );
+        this.$el.append( this.fileListInfo.render().el );
         this.$el.append( this.fileList.render().el );
 
         return this;
@@ -627,7 +625,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
 App.Views.FileList = Backbone.View.extend({
     tagName: 'ul',
-    className: App.Settings.classPrefix + '-file-list',
+    className: App.Settings.classPrefix + '-fileList',
 
     initialize: function () {
         this.listenTo(App.UploadFiles, 'add', this.addOne);
@@ -668,6 +666,35 @@ App.Views.FileList = Backbone.View.extend({
         this.$el.perfectScrollbar({
             minScrollbarLength: 50
         });
+    }
+});
+'use strict';
+
+App.Views.FileListInfo = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.Settings.classPrefix + '-fileList-info',
+
+    events: {
+        'click .cancel': 'cancelUpload',
+        'click .upload': 'startUpload'
+    },
+
+    initialize: function () {
+
+    },
+
+    render: function () {
+        this.$el.html( App.TmpEngine.getTemplate('fileListInfo') );
+
+        return this;
+    },
+
+    cancelUpload: function () {
+        App.Events.trigger('disable-modal-window');
+    },
+
+    startUpload: function () {
+
     }
 });
 'use strict';

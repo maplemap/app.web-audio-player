@@ -2,7 +2,7 @@
 
 App.Views.FileList = Backbone.View.extend({
     tagName: 'ul',
-    className: App.Settings.classPrefix + '-file-list',
+    className: App.Settings.classPrefix + '-fileList',
 
     initialize: function () {
         this.listenTo(App.UploadFiles, 'add', this.addOne);

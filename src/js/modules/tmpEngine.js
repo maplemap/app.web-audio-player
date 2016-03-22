@@ -45,10 +45,8 @@ App.TmpEngine = (function () {
             },
 
             fileListInfo: function (data) {
-                return '<ul class="'+ App.Settings.classPrefix +'-file-list-info">\
-                            <li class="upload">Upload</li>\
-                            <li class="cancel">Cancel</li>\
-                        <ul>'
+                return '<li class="upload">Upload</li>\
+                        <li class="cancel">Cancel</li>'
             },
 
             file: function (data) {

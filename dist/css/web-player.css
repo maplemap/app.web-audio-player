@@ -174,7 +174,7 @@
   padding: 0 6px;
 }
 #webAudioPlayer .wap-track-list,
-#webAudioPlayer .wap-file-list {
+#webAudioPlayer .wap-fileList {
   position: relative;
   min-height: 250px;
   max-height: 340px;
@@ -182,7 +182,7 @@
   margin: 15px 0 0 0;
 }
 #webAudioPlayer .wap-track-list li,
-#webAudioPlayer .wap-file-list li {
+#webAudioPlayer .wap-fileList li {
   position: relative;
   color: #333;
   list-style-type: none;
@@ -191,11 +191,11 @@
   cursor: pointer;
 }
 #webAudioPlayer .wap-track-list li:nth-child(even),
-#webAudioPlayer .wap-file-list li:nth-child(even) {
+#webAudioPlayer .wap-fileList li:nth-child(even) {
   background: #eee;
 }
 #webAudioPlayer .wap-track-list li.active:before,
-#webAudioPlayer .wap-file-list li.active:before {
+#webAudioPlayer .wap-fileList li.active:before {
   content: '\25b6';
   position: absolute;
   top: 10px;
@@ -204,16 +204,16 @@
   font-size: 13px;
 }
 #webAudioPlayer .wap-track-list li:hover,
-#webAudioPlayer .wap-file-list li:hover {
+#webAudioPlayer .wap-fileList li:hover {
   background: #ddd;
 }
 #webAudioPlayer .wap-track-list li span,
-#webAudioPlayer .wap-file-list li span {
+#webAudioPlayer .wap-fileList li span {
   display: inline-block;
   vertical-align: middle;
 }
 #webAudioPlayer .wap-track-list li .delete,
-#webAudioPlayer .wap-file-list li .delete {
+#webAudioPlayer .wap-fileList li .delete {
   float: right;
   width: 8px;
   height: 15px;
@@ -222,7 +222,7 @@
   margin-left: 5px;
 }
 #webAudioPlayer .wap-track-list li .delete:before,
-#webAudioPlayer .wap-file-list li .delete:before {
+#webAudioPlayer .wap-fileList li .delete:before {
   display: none;
   content: '\2715';
   font-family: 'Entypo', sans-serif;
@@ -230,11 +230,11 @@
   vertical-align: middle;
 }
 #webAudioPlayer .wap-track-list li:hover .delete:before,
-#webAudioPlayer .wap-file-list li:hover .delete:before {
+#webAudioPlayer .wap-fileList li:hover .delete:before {
   display: block;
 }
 #webAudioPlayer .wap-track-list li .name,
-#webAudioPlayer .wap-file-list li .name {
+#webAudioPlayer .wap-fileList li .name {
   position: relative;
   max-width: 60%;
   white-space: nowrap;
@@ -242,10 +242,10 @@
   overflow: hidden;
 }
 #webAudioPlayer .wap-track-list li .duration,
-#webAudioPlayer .wap-file-list li .duration {
+#webAudioPlayer .wap-fileList li .duration {
   float: right;
 }
-#webAudioPlayer .wap-file-list {
+#webAudioPlayer .wap-fileList {
   top: 0;
   max-height: 90%;
   min-height: 250px;
@@ -256,11 +256,11 @@
   -o-transition: top 0.3s;
   transition: top 0.3s;
 }
-#webAudioPlayer .wap-file-list li {
+#webAudioPlayer .wap-fileList li {
   padding: 8px 12px 8px 20px;
 }
 #webAudioPlayer .wap-playlist-info,
-#webAudioPlayer .wap-file-list-info {
+#webAudioPlayer .wap-fileList-info {
   position: absolute;
   width: 90%;
   top: 0;
@@ -271,21 +271,21 @@
   margin: 0 auto;
 }
 #webAudioPlayer .wap-playlist-info li,
-#webAudioPlayer .wap-file-list-info li {
+#webAudioPlayer .wap-fileList-info li {
   display: inline-block;
   font-size: 10px;
 }
 #webAudioPlayer .wap-playlist-info li.tracks-amount,
-#webAudioPlayer .wap-file-list-info li.tracks-amount {
+#webAudioPlayer .wap-fileList-info li.tracks-amount {
   margin-left: 5px;
 }
 #webAudioPlayer .wap-playlist-info li.tracks-delete,
-#webAudioPlayer .wap-file-list-info li.tracks-delete {
+#webAudioPlayer .wap-fileList-info li.tracks-delete {
   float: right;
   cursor: pointer;
   margin-top: 5px;
 }
-#webAudioPlayer .wap-file-list-info {
+#webAudioPlayer .wap-fileList-info {
   position: relative;
   top: 0;
   text-align: center;
@@ -296,13 +296,13 @@
   -o-transition: top 0.3s;
   transition: top 0.3s;
 }
-#webAudioPlayer .wap-file-list-info li {
+#webAudioPlayer .wap-fileList-info li {
   font-size: 11px;
   cursor: pointer;
   opacity: .8;
   margin: 0 8px;
 }
-#webAudioPlayer .wap-file-list-info li:hover {
+#webAudioPlayer .wap-fileList-info li:hover {
   color: #333;
   opacity: 1;
 }
@@ -341,8 +341,8 @@
   margin-top: 100px;
 }
 #webAudioPlayer .wap-file-uploader.upload-process .wap-dropzone,
-#webAudioPlayer .wap-file-uploader.upload-process .wap-file-list,
-#webAudioPlayer .wap-file-uploader.upload-process .wap-file-list-info {
+#webAudioPlayer .wap-file-uploader.upload-process .wap-fileList,
+#webAudioPlayer .wap-file-uploader.upload-process .wap-fileList-info {
   top: -355px;
 }
 #webAudioPlayer .wap-playlist {
@@ -407,6 +407,6 @@
 #webAudioPlayer .ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
   width: 5px;
 }
-#webAudioPlayer .wap-wap-file-list .ps-container > .ps-scrollbar-y-rail {
+#webAudioPlayer .wap-wap-fileList .ps-container > .ps-scrollbar-y-rail {
   right: -5px !important;
 }

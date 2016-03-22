@@ -14,7 +14,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
-        this.$fileListInfo = $( App.TmpEngine.getTemplate('fileListInfo') );
+        this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
 
         App.Events.on('start-upload-process', this.startuploadProcess, this);
@@ -22,7 +22,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     render: function () {
         this.$el.append( this.$dropZone );
-        this.$el.append( this.$fileListInfo );
+        this.$el.append( this.fileListInfo.render().el );
         this.$el.append( this.fileList.render().el );
 
         return this;
