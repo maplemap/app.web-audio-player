@@ -27,6 +27,8 @@ App.Views.FileUploader = Backbone.View.extend({
         this.$el.append( this.fileListInfo.render().el );
         this.$el.append( this.fileList.render().el );
 
+        this.delegateEvents(this.events);
+
         return this;
     },
 
@@ -67,8 +69,6 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     collectUploadFiles: function(files) {
-        App.Events.trigger('show-filelist');
-
         var that = this;
 
         $.each(files, function(i, file) {
@@ -78,6 +78,8 @@ App.Views.FileUploader = Backbone.View.extend({
                 if(validate) that.fileList.addOneToCollection(fileModel);
             });
         });
+
+        if(App.UploadFiles.length) App.Events.trigger('show-filelist');
     },
 
     validateFile: function (filetype, callback) {
@@ -92,7 +94,8 @@ App.Views.FileUploader = Backbone.View.extend({
 
     queueUpload: function () {
         if(App.UploadFiles.length) {
-            App.UploadFiles.toJSON();
+            console.log(App.UploadFiles.length);
+            console.log(App.UploadFiles.toJSON());
         }
     },
 

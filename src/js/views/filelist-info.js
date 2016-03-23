@@ -5,7 +5,7 @@ App.Views.FileListInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-fileList-info',
 
     events: {
-        'click .upload': 'startUpload'
+        'click .upload': 'startUploadEvent'
     },
 
     initialize: function () {
@@ -19,14 +19,12 @@ App.Views.FileListInfo = Backbone.View.extend({
         };
         this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
 
+        this.delegateEvents(this.events);
+
         return this;
     },
 
-    //backToDropzone: function () {
-    //    App.Events.trigger('hide-filelist');
-    //},
-
-    startUpload: function () {
+    startUploadEvent: function () {
         App.Events.trigger('start-upload');
     },
 
