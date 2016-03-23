@@ -4,7 +4,8 @@ var App = {
     Models: {},
     Collections: {},
     Views: {},
-    Events: _.extend({}, Backbone.Events)
+    Events: _.extend({}, Backbone.Events),
+    Helper: {}
 };
 
 //settings
@@ -156,7 +157,13 @@ App.Models.Track = Backbone.Model.extend({
 
 App.Models.File = Backbone.Model.extend({
     defaults: {
+        index: '',
         filename: ''
+    },
+
+    initialize: function () {
+        this.set('index', App.Helper.counter);
+        App.Helper.counter += 1;
     }
 });
 'use strict';
@@ -263,12 +270,12 @@ App.Views.Playlist = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playlist',
 
     initialize: function () {
-        //App.Events.on('enable-upload-window', this.enableUploadWindow, this);
-        //App.Events.on('disable-modal-window', this.disableModalWindow, this);
-
         this.trackerView = new App.Views.TrackList();
         this.playlistInfoView = new App.Views.PlaylistInfo();
         this.modalWindow = ( new App.Views.ModalWindow() );
+
+        App.Events.on('show-filelist', this.showFilelist, this);
+        App.Events.on('hide-filelist', this.hideFilelist, this);
 
         this.render();
     },
@@ -277,9 +284,6 @@ App.Views.Playlist = Backbone.View.extend({
         this.$el.append( this.playlistInfoView.render().el );
         this.$el.append( this.trackerView.render().el );
         this.$el.append( this.modalWindow.render().el );
-
-        App.Events.on('show-filelist', this.showFilelist, this);
-        App.Events.on('hide-filelist', this.hideFilelist, this);
 
         return this;
     },
@@ -352,10 +356,6 @@ App.Views.ModalWindow = Backbone.View.extend({
     className: App.Settings.classPrefix + '-modal-window',
     template: $( App.TmpEngine.getTemplate('modalWindow') ),
 
-    events: {
-        'click .close': 'disable'
-    },
-
     initialize: function () {
         App.Events.on('enable-upload-window', this.enableUploadWindow, this);
         App.Events.on('disable-modal-window', this.disable, this);
@@ -385,12 +385,20 @@ App.Views.ModalWindow = Backbone.View.extend({
         this.$el.removeClass('active');
         this.$closeButton.off('click');
         this.$modalContent.html('');
+
+        if(this.fileUploader) this.disableUploadWindow();
     },
 
     enableUploadWindow: function () {
-        this.$fileUploader = new App.Views.FileUploader();
+        if(!this.fileUploader) {
+            this.fileUploader = new App.Views.FileUploader();
+        }
 
-        this.enable( this.$fileUploader.render().el );
+        this.enable( this.fileUploader.render().el );
+    },
+    
+    disableUploadWindow: function () {
+        //this.fileUploader.destroy();
     }
 });
 'use strict';
@@ -451,12 +459,12 @@ App.Views.Tools = Backbone.View.extend({
     className: App.Settings.classPrefix + '-tools',
     
     events: {
-        'click .upload-files': 'addUploadFilesEvents'
+        'click .upload-files': 'initUploadFilesEvents'
     },
     
     initialize: function () {
-        App.Events.on('enable-upload-window', this.enableUploadWindow, this);
-        App.Events.on('disable-modal-window', this.disableUploadWindow, this);
+        App.Events.on('enable-upload-window', this.addClassToUploadFiles, this);
+        App.Events.on('disable-modal-window', this.removeClassToUploadFiles, this);
 
         this.$tools = $( App.TmpEngine.getTemplate('tools') );
 
@@ -470,17 +478,17 @@ App.Views.Tools = Backbone.View.extend({
         return this;
     },
 
-    addUploadFilesEvents: function (e) {
+    initUploadFilesEvents: function (e) {
         var event = ( $(e.target).hasClass('active') ) ? 'disable-modal-window' : 'enable-upload-window';
 
         App.Events.trigger( event );
     },
 
-    enableUploadWindow: function () {
+    addClassToUploadFiles: function () {
         this.$uploadFiles.addClass('active');
     },
 
-    disableUploadWindow: function () {
+    removeClassToUploadFiles: function () {
         this.$uploadFiles.removeClass('active');
     }
 });
@@ -513,6 +521,8 @@ App.Views.FileUploader = Backbone.View.extend({
         this.$el.append( this.$dropZone );
         this.$el.append( this.fileListInfo.render().el );
         this.$el.append( this.fileList.render().el );
+
+        this.delegateEvents(this.events);
 
         return this;
     },
@@ -554,8 +564,6 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     collectUploadFiles: function(files) {
-        App.Events.trigger('show-filelist');
-
         var that = this;
 
         $.each(files, function(i, file) {
@@ -565,6 +573,8 @@ App.Views.FileUploader = Backbone.View.extend({
                 if(validate) that.fileList.addOneToCollection(fileModel);
             });
         });
+
+        if(App.UploadFiles.length) App.Events.trigger('show-filelist');
     },
 
     validateFile: function (filetype, callback) {
@@ -579,7 +589,8 @@ App.Views.FileUploader = Backbone.View.extend({
 
     queueUpload: function () {
         if(App.UploadFiles.length) {
-            App.UploadFiles.toJSON();
+            console.log(App.UploadFiles.length);
+            console.log(App.UploadFiles.toJSON());
         }
     },
 
@@ -684,8 +695,7 @@ App.Views.FileListInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-fileList-info',
 
     events: {
-        'click .back': 'backToDropzone',
-        'click .upload': 'startUpload'
+        'click .upload': 'startUploadEvent'
     },
 
     initialize: function () {
@@ -699,14 +709,12 @@ App.Views.FileListInfo = Backbone.View.extend({
         };
         this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
 
+        this.delegateEvents(this.events);
+
         return this;
     },
 
-    backToDropzone: function () {
-        App.Events.trigger('hide-filelist');
-    },
-
-    startUpload: function () {
+    startUploadEvent: function () {
         App.Events.trigger('start-upload');
     },
 
@@ -853,5 +861,5 @@ h[c++],e=h[c++],l=h[c++],g=((g&7)<<18)+((d&63)<<12)+((e&63)<<6)+(l&63)-65536;a[b
 'use strict';
 
 App.Helper = {
-
+    counter: 1
 };
