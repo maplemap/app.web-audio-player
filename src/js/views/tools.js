@@ -6,12 +6,12 @@ App.Views.Tools = Backbone.View.extend({
     className: App.Settings.classPrefix + '-tools',
     
     events: {
-        'click .upload-files': 'addUploadFilesEvents'
+        'click .upload-files': 'initUploadFilesEvents'
     },
     
     initialize: function () {
-        App.Events.on('enable-upload-window', this.enableUploadWindow, this);
-        App.Events.on('disable-modal-window', this.disableUploadWindow, this);
+        App.Events.on('enable-upload-window', this.addClassToUploadFiles, this);
+        App.Events.on('disable-modal-window', this.removeClassToUploadFiles, this);
 
         this.$tools = $( App.TmpEngine.getTemplate('tools') );
 
@@ -25,17 +25,17 @@ App.Views.Tools = Backbone.View.extend({
         return this;
     },
 
-    addUploadFilesEvents: function (e) {
+    initUploadFilesEvents: function (e) {
         var event = ( $(e.target).hasClass('active') ) ? 'disable-modal-window' : 'enable-upload-window';
 
         App.Events.trigger( event );
     },
 
-    enableUploadWindow: function () {
+    addClassToUploadFiles: function () {
         this.$uploadFiles.addClass('active');
     },
 
-    disableUploadWindow: function () {
+    removeClassToUploadFiles: function () {
         this.$uploadFiles.removeClass('active');
     }
 });

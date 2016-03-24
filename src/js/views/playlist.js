@@ -4,12 +4,12 @@ App.Views.Playlist = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playlist',
 
     initialize: function () {
-        //App.Events.on('enable-upload-window', this.enableUploadWindow, this);
-        //App.Events.on('disable-modal-window', this.disableModalWindow, this);
-
         this.trackerView = new App.Views.TrackList();
         this.playlistInfoView = new App.Views.PlaylistInfo();
         this.modalWindow = ( new App.Views.ModalWindow() );
+
+        App.Events.on('show-filelist', this.showFilelist, this);
+        App.Events.on('hide-filelist', this.hideFilelist, this);
 
         this.render();
     },
@@ -18,9 +18,6 @@ App.Views.Playlist = Backbone.View.extend({
         this.$el.append( this.playlistInfoView.render().el );
         this.$el.append( this.trackerView.render().el );
         this.$el.append( this.modalWindow.render().el );
-
-        App.Events.on('show-filelist', this.showFilelist, this);
-        App.Events.on('hide-filelist', this.hideFilelist, this);
 
         return this;
     },

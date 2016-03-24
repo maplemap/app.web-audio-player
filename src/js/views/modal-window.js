@@ -4,10 +4,6 @@ App.Views.ModalWindow = Backbone.View.extend({
     className: App.Settings.classPrefix + '-modal-window',
     template: $( App.TmpEngine.getTemplate('modalWindow') ),
 
-    events: {
-        'click .close': 'disable'
-    },
-
     initialize: function () {
         App.Events.on('enable-upload-window', this.enableUploadWindow, this);
         App.Events.on('disable-modal-window', this.disable, this);
@@ -37,11 +33,15 @@ App.Views.ModalWindow = Backbone.View.extend({
         this.$el.removeClass('active');
         this.$closeButton.off('click');
         this.$modalContent.html('');
+
+        if(this.fileUploader) this.disableUploadWindow();
     },
 
     enableUploadWindow: function () {
-        this.$fileUploader = new App.Views.FileUploader();
+        if(!this.fileUploader) {
+            this.fileUploader = new App.Views.FileUploader();
+        }
 
-        this.enable( this.$fileUploader.render().el );
+        this.enable( this.fileUploader.render().el );
     }
 });
