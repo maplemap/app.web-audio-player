@@ -7,7 +7,7 @@ App.Models.File = Backbone.Model.extend({
     },
 
     initialize: function () {
-        this.set('index', App.Helper.counter);
-        App.Helper.counter += 1;
+        this.set('index', App.Helper.fileCounter);
+        App.Helper.fileCounter += 1;
     }
 });

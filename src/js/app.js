@@ -1,5 +1,5 @@
 'use strict';
 
 App.Helper = {
-    counter: 1
+    fileCounter: 1
 };
