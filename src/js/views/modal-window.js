@@ -33,8 +33,6 @@ App.Views.ModalWindow = Backbone.View.extend({
         this.$el.removeClass('active');
         this.$closeButton.off('click');
         this.$modalContent.html('');
-
-        if(this.fileUploader) this.disableUploadWindow();
     },
 
     enableUploadWindow: function () {
