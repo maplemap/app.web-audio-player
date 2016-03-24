@@ -29,28 +29,4 @@ App.Views.Playlist = Backbone.View.extend({
     hideFilelist: function () {
         this.$el.removeClass('show-filelist');
     }
-
-    //enableModalWindow: function (content) {
-    //    var that = this;
-    //
-    //    this.$modalWindow.addClass('active');
-    //    this.$modalWindow.find('.cancel').on('click', function (e) {
-    //        e.stopPropagation();
-    //        App.Events.trigger('disable-modal-window');
-    //    });
-    //
-    //    this.$modalWindow.find('.modal-content').html(content);
-    //},
-    //
-    //disableModalWindow : function () {
-    //    this.$modalWindow.removeClass('active');
-    //    this.$modalWindow.find('.cancel').off('click');
-    //    this.$modalWindow.find('.modal-content').html('');
-    //},
-    //
-    //enableUploadWindow: function () {
-    //    this.$fileUploader = new App.Views.FileUploader();
-    //
-    //    this.enableModalWindow( this.$fileUploader.render().el );
-    //}
 });
