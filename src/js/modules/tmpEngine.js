@@ -52,7 +52,8 @@ App.TmpEngine = (function () {
 
             file: function (data) {
                 return '<span class="name" title="' + data.name + '">' + data.name + '</span>\
-                        <span class="delete" title="delete file"></span>'
+                        <span class="delete" title="delete file"></span>\
+                        <span class="progressbar">0%</span>'
             },
             
             modalWindow: function () {

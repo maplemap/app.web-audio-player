@@ -142,6 +142,7 @@
         width: 8px;
         height: 15px;
         text-align: center;
+        cursor: pointer;
         line-height: 18px;
         margin-left: 5px;
 
@@ -182,7 +183,14 @@
     .transition(top, .3s);
 
     li {
+      cursor: default;
       padding: 8px 12px 8px 20px;
+
+      .progressbar {
+        float: right;
+        opacity: .7;
+        margin-left: 12px;
+      }
     }
   }
 

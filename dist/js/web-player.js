@@ -68,7 +68,8 @@ App.TmpEngine = (function () {
 
             file: function (data) {
                 return '<span class="name" title="' + data.name + '">' + data.name + '</span>\
-                        <span class="delete" title="delete file"></span>'
+                        <span class="delete" title="delete file"></span>\
+                        <span class="progressbar">0%</span>'
             },
             
             modalWindow: function () {
@@ -162,8 +163,8 @@ App.Models.File = Backbone.Model.extend({
     },
 
     initialize: function () {
-        this.set('index', App.Helper.counter);
-        App.Helper.counter += 1;
+        this.set('index', App.Helper.fileCounter);
+        App.Helper.fileCounter += 1;
     }
 });
 'use strict';
@@ -295,30 +296,6 @@ App.Views.Playlist = Backbone.View.extend({
     hideFilelist: function () {
         this.$el.removeClass('show-filelist');
     }
-
-    //enableModalWindow: function (content) {
-    //    var that = this;
-    //
-    //    this.$modalWindow.addClass('active');
-    //    this.$modalWindow.find('.cancel').on('click', function (e) {
-    //        e.stopPropagation();
-    //        App.Events.trigger('disable-modal-window');
-    //    });
-    //
-    //    this.$modalWindow.find('.modal-content').html(content);
-    //},
-    //
-    //disableModalWindow : function () {
-    //    this.$modalWindow.removeClass('active');
-    //    this.$modalWindow.find('.cancel').off('click');
-    //    this.$modalWindow.find('.modal-content').html('');
-    //},
-    //
-    //enableUploadWindow: function () {
-    //    this.$fileUploader = new App.Views.FileUploader();
-    //
-    //    this.enableModalWindow( this.$fileUploader.render().el );
-    //}
 });
 'use strict';
 
@@ -385,8 +362,6 @@ App.Views.ModalWindow = Backbone.View.extend({
         this.$el.removeClass('active');
         this.$closeButton.off('click');
         this.$modalContent.html('');
-
-        if(this.fileUploader) this.disableUploadWindow();
     },
 
     enableUploadWindow: function () {
@@ -395,10 +370,6 @@ App.Views.ModalWindow = Backbone.View.extend({
         }
 
         this.enable( this.fileUploader.render().el );
-    },
-    
-    disableUploadWindow: function () {
-        //this.fileUploader.destroy();
     }
 });
 'use strict';
@@ -511,6 +482,7 @@ App.Views.FileUploader = Backbone.View.extend({
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
         this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
+        this.currentFileIndex = 0;
 
         App.Events.on('show-filelist', this.showFilelist, this);
         App.Events.on('hide-filelist', this.hideFilelist, this);
@@ -525,6 +497,14 @@ App.Views.FileUploader = Backbone.View.extend({
         this.delegateEvents(this.events);
 
         return this;
+    },
+
+    showFilelist: function () {
+        this.$el.addClass('show-filelist');
+    },
+
+    hideFilelist: function () {
+        this.$el.removeClass('show-filelist');
     },
 
     clickDropzone: function (e) {
@@ -588,24 +568,18 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     queueUpload: function () {
-        if(App.UploadFiles.length) {
-            console.log(App.UploadFiles.length);
-            console.log(App.UploadFiles.toJSON());
+        if(App.UploadFiles.length && App.UploadFiles.length !== this.currentFileIndex) {
+            this.fileUpload( App.UploadFiles.models[this.currentFileIndex] );
+            this.currentFileIndex ++;
+        } else {
+            this.currentFileIndex = 0
         }
     },
 
-    showFilelist: function () {
-        this.$el.addClass('show-filelist');
-    },
-
-    hideFilelist: function () {
-        this.$el.removeClass('show-filelist');
-    },
-
-    fileUpload: function (file) {
-        console.log(file);
-        var data = new FormData();
-        data.append('file', file);
+    fileUpload: function (model) {
+        var that = this,
+            data = new FormData();
+        data.append('file', model.get('file'));
 
         $.ajax({
             url: '/server/php/upload.php?files',
@@ -622,11 +596,9 @@ App.Views.FileUploader = Backbone.View.extend({
                     if (e.lengthComputable) {
                         var percentComplete = e.loaded / e.total;
                         percentComplete = parseInt(percentComplete * 100);
-                        console.log(percentComplete);
+                        model.set('progressDone', percentComplete);
 
-                        if (percentComplete === 100) {
-
-                        }
+                        if (percentComplete === 100) that.queueUpload();
                     }
                 }, false);
 
@@ -732,12 +704,13 @@ App.Views.File = Backbone.View.extend({
     },
 
     initialize: function () {
-        //this.listenTo(this. model, 'change', this.render);
-        this.model.on('destroy', this.remove, this);
+        this.listenTo(this.model, 'change', this.changeProgressBar);
+        this.listenTo(this.model, 'destroy', this.remove);
     },
 
     render: function () {
         this.$el.html( App.TmpEngine.getTemplate('file', this.model.toJSON()) );
+        this.$progressBar = this.$el.find('.progressbar');
 
         return this;
     },
@@ -748,6 +721,10 @@ App.Views.File = Backbone.View.extend({
 
     destroy: function () {
         this.model.destroy();
+    },
+
+    changeProgressBar: function () {
+        this.$progressBar.text( this.model.get('progressDone') + '%' );
     }
 });
 'use strict';
@@ -861,5 +838,5 @@ h[c++],e=h[c++],l=h[c++],g=((g&7)<<18)+((d&63)<<12)+((e&63)<<6)+(l&63)-65536;a[b
 'use strict';
 
 App.Helper = {
-    counter: 1
+    fileCounter: 1
 };

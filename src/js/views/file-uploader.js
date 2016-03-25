@@ -16,6 +16,7 @@ App.Views.FileUploader = Backbone.View.extend({
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
         this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
+        this.currentFileIndex = 0;
 
         App.Events.on('show-filelist', this.showFilelist, this);
         App.Events.on('hide-filelist', this.hideFilelist, this);
@@ -30,6 +31,14 @@ App.Views.FileUploader = Backbone.View.extend({
         this.delegateEvents(this.events);
 
         return this;
+    },
+
+    showFilelist: function () {
+        this.$el.addClass('show-filelist');
+    },
+
+    hideFilelist: function () {
+        this.$el.removeClass('show-filelist');
     },
 
     clickDropzone: function (e) {
@@ -93,24 +102,18 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     queueUpload: function () {
-        if(App.UploadFiles.length) {
-            console.log(App.UploadFiles.length);
-            console.log(App.UploadFiles.toJSON());
+        if(App.UploadFiles.length && App.UploadFiles.length !== this.currentFileIndex) {
+            this.fileUpload( App.UploadFiles.models[this.currentFileIndex] );
+            this.currentFileIndex ++;
+        } else {
+            this.currentFileIndex = 0
         }
     },
 
-    showFilelist: function () {
-        this.$el.addClass('show-filelist');
-    },
-
-    hideFilelist: function () {
-        this.$el.removeClass('show-filelist');
-    },
-
-    fileUpload: function (file) {
-        console.log(file);
-        var data = new FormData();
-        data.append('file', file);
+    fileUpload: function (model) {
+        var that = this,
+            data = new FormData();
+        data.append('file', model.get('file'));
 
         $.ajax({
             url: '/server/php/upload.php?files',
@@ -127,11 +130,9 @@ App.Views.FileUploader = Backbone.View.extend({
                     if (e.lengthComputable) {
                         var percentComplete = e.loaded / e.total;
                         percentComplete = parseInt(percentComplete * 100);
-                        console.log(percentComplete);
+                        model.set('progressDone', percentComplete);
 
-                        if (percentComplete === 100) {
-
-                        }
+                        if (percentComplete === 100) that.queueUpload();
                     }
                 }, false);
 

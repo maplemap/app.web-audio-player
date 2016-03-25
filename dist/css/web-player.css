@@ -224,6 +224,7 @@
   width: 8px;
   height: 15px;
   text-align: center;
+  cursor: pointer;
   line-height: 18px;
   margin-left: 5px;
 }
@@ -263,7 +264,13 @@
   transition: top 0.3s;
 }
 #webAudioPlayer .wap-fileList li {
+  cursor: default;
   padding: 8px 12px 8px 20px;
+}
+#webAudioPlayer .wap-fileList li .progressbar {
+  float: right;
+  opacity: .7;
+  margin-left: 12px;
 }
 #webAudioPlayer .wap-playlist-info,
 #webAudioPlayer .wap-fileList-info {
