@@ -421,12 +421,10 @@
 }
 #webAudioPlayer .ps-container > .ps-scrollbar-y-rail {
   z-index: 10;
+  right: 0 !important;
   display: block;
   opacity: .6;
 }
 #webAudioPlayer .ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
   width: 5px;
-}
-#webAudioPlayer .wap-wap-fileList .ps-container > .ps-scrollbar-y-rail {
-  right: -5px !important;
 }
