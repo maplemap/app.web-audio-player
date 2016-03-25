@@ -12,5 +12,8 @@ var App = {
 App.Settings = {
     playerID: 'webAudioPlayer',
     classPrefix: 'wap',
-    uploadFileTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave']
+    uploadFileTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
+    phpServer: {
+        url: '/server/php/upload.php?files'
+    }
 };

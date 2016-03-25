@@ -24,7 +24,11 @@ App.Views.File = Backbone.View.extend({
     },
 
     destroy: function () {
+        var index = this.model.get('index'),
+            progress = this.model.get('progressDone');
+
         this.model.destroy();
+        if(progress !== 100) App.Events.trigger('file-upload-abort', index);
     },
 
     changeProgressBar: function () {

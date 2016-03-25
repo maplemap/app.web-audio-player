@@ -16,11 +16,11 @@ App.Views.FileUploader = Backbone.View.extend({
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
         this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
-        this.currentFileIndex = 0;
 
         App.Events.on('show-filelist', this.showFilelist, this);
         App.Events.on('hide-filelist', this.hideFilelist, this);
         App.Events.on('start-upload', this.queueUpload, this);
+        App.Events.on('file-upload-abort', this.fileUploadAbort, this);
     },
 
     render: function () {
@@ -80,7 +80,7 @@ App.Views.FileUploader = Backbone.View.extend({
     collectUploadFiles: function(files) {
         var that = this;
 
-        $.each(files, function(i, file) {
+        _.each(files, function(file, i) {
             var fileModel = {file: file, name: file.name, progressTotal: 0, progressDone: 0};
 
             that.validateFile(file.type, function (validate) {
@@ -94,7 +94,7 @@ App.Views.FileUploader = Backbone.View.extend({
     validateFile: function (filetype, callback) {
         var validate = false;
 
-        $.each( App.Settings.uploadFileTypes, function (i, type) {
+        _.each( App.Settings.uploadFileTypes, function (type, i) {
             if(filetype === type) validate = true;
         });
 
@@ -102,21 +102,26 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     queueUpload: function () {
-        if(App.UploadFiles.length && App.UploadFiles.length !== this.currentFileIndex) {
-            this.fileUpload( App.UploadFiles.models[this.currentFileIndex] );
-            this.currentFileIndex ++;
-        } else {
-            this.currentFileIndex = 0
+        var collArray = App.UploadFiles.toJSON();
+
+        for (var i = 0, max = collArray.length; i < max; i++) {
+            if(collArray[i]['progressDone'] === 0) {
+                var model = App.UploadFiles.where({ index: collArray[i]['index'] });
+
+                return this.fileUpload(model[0]);
+            }
         }
     },
 
     fileUpload: function (model) {
         var that = this,
             data = new FormData();
+
         data.append('file', model.get('file'));
+        this.currentUploadFile = model.get('index');
 
         $.ajax({
-            url: '/server/php/upload.php?files',
+            url: App.Settings.phpServer.url,
             type: 'POST',
             data: data,
             cache: false,
@@ -124,26 +129,42 @@ App.Views.FileUploader = Backbone.View.extend({
             contentType: false,
             processData: false,
             xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-
-                xhr.upload.addEventListener("progress", function(e) {
-                    if (e.lengthComputable) {
-                        var percentComplete = e.loaded / e.total;
-                        percentComplete = parseInt(percentComplete * 100);
-                        model.set('progressDone', percentComplete);
-
-                        if (percentComplete === 100) that.queueUpload();
-                    }
-                }, false);
-
-                return xhr;
+                return that.fileUploadProgress(model);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
+            error: function(e, jqXHR, ajaxSettings, thrownError) {
+                console.log(jqXHR.status);
+                //ToDo: In the case of file upload interruption creates a message with the contents 'error'
             },
             success: function(response){
-                console.log(response); // display response from the PHP script, if any
+                console.log(model.get('file')['name'] + ' upload');
             }
         });
+    },
+
+    fileUploadProgress: function (model) {
+        var that = this;
+            this.xhr = new window.XMLHttpRequest();
+
+        this.xhr.upload.addEventListener("progress", function(e) {
+            if (e.lengthComputable) {
+                var percentComplete = e.loaded / e.total;
+                percentComplete = parseInt(percentComplete * 100);
+
+                model.set('progressDone', percentComplete);
+
+                if (percentComplete === 100) that.queueUpload();
+            }
+        }, false);
+
+        return this.xhr;
+    },
+    
+    fileUploadAbort: function (index) {
+        if(this.xhr && index === this.currentUploadFile) {
+            this.xhr.abort();
+            console.log(this.xhr);
+
+            this.queueUpload();
+        }
     }
 });
