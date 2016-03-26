@@ -14,6 +14,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
+        this.$inputTypeFile = this.$dropZone.find('input[type="file"]');
         this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
 
@@ -21,6 +22,7 @@ App.Views.FileUploader = Backbone.View.extend({
         App.Events.on('hide-filelist', this.hideFilelist, this);
         App.Events.on('start-upload', this.queueUpload, this);
         App.Events.on('file-upload-abort', this.fileUploadAbort, this);
+        App.Events.on('disable-modal-window', this.cleaninputTypeFile, this);
     },
 
     render: function () {
@@ -44,6 +46,10 @@ App.Views.FileUploader = Backbone.View.extend({
     clickDropzone: function (e) {
         $(e.target).find('input[type="file"]').on('click', function (e) { e.stopPropagation() })
                    .trigger('click');
+    },
+
+    cleaninputTypeFile: function () {
+        this.$inputTypeFile.val('');
     },
 
     changeFileInput: function (e) {
