@@ -483,6 +483,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
+        this.$inputTypeFile = this.$dropZone.find('input[type="file"]');
         this.fileListInfo = new App.Views.FileListInfo();
         this.fileList = new App.Views.FileList();
 
@@ -490,6 +491,7 @@ App.Views.FileUploader = Backbone.View.extend({
         App.Events.on('hide-filelist', this.hideFilelist, this);
         App.Events.on('start-upload', this.queueUpload, this);
         App.Events.on('file-upload-abort', this.fileUploadAbort, this);
+        App.Events.on('disable-modal-window', this.cleaninputTypeFile, this);
     },
 
     render: function () {
@@ -511,8 +513,12 @@ App.Views.FileUploader = Backbone.View.extend({
     },
 
     clickDropzone: function (e) {
-        $(e.target).find('input[type="file"]').on('click', function (e) { e.stopPropagation() })
+        this.$inputTypeFile.on('click', function (e) { e.stopPropagation() })
                    .trigger('click');
+    },
+
+    cleaninputTypeFile: function () {
+        this.$inputTypeFile.val('');
     },
 
     changeFileInput: function (e) {
@@ -598,40 +604,39 @@ App.Views.FileUploader = Backbone.View.extend({
             contentType: false,
             processData: false,
             xhr: function() {
-                return that.fileUploadProgress(model);
+                return fileUploadProgress(model);
             },
-            error: function(e, jqXHR, ajaxSettings, thrownError) {
-                console.log(jqXHR.status);
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.log(xhr);
                 //ToDo: In the case of file upload interruption creates a message with the contents 'error'
             },
             success: function(response){
                 console.log(model.get('file')['name'] + ' upload');
             }
         });
+
+
+        function fileUploadProgress (model) {
+            that.xhr = new window.XMLHttpRequest();
+
+            that.xhr.upload.addEventListener("progress", function(e) {
+                if (e.lengthComputable) {
+                    var percentComplete = e.loaded / e.total;
+                    percentComplete = parseInt(percentComplete * 100);
+
+                    model.set('progressDone', percentComplete);
+
+                    if (percentComplete === 100) that.queueUpload();
+                }
+            }, false);
+
+            return that.xhr;
+        }
     },
 
-    fileUploadProgress: function (model) {
-        var that = this;
-            this.xhr = new window.XMLHttpRequest();
-
-        this.xhr.upload.addEventListener("progress", function(e) {
-            if (e.lengthComputable) {
-                var percentComplete = e.loaded / e.total;
-                percentComplete = parseInt(percentComplete * 100);
-
-                model.set('progressDone', percentComplete);
-
-                if (percentComplete === 100) that.queueUpload();
-            }
-        }, false);
-
-        return this.xhr;
-    },
-    
     fileUploadAbort: function (index) {
-        if(this.xhr && index === this.currentUploadFile) {
+        if(this.xhr && index === this.currentUploadFile || this.xhr && index === 'cancel') {
             this.xhr.abort();
-            console.log(this.xhr);
 
             this.queueUpload();
         }
@@ -676,6 +681,8 @@ App.Views.FileList = Backbone.View.extend({
 
     disableFileList: function () {
         App.Events.trigger('hide-filelist');
+
+        App.Events.trigger('file-upload-abort', 'cancel');
     },
 
     initFileListScroll: function () {

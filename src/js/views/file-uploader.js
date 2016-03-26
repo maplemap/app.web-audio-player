@@ -160,9 +160,8 @@ App.Views.FileUploader = Backbone.View.extend({
     },
     
     fileUploadAbort: function (index) {
-        if(this.xhr && index === this.currentUploadFile) {
+        if(this.xhr && index === this.currentUploadFile || this.xhr && index === 'cancel') {
             this.xhr.abort();
-            console.log(this.xhr);
 
             this.queueUpload();
         }

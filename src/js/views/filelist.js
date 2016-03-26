@@ -36,6 +36,8 @@ App.Views.FileList = Backbone.View.extend({
 
     disableFileList: function () {
         App.Events.trigger('hide-filelist');
+
+        App.Events.trigger('file-upload-abort', 'cancel');
     },
 
     initFileListScroll: function () {
