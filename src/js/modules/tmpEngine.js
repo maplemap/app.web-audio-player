@@ -18,7 +18,7 @@ App.TmpEngine = (function () {
             playlistInfo: function (data) {
                 return '<li class="duration"><span>'+ data.duration +'</span></li>\
                         <li class="amount"><span>'+ data.amount +'</span></li>\
-                        <li class="tracks-delete">delete all</li>'
+                        <li class="tracks-delete"><button>delete all</button></li>'
             },
 
             track: function (data) {

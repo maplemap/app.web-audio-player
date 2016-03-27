@@ -37,7 +37,7 @@ App.TmpEngine = (function () {
             playlistInfo: function (data) {
                 return '<li class="duration"><span>'+ data.duration +'</span></li>\
                         <li class="amount"><span>'+ data.amount +'</span></li>\
-                        <li class="tracks-delete">delete all</li>'
+                        <li class="tracks-delete"><button>delete all</button></li>'
             },
 
             track: function (data) {
@@ -704,7 +704,7 @@ App.Views.FileListInfo = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.listenTo(App.UploadFiles, 'all', this.changeFileAmount);
+        this.listenTo(App.UploadFiles, 'all', this.refreshData);
         App.Events.on('disable-modal-window', this.destroyAllCollection, this);
         App.Events.on('finish-upload', this.finishUpload, this);
     },
@@ -721,7 +721,7 @@ App.Views.FileListInfo = Backbone.View.extend({
         return this;
     },
 
-    changeFileAmount: function () {
+    refreshData: function () {
         this.$el.find('.amount').html( App.UploadFiles.length );
     },
 

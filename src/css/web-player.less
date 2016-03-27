@@ -58,10 +58,13 @@
   margin: 0 auto;
 
   button {
+    font-family: Inconsolata, sans-serif;
     border: none;
     background: none;
     outline: none;
     cursor: pointer;
+    padding: 0;
+    margin: 0;
     
     &[disabled="disabled"] {
       cursor: not-allowed;
@@ -234,6 +237,10 @@
         float: right;
         cursor: pointer;
         margin-top: 5px;
+
+        button {
+          font-size: 10px;
+        }
       }
     }
   }
