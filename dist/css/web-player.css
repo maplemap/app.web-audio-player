@@ -150,8 +150,8 @@
 #webAudioPlayer .processing:after {
   content: '';
   position: absolute;
-  left: -9px;
-  top: 3px;
+  left: -15px;
+  top: -1px;
   width: 13px;
   height: 13px;
   background: url("../img/loader.svg");
