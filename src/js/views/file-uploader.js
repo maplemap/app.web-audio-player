@@ -117,6 +117,8 @@ App.Views.FileUploader = Backbone.View.extend({
                 return this.fileUpload(model[0]);
             }
         }
+
+        App.Events.trigger('finish-upload');
     },
 
     fileUpload: function (model) {

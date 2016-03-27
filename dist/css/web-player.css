@@ -141,6 +141,19 @@
   outline: none;
   cursor: pointer;
 }
+#webAudioPlayer button[disabled="disabled"] {
+  cursor: not-allowed;
+}
+#webAudioPlayer .processing:after {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 3px;
+  width: 13px;
+  height: 13px;
+  background: url("../img/loader.svg");
+  background-size: contain;
+}
 #webAudioPlayer .wap-audiobox,
 #webAudioPlayer input[type="file"] {
   display: none;
@@ -313,6 +326,7 @@
   font-size: 11px;
 }
 #webAudioPlayer .wap-fileList-info li button {
+  position: relative;
   opacity: .8;
 }
 #webAudioPlayer .wap-fileList-info li button:hover {

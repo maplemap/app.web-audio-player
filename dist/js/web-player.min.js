@@ -64,7 +64,7 @@ App.TmpEngine = (function () {
             },
 
             fileListInfo: function (data) {
-                return '<li class="amount"><span>'+ data.amount +'</span></li>\
+                return '<li class="amount">'+ data.amount +'</li>\
                         <li><button class="upload">Upload</button></li>\
                         <!-- <li class="back">Back</li> -->'
             },
@@ -586,6 +586,8 @@ App.Views.FileUploader = Backbone.View.extend({
                 return this.fileUpload(model[0]);
             }
         }
+
+        App.Events.trigger('finish-upload');
     },
 
     fileUpload: function (model) {
@@ -698,12 +700,13 @@ App.Views.FileListInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-fileList-info',
 
     events: {
-        'click .upload': 'startUploadEvent'
+        'click .upload': 'startUpload'
     },
 
     initialize: function () {
-        this.listenTo(App.UploadFiles, 'all', this.render);
+        this.listenTo(App.UploadFiles, 'all', this.changeFileAmount);
         App.Events.on('disable-modal-window', this.destroyAllCollection, this);
+        App.Events.on('finish-upload', this.finishUpload, this);
     },
 
     render: function () {
@@ -711,14 +714,29 @@ App.Views.FileListInfo = Backbone.View.extend({
             amount: App.UploadFiles.length
         };
         this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
+        this.$uploadBtn = this.$el.find('.upload');
 
         this.delegateEvents(this.events);
 
         return this;
     },
 
-    startUploadEvent: function () {
+    changeFileAmount: function () {
+        this.$el.find('.amount').html( App.UploadFiles.length );
+    },
+
+    startUpload: function () {
+        this.$uploadBtn
+            .attr('disabled', 'disabled')
+            .addClass('processing');
+
         App.Events.trigger('start-upload');
+    },
+
+    finishUpload: function () {
+        this.$uploadBtn
+            .removeAttr('disabled')
+            .removeClass('processing');
     },
 
     destroyAllCollection: function () {

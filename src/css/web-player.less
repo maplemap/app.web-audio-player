@@ -10,6 +10,9 @@
 @playlist-min-height: 250px;
 @playlist-max-height: 350px;
 
+@processing-width: 13px;
+@processing-height: 13px;
+
 @track-active-hover-bg: #ddd;
 
 
@@ -59,6 +62,21 @@
     background: none;
     outline: none;
     cursor: pointer;
+    
+    &[disabled="disabled"] {
+      cursor: not-allowed;
+    }
+  }
+
+  .processing:after {
+    content: '';
+    position: absolute;
+    left: -@processing-width + 4;
+    top: 3px;
+    width: @processing-width;
+    height: @processing-height;
+    background: url("../img/loader.svg");
+    background-size: contain;
   }
 
   .@{class-prefix}-audiobox,
@@ -231,6 +249,7 @@
       font-size: 11px;
 
       button {
+        position: relative;
         opacity: .8;
 
         &:hover {

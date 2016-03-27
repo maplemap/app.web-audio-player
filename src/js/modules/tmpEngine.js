@@ -45,7 +45,7 @@ App.TmpEngine = (function () {
             },
 
             fileListInfo: function (data) {
-                return '<li class="amount"><span>'+ data.amount +'</span></li>\
+                return '<li class="amount">'+ data.amount +'</li>\
                         <li><button class="upload">Upload</button></li>\
                         <!-- <li class="back">Back</li> -->'
             },

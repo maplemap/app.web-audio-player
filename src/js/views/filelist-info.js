@@ -5,12 +5,13 @@ App.Views.FileListInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-fileList-info',
 
     events: {
-        'click .upload': 'startUploadEvent'
+        'click .upload': 'startUpload'
     },
 
     initialize: function () {
-        this.listenTo(App.UploadFiles, 'all', this.render);
+        this.listenTo(App.UploadFiles, 'all', this.changeFileAmount);
         App.Events.on('disable-modal-window', this.destroyAllCollection, this);
+        App.Events.on('finish-upload', this.finishUpload, this);
     },
 
     render: function () {
@@ -18,14 +19,29 @@ App.Views.FileListInfo = Backbone.View.extend({
             amount: App.UploadFiles.length
         };
         this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
+        this.$uploadBtn = this.$el.find('.upload');
 
         this.delegateEvents(this.events);
 
         return this;
     },
 
-    startUploadEvent: function () {
+    changeFileAmount: function () {
+        this.$el.find('.amount').html( App.UploadFiles.length );
+    },
+
+    startUpload: function () {
+        this.$uploadBtn
+            .attr('disabled', 'disabled')
+            .addClass('processing');
+
         App.Events.trigger('start-upload');
+    },
+
+    finishUpload: function () {
+        this.$uploadBtn
+            .removeAttr('disabled')
+            .removeClass('processing');
     },
 
     destroyAllCollection: function () {
