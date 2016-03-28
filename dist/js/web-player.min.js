@@ -64,10 +64,13 @@ App.TmpEngine = (function () {
                 return '<ul class="' + App.Settings.classPrefix + '-file-list"></ul>'
             },
 
-            fileListInfo: function (data) {
+            fileUploadListInfo: function (data) {
                 return '<li class="amount">'+ data.amount +'</li>\
-                        <li><button class="upload">Upload</button></li>\
-                        <!-- <li class="back">Back</li> -->'
+                        <li><button class="upload">Upload</button></li>'
+            },
+
+            fileLoaderListInfo: function (data) {
+                return '<li><button class="upload">Add to playlist</button></li>'
             },
 
             file: function (data) {
@@ -490,12 +493,12 @@ App.Views.FileLoader = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.fileListInfo = new App.Views.FileListInfo();
+        this.fileLoaderListInfo = new App.Views.FileLoaderListInfo();
         this.fileList = new App.Views.FileList();
     },
 
     render: function () {
-        this.$el.append( this.fileListInfo.render().el );
+        this.$el.append( this.fileLoaderListInfo.render().el );
         this.$el.append( this.fileList.render().el );
 
         this.delegateEvents(this.events);
@@ -521,7 +524,7 @@ App.Views.FileUploader = Backbone.View.extend({
     initialize: function () {
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
         this.$inputTypeFile = this.$dropZone.find('input[type="file"]');
-        this.fileListInfo = new App.Views.FileListInfo();
+        this.fileUploadListInfo = new App.Views.FileUploadListInfo();
         this.fileList = new App.Views.FileList();
 
         App.Events.on('show-filelist', this.showFilelist, this);
@@ -533,7 +536,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
     render: function () {
         this.$el.append( this.$dropZone );
-        this.$el.append( this.fileListInfo.render().el );
+        this.$el.append( this.fileUploadListInfo.render().el );
         this.$el.append( this.fileList.render().el );
 
         this.delegateEvents(this.events);
@@ -732,9 +735,9 @@ App.Views.FileList = Backbone.View.extend({
 });
 'use strict';
 
-App.Views.FileListInfo = Backbone.View.extend({
+App.Views.FileUploadListInfo = Backbone.View.extend({
     tagName: 'ul',
-    className: App.Settings.classPrefix + '-fileList-info',
+    className: App.Settings.classPrefix + '-file-upload-list-info',
 
     events: {
         'click .upload': 'startUpload'
@@ -750,7 +753,7 @@ App.Views.FileListInfo = Backbone.View.extend({
         var data = {
             amount: App.UploadFiles.length
         };
-        this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
+        this.$el.html( App.TmpEngine.getTemplate('fileUploadListInfo', data) );
         this.$uploadBtn = this.$el.find('.upload');
 
         this.delegateEvents(this.events);
@@ -778,6 +781,33 @@ App.Views.FileListInfo = Backbone.View.extend({
 
     destroyAllCollection: function () {
         App.UploadFiles.destroyAllCollection();
+    }
+});
+'use strict';
+
+App.Views.FileLoaderListInfo = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.Settings.classPrefix + '-file-loader-List-info',
+
+    events: {
+        'click .upload': 'startUpload'
+    },
+
+    initialize: function () {
+        //this.listenTo(App.UploadFiles, 'all', this.refreshData);
+        //App.Events.on('disable-modal-window', this.destroyAllCollection, this);
+        //App.Events.on('finish-upload', this.finishUpload, this);
+    },
+
+    render: function () {
+        //var data = {
+        //    amount: App.UploadFiles.length
+        //};
+        this.$el.html( App.TmpEngine.getTemplate('fileLoaderListInfo') );
+
+        this.delegateEvents(this.events);
+
+        return this;
     }
 });
 'use strict';

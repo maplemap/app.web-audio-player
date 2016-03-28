@@ -1,8 +1,8 @@
 'use strict';
 
-App.Views.FileListInfo = Backbone.View.extend({
+App.Views.FileUploadListInfo = Backbone.View.extend({
     tagName: 'ul',
-    className: App.Settings.classPrefix + '-fileList-info',
+    className: App.Settings.classPrefix + '-file-upload-list-info',
 
     events: {
         'click .upload': 'startUpload'
@@ -18,7 +18,7 @@ App.Views.FileListInfo = Backbone.View.extend({
         var data = {
             amount: App.UploadFiles.length
         };
-        this.$el.html( App.TmpEngine.getTemplate('fileListInfo', data) );
+        this.$el.html( App.TmpEngine.getTemplate('fileUploadListInfo', data) );
         this.$uploadBtn = this.$el.find('.upload');
 
         this.delegateEvents(this.events);
