@@ -420,9 +420,10 @@
   cursor: pointer;
 }
 #webAudioPlayer .wap-tools li:first-child {
-  margin-left: 0;
+  margin-left: 7px;
 }
-#webAudioPlayer .wap-tools li.upload-files {
+#webAudioPlayer .wap-tools li.upload-files,
+#webAudioPlayer .wap-tools li.get-files {
   float: right;
   margin-right: 7px;
 }
@@ -430,7 +431,7 @@
   content: '\e711';
 }
 #webAudioPlayer .wap-tools li.get-files:before {
-  content: '\1f4e4';
+  content: '\2b';
 }
 #webAudioPlayer .wap-controls .volume .ui-slider-range {
   height: 8px;

@@ -14,7 +14,7 @@ App.Settings = {
     classPrefix: 'wap',
     uploadFileTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
     phpServer: {
-        url: '/server/php/upload.php?files'
+        uploadUrl: '/server/php/upload.php?files'
     }
 };
 'use strict';
@@ -47,7 +47,8 @@ App.TmpEngine = (function () {
             },
 
             tools: function () {
-                return '<li class="upload-files" title="upload files to server"></li>'
+                return '<li class="upload-files" data-event="enable-upload-window" title="upload files to server"></li>\
+                        <li class="get-files" data-event="enable-loader-window" title="get files from server"></li>'
             },
             
             information: function (options) {
@@ -338,6 +339,7 @@ App.Views.ModalWindow = Backbone.View.extend({
 
     initialize: function () {
         App.Events.on('enable-upload-window', this.enableUploadWindow, this);
+        App.Events.on('enable-loader-window', this.enableLoaderWindow, this);
         App.Events.on('disable-modal-window', this.disable, this);
 
         this.render();
@@ -368,11 +370,19 @@ App.Views.ModalWindow = Backbone.View.extend({
     },
 
     enableUploadWindow: function () {
-        if(!this.fileUploader) {
+        if( !this.fileUploader ) {
             this.fileUploader = new App.Views.FileUploader();
         }
 
         this.enable( this.fileUploader.render().el );
+    },
+    
+    enableLoaderWindow: function () {
+        if( !this.fileLoader ) {
+            this.fileLoader = new App.Views.FileLoader();
+        }
+
+        this.enable( this.fileLoader.render().el );
     }
 });
 'use strict';
@@ -433,12 +443,11 @@ App.Views.Tools = Backbone.View.extend({
     className: App.Settings.classPrefix + '-tools',
     
     events: {
-        'click .upload-files': 'initUploadFilesEvents'
+        'click li': 'toggleTools'
     },
     
     initialize: function () {
-        App.Events.on('enable-upload-window', this.addClassToUploadFiles, this);
-        App.Events.on('disable-modal-window', this.removeClassToUploadFiles, this);
+        App.Events.on('disable-modal-window', this.removeActiveClasses, this);
 
         this.$tools = $( App.TmpEngine.getTemplate('tools') );
 
@@ -447,23 +456,51 @@ App.Views.Tools = Backbone.View.extend({
 
     render: function () {
         this.$el.append( this.$tools );
-        this.$uploadFiles = this.$el.find('.upload-files');
 
         return this;
     },
 
-    initUploadFilesEvents: function (e) {
-        var event = ( $(e.target).hasClass('active') ) ? 'disable-modal-window' : 'enable-upload-window';
+    toggleTools: function (e) {
+        var $target = $(e.target),
+            event = $target.data('event');
 
-        App.Events.trigger( event );
+        if( $target.hasClass('active') ) {
+            $target.removeClass('active');
+            App.Events.trigger('disable-modal-window');
+        } else {
+            this.$el.find('li').removeClass('active');
+
+            App.Events.trigger( event );
+            $target.addClass('active');
+        }
     },
 
-    addClassToUploadFiles: function () {
-        this.$uploadFiles.addClass('active');
+    removeActiveClasses: function () {
+        this.$el.find('li').removeClass('active');
+    }
+});
+
+'use strict';
+
+App.Views.FileLoader = Backbone.View.extend({
+    className: App.Settings.classPrefix + '-file-loader',
+
+    events: {
+
     },
 
-    removeClassToUploadFiles: function () {
-        this.$uploadFiles.removeClass('active');
+    initialize: function () {
+        this.fileListInfo = new App.Views.FileListInfo();
+        this.fileList = new App.Views.FileList();
+    },
+
+    render: function () {
+        this.$el.append( this.fileListInfo.render().el );
+        this.$el.append( this.fileList.render().el );
+
+        this.delegateEvents(this.events);
+
+        return this;
     }
 });
 
@@ -598,7 +635,7 @@ App.Views.FileUploader = Backbone.View.extend({
         this.currentUploadFile = model.get('index');
 
         $.ajax({
-            url: App.Settings.phpServer.url,
+            url: App.Settings.phpServer.uploadUrl,
             type: 'POST',
             data: data,
             cache: false,

@@ -6,12 +6,11 @@ App.Views.Tools = Backbone.View.extend({
     className: App.Settings.classPrefix + '-tools',
     
     events: {
-        'click .upload-files': 'initUploadFilesEvents'
+        'click li': 'toggleTools'
     },
     
     initialize: function () {
-        App.Events.on('enable-upload-window', this.addClassToUploadFiles, this);
-        App.Events.on('disable-modal-window', this.removeClassToUploadFiles, this);
+        App.Events.on('disable-modal-window', this.removeActiveClasses, this);
 
         this.$tools = $( App.TmpEngine.getTemplate('tools') );
 
@@ -20,22 +19,26 @@ App.Views.Tools = Backbone.View.extend({
 
     render: function () {
         this.$el.append( this.$tools );
-        this.$uploadFiles = this.$el.find('.upload-files');
 
         return this;
     },
 
-    initUploadFilesEvents: function (e) {
-        var event = ( $(e.target).hasClass('active') ) ? 'disable-modal-window' : 'enable-upload-window';
+    toggleTools: function (e) {
+        var $target = $(e.target),
+            event = $target.data('event');
 
-        App.Events.trigger( event );
+        if( $target.hasClass('active') ) {
+            $target.removeClass('active');
+            App.Events.trigger('disable-modal-window');
+        } else {
+            this.$el.find('li').removeClass('active');
+
+            App.Events.trigger( event );
+            $target.addClass('active');
+        }
     },
 
-    addClassToUploadFiles: function () {
-        this.$uploadFiles.addClass('active');
-    },
-
-    removeClassToUploadFiles: function () {
-        this.$uploadFiles.removeClass('active');
+    removeActiveClasses: function () {
+        this.$el.find('li').removeClass('active');
     }
 });
