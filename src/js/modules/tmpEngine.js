@@ -28,7 +28,8 @@ App.TmpEngine = (function () {
             },
 
             tools: function () {
-                return '<li class="upload-files" title="upload files to server"></li>'
+                return '<li class="upload-files" data-event="enable-upload-window" title="upload files to server"></li>\
+                        <li class="get-files" data-event="enable-loader-window" title="get files from server"></li>'
             },
             
             information: function (options) {
