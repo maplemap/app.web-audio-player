@@ -129,7 +129,7 @@ App.Views.FileUploader = Backbone.View.extend({
         this.currentUploadFile = model.get('index');
 
         $.ajax({
-            url: App.Settings.phpServer.url,
+            url: App.Settings.phpServer.uploadUrl,
             type: 'POST',
             data: data,
             cache: false,

@@ -14,6 +14,6 @@ App.Settings = {
     classPrefix: 'wap',
     uploadFileTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
     phpServer: {
-        url: '/server/php/upload.php?files'
+        uploadUrl: '/server/php/upload.php?files'
     }
 };
