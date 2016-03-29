@@ -45,10 +45,13 @@ App.TmpEngine = (function () {
                 return '<ul class="' + App.Settings.classPrefix + '-file-list"></ul>'
             },
 
-            fileListInfo: function (data) {
+            fileUploadListInfo: function (data) {
                 return '<li class="amount">'+ data.amount +'</li>\
-                        <li><button class="upload">Upload</button></li>\
-                        <!-- <li class="back">Back</li> -->'
+                        <li><button class="upload">Upload</button></li>'
+            },
+
+            fileLoaderListInfo: function (data) {
+                return '<li><button class="add-to-pl processing" disabled="disabled">Loading</button></li>'
             },
 
             file: function (data) {
