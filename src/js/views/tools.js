@@ -28,11 +28,9 @@ App.Views.Tools = Backbone.View.extend({
             event = $target.data('event');
 
         if( $target.hasClass('active') ) {
-            $target.removeClass('active');
             App.Events.trigger('disable-modal-window');
         } else {
-            this.$el.find('li').removeClass('active');
-
+            App.Events.trigger('disable-modal-window');
             App.Events.trigger( event );
             $target.addClass('active');
         }
