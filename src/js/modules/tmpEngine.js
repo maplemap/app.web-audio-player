@@ -41,6 +41,10 @@ App.TmpEngine = (function () {
                         <div class="'+ App.Settings.classPrefix +'-album-name">18 months</div>'
             },
 
+            listMessage: function (message) {
+                return '<li>' + message + '</li>'
+            },
+
             fileList: function () {
                 return '<ul class="' + App.Settings.classPrefix + '-file-list"></ul>'
             },
