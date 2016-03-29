@@ -70,7 +70,7 @@ App.TmpEngine = (function () {
             },
 
             fileLoaderListInfo: function (data) {
-                return '<li><button class="upload">Add to playlist</button></li>'
+                return '<li><button class="add-to-pl">Add to playlist</button></li>'
             },
 
             file: function (data) {
@@ -468,11 +468,9 @@ App.Views.Tools = Backbone.View.extend({
             event = $target.data('event');
 
         if( $target.hasClass('active') ) {
-            $target.removeClass('active');
             App.Events.trigger('disable-modal-window');
         } else {
-            this.$el.find('li').removeClass('active');
-
+            App.Events.trigger('disable-modal-window');
             App.Events.trigger( event );
             $target.addClass('active');
         }
