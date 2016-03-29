@@ -6,6 +6,7 @@ App.Views.ModalWindow = Backbone.View.extend({
 
     initialize: function () {
         App.Events.on('enable-upload-window', this.enableUploadWindow, this);
+        App.Events.on('enable-loader-window', this.enableLoaderWindow, this);
         App.Events.on('disable-modal-window', this.disable, this);
 
         this.render();
@@ -36,10 +37,18 @@ App.Views.ModalWindow = Backbone.View.extend({
     },
 
     enableUploadWindow: function () {
-        if(!this.fileUploader) {
+        if( !this.fileUploader ) {
             this.fileUploader = new App.Views.FileUploader();
         }
 
         this.enable( this.fileUploader.render().el );
+    },
+    
+    enableLoaderWindow: function () {
+        if( !this.fileLoader ) {
+            this.fileLoader = new App.Views.FileLoader();
+        }
+
+        this.enable( this.fileLoader.render().el );
     }
 });
