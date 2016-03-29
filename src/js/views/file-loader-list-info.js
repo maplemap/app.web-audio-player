@@ -5,13 +5,11 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-file-loader-List-info',
 
     events: {
-        'click .upload': 'startUpload'
+
     },
 
     initialize: function () {
-        //this.listenTo(App.UploadFiles, 'all', this.refreshData);
-        //App.Events.on('disable-modal-window', this.destroyAllCollection, this);
-        //App.Events.on('finish-upload', this.finishUpload, this);
+        App.Events.on('stop-loading-process', this.stopLoadingProcess, this);
     },
 
     render: function () {
@@ -20,8 +18,16 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         //};
         this.$el.html( App.TmpEngine.getTemplate('fileLoaderListInfo') );
 
+        this.$addToPlaylistBtn = this.$el.find('.add-to-pl');
+
         this.delegateEvents(this.events);
 
         return this;
+    },
+
+    stopLoadingProcess: function () {
+        this.$addToPlaylistBtn
+            .removeAttr('disabled')
+            .removeClass('processing');
     }
 });
