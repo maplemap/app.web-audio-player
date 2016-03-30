@@ -4,10 +4,10 @@ App.Views.FileLoader = Backbone.View.extend({
     className: App.Settings.classPrefix + '-file-loader',
 
     initialize: function () {
-        App.Events.on('enable-loader-window', this.filesLoading, this);
+        App.Events.on('start-loading-process', this.filesLoading, this);
 
         this.fileLoaderListInfo = new App.Views.FileLoaderListInfo();
-        this.fileList = new App.Views.FileList();
+        this.fileList = new App.Views.LoadFileList();
     },
 
     render: function () {
@@ -22,6 +22,7 @@ App.Views.FileLoader = Backbone.View.extend({
     },
 
     filesLoading: function () {
+
         var that = this;
 
         $.ajax({
@@ -30,23 +31,36 @@ App.Views.FileLoader = Backbone.View.extend({
             cache: false,
             dataType: 'json',
             error: function(xhr, ajaxOptions, thrownError) {
+                App.Events.trigger('stop-loading-process');
                 console.log(xhr);
             },
             success: function(data){
+                App.Events.trigger('stop-loading-process');
+
+                console.log(data);
                 that.dataHandler(data);
             }
         });
     },
 
     dataHandler: function (data) {
-        console.log(data);
-        var notFoundMsg = 'Files on the server not found. Please, upload files';
+        var that = this;
 
-        if(!data || !data.length) {
-            App.Events.trigger('stop-loading-process');
-            this.$fileList.html( App.TmpEngine.getTemplate('listMessage', notFoundMsg) );
+        if(data && data.length) {
+            App.Events.trigger('show-filelist');
+
+            _.each(data, function(fileModel, i) {
+                if(fileModel.name && fileModel.href) that.fileList.addOneToCollection( fileModel );
+            });
+
+            App.Events.trigger('activate-add-to-pl-btn');
+
         } else {
-
+            this.$fileList.html( App.TmpEngine.getTemplate('listMessage', this.messages["files_not_found"]) );
         }
+    },
+
+    messages: {
+        "files_not_found": "Files not found. Please, upload files"
     }
 });
