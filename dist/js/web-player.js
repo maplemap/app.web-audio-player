@@ -62,7 +62,7 @@ App.TmpEngine = (function () {
             },
 
             listMessage: function (message) {
-                return '<li>' + message + '</li>'
+                return '<li class="list-message">' + message + '</li>'
             },
 
             fileList: function () {
@@ -75,7 +75,8 @@ App.TmpEngine = (function () {
             },
 
             fileLoaderListInfo: function (data) {
-                return '<li><button class="add-to-pl processing" disabled="disabled">Loading</button></li>'
+                return  '<li class="amount">0</li>\
+                        <li><button class="action-btn"></button></li>'
             },
 
             file: function (data) {
@@ -219,7 +220,6 @@ App.Tracks = new App.Collections.Tracks();
 
 App.Collections.UploadFiles = Backbone.Collection.extend({
     model: App.Models.File,
-    //localStorage: new Backbone.LocalStorage('web-player'),
 
     destroyAllCollection: function () {
         _.invoke( this.toArray(), 'destroy' );
@@ -227,6 +227,7 @@ App.Collections.UploadFiles = Backbone.Collection.extend({
 });
 
 App.UploadFiles = new App.Collections.UploadFiles();
+App.LoadFiles = new App.Collections.UploadFiles();
 'use strict';
 
 App.Views.Player = Backbone.View.extend({
@@ -391,6 +392,7 @@ App.Views.ModalWindow = Backbone.View.extend({
         }
 
         this.enable( this.fileLoader.render().el );
+        App.Events.trigger('start-loading-process');
     }
 });
 'use strict';
@@ -401,14 +403,16 @@ App.Views.TrackList = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);
+        App.Events.on('add-files-to-playlist', this.render, this);
 
         App.Tracks.fetch();
     },
 
     render: function () {
         var that = this;
+        console.log(App.LoadFiles.toJSON());
 
-        $.each(tracks, function (i, track) {
+        $.each(App.LoadFiles.toJSON(), function (i, track) {
             that.addOneToCollection(track);
         });
 
@@ -492,10 +496,10 @@ App.Views.FileLoader = Backbone.View.extend({
     className: App.Settings.classPrefix + '-file-loader',
 
     initialize: function () {
-        App.Events.on('enable-loader-window', this.filesLoading, this);
+        App.Events.on('start-loading-process', this.filesLoading, this);
 
         this.fileLoaderListInfo = new App.Views.FileLoaderListInfo();
-        this.fileList = new App.Views.FileList();
+        this.fileList = new App.Views.LoadFileList();
     },
 
     render: function () {
@@ -510,6 +514,7 @@ App.Views.FileLoader = Backbone.View.extend({
     },
 
     filesLoading: function () {
+
         var that = this;
 
         $.ajax({
@@ -518,24 +523,37 @@ App.Views.FileLoader = Backbone.View.extend({
             cache: false,
             dataType: 'json',
             error: function(xhr, ajaxOptions, thrownError) {
+                App.Events.trigger('stop-loading-process');
                 console.log(xhr);
             },
             success: function(data){
+                App.Events.trigger('stop-loading-process');
+
+                console.log(data);
                 that.dataHandler(data);
             }
         });
     },
 
     dataHandler: function (data) {
-        console.log(data);
-        var notFoundMsg = 'Files on the server not found. Please, upload files';
+        var that = this;
 
-        if(!data || !data.length) {
-            App.Events.trigger('stop-loading-process');
-            this.$fileList.html( App.TmpEngine.getTemplate('listMessage', notFoundMsg) );
+        if(data && data.length) {
+            App.Events.trigger('show-filelist');
+
+            _.each(data, function(fileModel, i) {
+                if(fileModel.name && fileModel.href) that.fileList.addOneToCollection( fileModel );
+            });
+
+            App.Events.trigger('activate-add-to-pl-btn');
+
         } else {
-
+            this.$fileList.html( App.TmpEngine.getTemplate('listMessage', this.messages["files_not_found"]) );
         }
+    },
+
+    messages: {
+        "files_not_found": "Files not found. Please, upload files"
     }
 });
 
@@ -767,6 +785,45 @@ App.Views.FileList = Backbone.View.extend({
 });
 'use strict';
 
+App.Views.LoadFileList = Backbone.View.extend({
+    tagName: 'ul',
+    className: App.Settings.classPrefix + '-fileList',
+
+    initialize: function () {
+        this.listenTo(App.LoadFiles, 'add', this.addOne);
+        App.Events.on('disable-modal-window', this.disableFileList, this);
+    },
+
+    render: function () {
+        this.initFileListScroll();
+
+        return this;
+    },
+
+    addOne: function (model) {
+        var view = new App.Views.File({
+            model: model
+        });
+
+        this.$el.append( view.render().el );
+    },
+
+    addOneToCollection: function (model) {
+        App.LoadFiles.add(model);
+    },
+
+    disableFileList: function () {
+        App.Events.trigger('hide-filelist');
+    },
+
+    initFileListScroll: function () {
+        this.$el.perfectScrollbar({
+            minScrollbarLength: 50
+        });
+    }
+});
+'use strict';
+
 App.Views.FileUploadListInfo = Backbone.View.extend({
     tagName: 'ul',
     className: App.Settings.classPrefix + '-file-upload-list-info',
@@ -826,26 +883,49 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     },
 
     initialize: function () {
-        App.Events.on('stop-loading-process', this.stopLoadingProcess, this);
+        this.listenTo(App.LoadFiles, 'all', this.refreshData);
+        App.Events.on('start-loading-process', this.addLoader, this);
+        App.Events.on('stop-loading-process', this.removeLoader, this);
+        App.Events.on('activate-add-to-pl-btn', this.activateAddToPlaylistBtn, this);
     },
 
     render: function () {
-        //var data = {
-        //    amount: App.UploadFiles.length
-        //};
         this.$el.html( App.TmpEngine.getTemplate('fileLoaderListInfo') );
 
-        this.$addToPlaylistBtn = this.$el.find('.add-to-pl');
+        this.$amount = this.$el.find('.amount');
+        this.$actionBtn = this.$el.find('.action-btn');
 
         this.delegateEvents(this.events);
 
         return this;
     },
 
-    stopLoadingProcess: function () {
-        this.$addToPlaylistBtn
+    refreshData: function () {
+        this.$amount.html( App.LoadFiles.length );
+    },
+
+    activateAddToPlaylistBtn: function () {
+        this.$actionBtn
+            .html('Add to playlist')
+            .on('click', function () {
+                console.log('asdasdasd');
+                App.Events.trigger('add-files-to-playlist');
+                App.Events.trigger('disable-modal-window');
+            })
+    },
+
+    addLoader: function () {
+        this.$actionBtn
+            .html('Loading')
+            .attr('disabled', 'disabled')
+            .addClass('processing');
+    },
+
+    removeLoader: function () {
+        this.$actionBtn
             .removeAttr('disabled')
-            .removeClass('processing');
+            .removeClass('processing')
+            .html('');
     }
 });
 'use strict';
