@@ -6,6 +6,7 @@ App.Views.TrackList = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);
+        App.Events.on('add-files-to-playlist', this.render, this);
 
         App.Tracks.fetch();
     },
@@ -13,7 +14,7 @@ App.Views.TrackList = Backbone.View.extend({
     render: function () {
         var that = this;
 
-        $.each(tracks, function (i, track) {
+        $.each(App.LoadFiles.toJSON(), function (i, track) {
             that.addOneToCollection(track);
         });
 
