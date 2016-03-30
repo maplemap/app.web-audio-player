@@ -1,11 +1,11 @@
 'use strict';
 
-App.Views.FileList = Backbone.View.extend({
+App.Views.LoadFileList = Backbone.View.extend({
     tagName: 'ul',
     className: App.Settings.classPrefix + '-fileList',
 
     initialize: function () {
-        this.listenTo(App.UploadFiles, 'add', this.addOne);
+        this.listenTo(App.LoadFiles, 'add', this.addOne);
         App.Events.on('disable-modal-window', this.disableFileList, this);
     },
 
@@ -24,20 +24,11 @@ App.Views.FileList = Backbone.View.extend({
     },
 
     addOneToCollection: function (model) {
-        App.UploadFiles.add(model);
-    },
-
-    renderList: function (event) {
-        var that = this;
-        App.Tracks.each(function (model, indx) {
-            that.addOne(model);
-        });
+        App.LoadFiles.add(model);
     },
 
     disableFileList: function () {
         App.Events.trigger('hide-filelist');
-
-        App.Events.trigger('file-upload-abort', 'cancel');
     },
 
     initFileListScroll: function () {

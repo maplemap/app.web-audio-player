@@ -40,6 +40,7 @@ var path = {
                 './src/js/views/file-loader.js',
                 './src/js/views/file-uploader.js',
                 './src/js/views/filelist.js',
+                './src/js/views/load-filelist.js',
                 './src/js/views/file-upload-list-info.js',
                 './src/js/views/file-loader-list-info.js',
                 './src/js/views/file.js',

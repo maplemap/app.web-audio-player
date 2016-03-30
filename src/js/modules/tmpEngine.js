@@ -42,7 +42,7 @@ App.TmpEngine = (function () {
             },
 
             listMessage: function (message) {
-                return '<li>' + message + '</li>'
+                return '<li class="list-message">' + message + '</li>'
             },
 
             fileList: function () {
@@ -55,7 +55,8 @@ App.TmpEngine = (function () {
             },
 
             fileLoaderListInfo: function (data) {
-                return '<li><button class="add-to-pl processing" disabled="disabled">Loading</button></li>'
+                return  '<li class="amount">0</li>\
+                        <li><button class="action-btn"></button></li>'
             },
 
             file: function (data) {

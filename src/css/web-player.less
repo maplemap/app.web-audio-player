@@ -193,6 +193,16 @@
       .duration {
         float: right;
       }
+
+      &.list-message {
+        text-align: center;
+        padding: 0 60px;
+        margin-top: 70px;
+
+        &:hover {
+          background: none;
+        }
+      }
     }
   }
 
@@ -230,14 +240,11 @@
     li {
       display: inline-block;
       font-size: 10px;
+      margin-top: 5px;
 
-      &.amount {
-        margin-left: 5px;
-      }
       &.tracks-delete {
         float: right;
         cursor: pointer;
-        margin-top: 5px;
       }
 
       button {
@@ -253,6 +260,17 @@
     }
   }
 
+  .@{class-prefix}-file-upload-list-info,
+  .@{class-prefix}-file-loader-List-info {
+      li {
+        &.amount,
+        &.server {
+          float: left;
+          margin: 7px 0 0 5px;
+        }
+      }
+  }
+
   .@{class-prefix}-file-upload-list-info {
     position: relative;
     text-align: center;
@@ -265,10 +283,6 @@
       &.back {
         margin-left: 10px;
       }
-      &.amount {
-        float: left;
-        margin-top: 4px;
-      }
     }
   }
 
@@ -277,8 +291,12 @@
     text-align: center;
     padding: 0 10px 5px 10px;
 
-    .add-to-pl {
-      margin-top: 7px;
+    li {
+      &.action-btn {
+        color: @player-main-color;
+        opacity: 1;
+        margin-top: 7px;
+      }
     }
   }
 
@@ -323,6 +341,21 @@
         top: -355px;
       }
     }
+  }
+
+  .@{class-prefix}-file-loader {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+
+      .@{class-prefix}-fileList {
+        .name {
+          max-width: 90%;
+        }
+        .progressbar {
+          display: none;
+        }
+      }
   }
 
   .@{class-prefix}-playlist {
