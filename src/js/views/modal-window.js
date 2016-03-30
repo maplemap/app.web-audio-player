@@ -50,5 +50,6 @@ App.Views.ModalWindow = Backbone.View.extend({
         }
 
         this.enable( this.fileLoader.render().el );
+        App.Events.trigger('start-loading-process');
     }
 });

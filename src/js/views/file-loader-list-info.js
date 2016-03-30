@@ -9,25 +9,48 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     },
 
     initialize: function () {
-        App.Events.on('stop-loading-process', this.stopLoadingProcess, this);
+        this.listenTo(App.LoadFiles, 'all', this.refreshData);
+        App.Events.on('start-loading-process', this.addLoader, this);
+        App.Events.on('stop-loading-process', this.removeLoader, this);
+        App.Events.on('activate-add-to-pl-btn', this.activateAddToPlaylistBtn, this);
     },
 
     render: function () {
-        //var data = {
-        //    amount: App.UploadFiles.length
-        //};
         this.$el.html( App.TmpEngine.getTemplate('fileLoaderListInfo') );
 
-        this.$addToPlaylistBtn = this.$el.find('.add-to-pl');
+        this.$amount = this.$el.find('.amount');
+        this.$actionBtn = this.$el.find('.action-btn');
 
         this.delegateEvents(this.events);
 
         return this;
     },
 
-    stopLoadingProcess: function () {
-        this.$addToPlaylistBtn
+    refreshData: function () {
+        this.$amount.html( App.LoadFiles.length );
+    },
+
+    activateAddToPlaylistBtn: function () {
+        this.$actionBtn
+            .html('Add to playlist')
+            .on('click', function () {
+                console.log('asdasdasd');
+                App.Events.trigger('add-files-to-playlist');
+                App.Events.trigger('disable-modal-window');
+            })
+    },
+
+    addLoader: function () {
+        this.$actionBtn
+            .html('Loading')
+            .attr('disabled', 'disabled')
+            .addClass('processing');
+    },
+
+    removeLoader: function () {
+        this.$actionBtn
             .removeAttr('disabled')
-            .removeClass('processing');
+            .removeClass('processing')
+            .html('');
     }
 });
