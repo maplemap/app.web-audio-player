@@ -12,7 +12,7 @@ var App = {
 App.Settings = {
     playerID: 'webAudioPlayer',
     classPrefix: 'wap',
-    uploadFileTypes: ['audio/mp3', 'audio/mpeg', 'audio/vnd.wave'],
+    uploadFileTypes: ['audio/mp3', 'audio/mpeg'],
     phpServer: {
         uploadUrl: '/server/php/upload.php',
         loadUrl: '/server/php/load.php'
@@ -92,7 +92,7 @@ App.TmpEngine = (function () {
 
             dropZone: function () {
                 return '<div class="'+ App.Settings.classPrefix +'-dropzone">\
-                            Drop files(mp3, wav) here <br>or click to load on server.\
+                            Drop files(only mp3) here <br>or click to load on server.\
                             <input type="file" name="files[]" multiple>\
                         </div>'
             }
@@ -218,7 +218,7 @@ App.Tracks = new App.Collections.Tracks();
 'use strict';
 
 
-App.Collections.UploadFiles = Backbone.Collection.extend({
+App.Collections.Files = Backbone.Collection.extend({
     model: App.Models.File,
 
     destroyAllCollection: function () {
@@ -226,8 +226,9 @@ App.Collections.UploadFiles = Backbone.Collection.extend({
     }
 });
 
-App.UploadFiles = new App.Collections.UploadFiles();
-App.LoadFiles = new App.Collections.UploadFiles();
+App.UploadFiles = new App.Collections.Files();
+App.LoadFiles = new App.Collections.Files();
+App.ParseFiles = new App.Collections.Files();
 'use strict';
 
 App.Views.Player = Backbone.View.extend({
@@ -410,7 +411,6 @@ App.Views.TrackList = Backbone.View.extend({
 
     render: function () {
         var that = this;
-        console.log(App.LoadFiles.toJSON());
 
         $.each(App.LoadFiles.toJSON(), function (i, track) {
             that.addOneToCollection(track);
@@ -526,10 +526,8 @@ App.Views.FileLoader = Backbone.View.extend({
                 App.Events.trigger('stop-loading-process');
                 console.log(xhr);
             },
-            success: function(data){
+            success: function(data) {
                 App.Events.trigger('stop-loading-process');
-
-                console.log(data);
                 that.dataHandler(data);
             }
         });
@@ -542,7 +540,7 @@ App.Views.FileLoader = Backbone.View.extend({
             App.Events.trigger('show-filelist');
 
             _.each(data, function(fileModel, i) {
-                if(fileModel.name && fileModel.href) that.fileList.addOneToCollection( fileModel );
+                if(fileModel.name) that.fileList.addOneToCollection( fileModel );
             });
 
             App.Events.trigger('activate-add-to-pl-btn');
@@ -908,9 +906,8 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$actionBtn
             .html('Add to playlist')
             .on('click', function () {
-                console.log('asdasdasd');
-                App.Events.trigger('add-files-to-playlist');
                 App.Events.trigger('disable-modal-window');
+                App.Events.trigger('start-parse-loaded-files');
             })
     },
 
@@ -967,79 +964,62 @@ App.Views.File = Backbone.View.extend({
 });
 'use strict';
 
-var app = app || {};
+App.AudioParsing = (function (id3) {
 
-app.GetFiles = (function () {
-    var settings = {
-        urlServer: 'http://php-file-server.local/index.php'
-    },
-    $playlist = false,
-    $fileList = false,
+    var start = function () {
+        _.each(App.LoadFiles.toJSON(), function (file, i) {
 
-    init = function ($player) {
-        $playlist = $player.find('.playlist');
-        $playlist.append( );
+            getTags(file.link, function (tags) {
+                getBase64(tags.v2.image.data, function (imageBase64) {
+                    getDuration(file.link, function (duration) {
+                        var trackModel = {
+                            album: tags.album || tags.v1.album || tags.v2.album,
+                            artist: tags.artist || tags.v1.artist || tags.v2.artist,
+                            name: tags.title || tags.v1.title || tags.v2.title,
+                            genre: tags.v1.genre || tags.v2.genre,
+                            year: tags.year || tags.v1.year || tags.v2.year,
+                            image: imageBase64,
+                            duration: duration
+                        };
 
-        $fileList = $playlist.find('.' + settings.fileListClass);
-
-        initEvents();
-    },
-
-    initEvents = function () {
-        $('.get-files').on('click', function () {
-            var $modalWindow = $playlist.find('.modal-window');
-
-            $modalWindow.toggleClass('active');
-
-            if($modalWindow.hasClass('active')) getFilesList();
-        });
-
-        $fileList.find('.cancel').on('click', function () {
-            $fileList.removeClass('active');
-        });
+                        console.log(trackModel);
+                    })
+                })
+            });
+        })
     },
 
-    getFilesList = function () {
-        $.ajax({
-            type: "GET",
-            url: settings.urlServer,
-            cache: false,
-            beforeSend: function () {
+    getTags = function (filelink, callback) {
+        id3(filelink, function(err, tags) {
+            if(err) return console.log(err);
 
-            },
-            success: function(result){
-                console.log(result)
-            }
+            if(typeof callback === 'function') callback(tags);
         });
+    },
+
+    getBase64 = function (arrayBuffer, callback) {
+        var result = false;
+        if(arrayBuffer) {
+            result = btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
+        }
+
+        if(typeof callback === 'function') callback( window.btoa( result ) );
+    },
+
+    getDuration = function (filelink, callback) {
+        var audio = new Audio();
+        audio.onloadedmetadata = function() {
+            if(typeof callback === 'function') callback( this.duration );
+        };
+        audio.src = filelink;
     };
 
     return {
-        init: init
+        start: start
     }
-})();
-'use strict';
+})(id3);
 
-//requirements ../plugins/id3-minimized.js
-
-var ID3Tags = (function ($) {
-
-    var settings = {
-      tags: ["title","artist","album","picture"]
-    },
-
-    getTags = function (file) {
-        ID3.loadTags(file.name, function() {
-            console.log(ID3.getAllTags(file.name));
-        }, {
-            tags: settings.tags,
-            dataReader: ID3.FileAPIReader(file)
-        });
-    };
-
-    return {
-        getTags: getTags
-    }
-})(jQuery);
+App.Events.on('start-parse-loaded-files', App.AudioParsing.start);
 (function(A){if("object"===typeof exports&&"undefined"!==typeof module)module.f=A();else if("function"===typeof define&&define.M)define([],A);else{var g;"undefined"!==typeof window?g=window:"undefined"!==typeof global?g=global:"undefined"!==typeof self?g=self:g=this;g.ID3=A()}})(function(){return function g(l,h,f){function c(b,d){if(!h[b]){if(!l[b]){var e="function"==typeof require&&require;if(!d&&e)return e(b,!0);if(a)return a(b,!0);e=Error("Cannot find module '"+b+"'");throw e.code="MODULE_NOT_FOUND",
 e;}e=h[b]={f:{}};l[b][0].call(e.f,function(a){var e=l[b][1][a];return c(e?e:a)},e,e.f,g,l,h,f)}return h[b].f}for(var a="function"==typeof require&&require,b=0;b<f.length;b++)c(f[b]);return c}({1:[function(g,l){var h=g("./stringutils");if("undefined"!==typeof document){var f=document.createElement("script");f.type="text/vbscript";f.textContent="Function IEBinary_getByteAt(strBinary, iOffset)\r\n\tIEBinary_getByteAt = AscB(MidB(strBinary,iOffset+1,1))\r\nEnd Function\r\nFunction IEBinary_getLength(strBinary)\r\n\tIEBinary_getLength = LenB(strBinary)\r\nEnd Function\r\n";
 document.getElementsByTagName("head")[0].appendChild(f)}else g("btoa"),g("atob");l.f=function(c,a,b){var m=a||0,d=0;"string"==typeof c?(d=b||c.length,this.a=function(a){return c.charCodeAt(a+m)&255}):"unknown"==typeof c&&(d=b||IEBinary_getLength(c),this.a=function(a){return IEBinary_getByteAt(c,a+m)});this.s=function(a,b){for(var d=Array(b),m=0;m<b;m++)d[m]=this.a(a+m);return d};this.l=function(){return d};this.g=function(a,b){return 0!=(this.a(a)&1<<b)};this.F=function(a){a=(this.a(a+1)<<8)+this.a(a);

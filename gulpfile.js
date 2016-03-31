@@ -44,8 +44,7 @@ var path = {
                 './src/js/views/file-upload-list-info.js',
                 './src/js/views/file-loader-list-info.js',
                 './src/js/views/file.js',
-                './src/js/modules/getFiles.js',
-                './src/js/modules/ID3Tags.js',
+                './src/js/modules/audioParsing.js',
                 './src/js/plugins/id3-minimized.js',
                 './src/js/app.js'
             ],
