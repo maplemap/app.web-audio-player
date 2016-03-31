@@ -9,7 +9,7 @@ $files = preg_grep('/^([^.])/', scandir($pathForScan));
 foreach ($files as &$filename) {
     $results[] = array(
         "name" => $filename,
-        "href" => $hostname."/server/uploads/".$filename
+        "link" => $hostname."/server/uploads/".$filename
     );
 }
 

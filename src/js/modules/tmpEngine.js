@@ -72,7 +72,7 @@ App.TmpEngine = (function () {
 
             dropZone: function () {
                 return '<div class="'+ App.Settings.classPrefix +'-dropzone">\
-                            Drop files(mp3, wav) here <br>or click to load on server.\
+                            Drop files(only mp3) here <br>or click to load on server.\
                             <input type="file" name="files[]" multiple>\
                         </div>'
             }

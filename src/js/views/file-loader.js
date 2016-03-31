@@ -34,10 +34,8 @@ App.Views.FileLoader = Backbone.View.extend({
                 App.Events.trigger('stop-loading-process');
                 console.log(xhr);
             },
-            success: function(data){
+            success: function(data) {
                 App.Events.trigger('stop-loading-process');
-
-                console.log(data);
                 that.dataHandler(data);
             }
         });
@@ -50,7 +48,7 @@ App.Views.FileLoader = Backbone.View.extend({
             App.Events.trigger('show-filelist');
 
             _.each(data, function(fileModel, i) {
-                if(fileModel.name && fileModel.href) that.fileList.addOneToCollection( fileModel );
+                if(fileModel.name) that.fileList.addOneToCollection( fileModel );
             });
 
             App.Events.trigger('activate-add-to-pl-btn');

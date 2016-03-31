@@ -34,9 +34,8 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$actionBtn
             .html('Add to playlist')
             .on('click', function () {
-                console.log('asdasdasd');
-                App.Events.trigger('add-files-to-playlist');
                 App.Events.trigger('disable-modal-window');
+                App.Events.trigger('start-parse-loaded-files');
             })
     },
 
