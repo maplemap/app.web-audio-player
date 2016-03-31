@@ -1,7 +1,7 @@
 'use strict';
 
 
-App.Collections.UploadFiles = Backbone.Collection.extend({
+App.Collections.Files = Backbone.Collection.extend({
     model: App.Models.File,
 
     destroyAllCollection: function () {
@@ -9,5 +9,6 @@ App.Collections.UploadFiles = Backbone.Collection.extend({
     }
 });
 
-App.UploadFiles = new App.Collections.UploadFiles();
-App.LoadFiles = new App.Collections.UploadFiles();
+App.UploadFiles = new App.Collections.Files();
+App.LoadFiles = new App.Collections.Files();
+App.ParseFiles = new App.Collections.Files();
