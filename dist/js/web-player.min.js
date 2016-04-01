@@ -163,7 +163,9 @@ App.Views.Track = Backbone.View.extend({
 
 App.Models.Track = Backbone.Model.extend({
     defaults: {
+        artist: '',
         name: '',
+        link: '',
         duration: ''
     }
 });
@@ -171,8 +173,7 @@ App.Models.Track = Backbone.Model.extend({
 
 App.Models.File = Backbone.Model.extend({
     defaults: {
-        index: '',
-        filename: ''
+        index: ''
     },
 
     initialize: function () {
@@ -188,23 +189,35 @@ App.Collections.Tracks = Backbone.Collection.extend({
     localStorage: new Backbone.LocalStorage('web-player'),
 
     getTotalTime: function () {
-        var totalSeconds = 0,
-            hours, minutes, seconds, time;
+        var totalSeconds = 0;
 
         this.each(function (obj, index) {
             var timeArray = obj.get('duration').split(':');
             totalSeconds += parseInt(timeArray[0], 10) * 60 + parseInt(timeArray[1], 10);
         });
 
-        hours   = Math.floor(totalSeconds / 3600);
-        minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
-        seconds = totalSeconds - (hours * 3600) - (minutes * 60);
 
-        if (hours   < 10) {hours   = '0' + hours;}
+        return this.getTimeFromSeconds(totalSeconds, 'hours');
+    },
+
+    getTimeFromSeconds: function (seconds, flag) {
+        var hours, minutes, time;
+
+        hours   = Math.floor(seconds / 3600);
+        minutes = Math.floor((seconds - (hours * 3600)) / 60);
+        seconds = seconds - (hours * 3600) - (minutes * 60);
+
+        hours = (hours && hours < 10) ? '0' + hours + ':' : '';
+
+        if (hours) {
+            if (hours < 10) hours =  '0' + hours + ':';
+        } else {
+            hours = (flag === 'hours') ? '00:' : '';
+        }
         if (minutes < 10) {minutes = '0' + minutes;}
         if (seconds < 10) {seconds = '0' + seconds;}
 
-        time = hours + ':' + minutes + ':' + seconds;
+        time = hours + minutes + ':' + seconds;
 
         return time;
     },
@@ -323,6 +336,8 @@ App.Views.PlaylistInfo = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(App.Tracks, 'all', this.render);
+        App.Events.on('start-file-parse-process', this.startParseProcess, this);
+        App.Events.on('stop-file-parse-process', this.stopParseProcess, this);
     },
 
     render: function () {
@@ -337,10 +352,20 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     },
 
     destroyAllCollection: function () {
-        console.log('ToDo: Add load process of destroying');
-        App.Tracks.destroyAllCollection(); //ToDo: Add load process of destroying
+        console.log('ToDo: Add load process of destroying'); //ToDo: Add load process of destroying
+        App.Tracks.destroyAllCollection();
+    },
+
+    startParseProcess: function () {
+        
+    },
+
+    stopParseProcess: function () {
+
     }
 });
+
+//ToDo: Add loader for adding tracks to tracklist from server
 'use strict';
 
 App.Views.ModalWindow = Backbone.View.extend({
@@ -411,6 +436,7 @@ App.Views.TrackList = Backbone.View.extend({
 
     render: function () {
         var that = this;
+        //ToDo: Add check for the presence of file on server
 
         $.each(App.LoadFiles.toJSON(), function (i, track) {
             that.addOneToCollection(track);
@@ -551,7 +577,7 @@ App.Views.FileLoader = Backbone.View.extend({
     },
 
     messages: {
-        "files_not_found": "Files not found. Please, upload files"
+        "files_not_found": "Files not found. Please, upload files" //ToDo: Delete if we close loading files
     }
 });
 
@@ -964,46 +990,97 @@ App.Views.File = Backbone.View.extend({
 });
 'use strict';
 
-App.AudioParsing = (function (id3) {
+App.AudioParsing = (function (jsmediatags, async, w) {
 
-    var start = function () {
-        _.each(App.LoadFiles.toJSON(), function (file, i) {
+var filesCollection = false,
+    tracksCollection = false,
+    currentIndex = 0,
 
-            getTags(file.link, function (tags) {
-                getBase64(tags.v2.image.data, function (imageBase64) {
-                    getDuration(file.link, function (duration) {
-                        var trackModel = {
-                            album: tags.album || tags.v1.album || tags.v2.album,
-                            artist: tags.artist || tags.v1.artist || tags.v2.artist,
-                            name: tags.title || tags.v1.title || tags.v2.title,
-                            genre: tags.v1.genre || tags.v2.genre,
-                            year: tags.year || tags.v1.year || tags.v2.year,
-                            image: imageBase64,
-                            duration: duration
-                        };
+    init = function () {
+        filesCollection = App.LoadFiles.toJSON();
+        tracksCollection = App.Tracks;
 
-                        console.log(trackModel);
-                    })
-                })
-            });
-        })
+        queueParse();
+        App.Events.trigger('start-file-parse-process');
     },
 
-    getTags = function (filelink, callback) {
-        id3(filelink, function(err, tags) {
+    queueParse = function () {
+        if(filesCollection && filesCollection.length !== currentIndex) {
+            parseFile( filesCollection[currentIndex] );
+        } else {
+            App.Events.trigger('stop-file-parse-process');
+        }
+    },
+
+    parseFile = function (file) {
+        var trackModel = {};
+
+        async.waterfall([
+            function(callback) {
+                getTags(file.link, function (tags) {
+                    console.log(tags);
+                    trackModel = {
+                        link: file.link,
+                        name: tags.title || file.name || '',
+                        album: tags.album || '',
+                        artist: tags.artist || '',
+                        comment: {
+                            language: tags.comment.language || '',
+                            short_description: tags.comment.short_description || '',
+                            text: tags.comment.text || ''
+                        },
+                        genre: tags.genre || '',
+                        year: tags.year || ''
+                    };
+
+                    callback(null, tags);
+                });
+            },
+            function(tags, callback) {
+                getBase64(tags.picture, function (dataBase64) {
+                    trackModel.image = dataBase64;
+
+                    callback(null);
+                });
+            },
+            function(callback) {
+                getDuration(file.link, function (seconds) {
+                    seconds = parseInt(seconds, 10);
+                    trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );
+
+                    callback(null, seconds);
+                });
+            }
+        ], function (err) {
             if(err) return console.log(err);
 
-            if(typeof callback === 'function') callback(tags);
+            tracksCollection.add( trackModel );
+
+            currentIndex++;
+            queueParse();
         });
     },
 
-    getBase64 = function (arrayBuffer, callback) {
-        var result = false;
-        if(arrayBuffer) {
-            result = btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
+    getTags = function (filelink, callback) {
+        jsmediatags.read(filelink, {
+            onSuccess: function(data) {
+                if(typeof callback === 'function') callback(data.tags);
+            },
+            onError: function(error) {
+                console.log(error);
+            }
+        });
+    },
+
+    getBase64 = function (imgTag, callback) {
+        var data = '';
+
+        if( !$.isEmptyObject(imgTag) && imgTag.data.length) {
+            data = w.btoa(String.fromCharCode.apply(null, new Uint8Array( imgTag.data )));
+            data = 'data:' + imgTag.format + ';base64,' + data;
         }
 
-        if(typeof callback === 'function') callback( window.btoa( result ) );
+        if(typeof callback === 'function') callback( data );
     },
 
     getDuration = function (filelink, callback) {
@@ -1015,11 +1092,11 @@ App.AudioParsing = (function (id3) {
     };
 
     return {
-        start: start
+        init: init
     }
-})(id3);
+})(jsmediatags, async, window);
 
-App.Events.on('start-parse-loaded-files', App.AudioParsing.start);
+App.Events.on('start-parse-loaded-files', App.AudioParsing.init);
 (function(A){if("object"===typeof exports&&"undefined"!==typeof module)module.f=A();else if("function"===typeof define&&define.M)define([],A);else{var g;"undefined"!==typeof window?g=window:"undefined"!==typeof global?g=global:"undefined"!==typeof self?g=self:g=this;g.ID3=A()}})(function(){return function g(l,h,f){function c(b,d){if(!h[b]){if(!l[b]){var e="function"==typeof require&&require;if(!d&&e)return e(b,!0);if(a)return a(b,!0);e=Error("Cannot find module '"+b+"'");throw e.code="MODULE_NOT_FOUND",
 e;}e=h[b]={f:{}};l[b][0].call(e.f,function(a){var e=l[b][1][a];return c(e?e:a)},e,e.f,g,l,h,f)}return h[b].f}for(var a="function"==typeof require&&require,b=0;b<f.length;b++)c(f[b]);return c}({1:[function(g,l){var h=g("./stringutils");if("undefined"!==typeof document){var f=document.createElement("script");f.type="text/vbscript";f.textContent="Function IEBinary_getByteAt(strBinary, iOffset)\r\n\tIEBinary_getByteAt = AscB(MidB(strBinary,iOffset+1,1))\r\nEnd Function\r\nFunction IEBinary_getLength(strBinary)\r\n\tIEBinary_getLength = LenB(strBinary)\r\nEnd Function\r\n";
 document.getElementsByTagName("head")[0].appendChild(f)}else g("btoa"),g("atob");l.f=function(c,a,b){var m=a||0,d=0;"string"==typeof c?(d=b||c.length,this.a=function(a){return c.charCodeAt(a+m)&255}):"unknown"==typeof c&&(d=b||IEBinary_getLength(c),this.a=function(a){return IEBinary_getByteAt(c,a+m)});this.s=function(a,b){for(var d=Array(b),m=0;m<b;m++)d[m]=this.a(a+m);return d};this.l=function(){return d};this.g=function(a,b){return 0!=(this.a(a)&1<<b)};this.F=function(a){a=(this.a(a+1)<<8)+this.a(a);

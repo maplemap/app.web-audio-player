@@ -25,8 +25,5 @@
     "gulp-watch": "*",
     "imagemin-pngquant": "*",
     "rimraf": "*"
-  },
-  "dependencies": {
-    "id3js": "^1.1.3"
   }
 }

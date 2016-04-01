@@ -15,6 +15,8 @@
     "backbone": "~1.2.3",
     "jquery-ui": "^1.11.4",
     "backbone.localStorage": "backbone.localstorage#^1.1.16",
-    "perfect-scrollbar": "^0.6.10"
+    "perfect-scrollbar": "^0.6.10",
+    "async": "^1.5.2",
+    "jsmediatags-sebastianha": "^3.0.5"
   }
 }
