@@ -1,6 +1,6 @@
 'use strict';
 
-App.AudioParsing = (function (id3, async) {
+App.AudioParsing = (function (jsmediatags, async, w) {
 
 var filesCollection = false,
     tracksCollection = false,
@@ -11,78 +11,60 @@ var filesCollection = false,
         tracksCollection = App.Tracks;
 
         queueParse();
+        App.Events.trigger('start-file-parse-process');
     },
 
     queueParse = function () {
-        if(currentIndex !== filesCollection.length) {
-            parseFile( filesCollection[currentIndex]['link'] );
+        if(filesCollection && filesCollection.length !== currentIndex) {
+            parseFile( filesCollection[currentIndex] );
+        } else {
+            App.Events.trigger('stop-file-parse-process');
         }
-
-
-
-
-        //_.each(App.LoadFiles.toJSON(), function (file, i) {
-        //
-        //    getTags(file.link, function (tags) {
-        //        getBase64(tags.v2.image.data, function (imageBase64) {
-        //            getDuration(file.link, function (duration) {
-        //                var trackModel = {
-        //                    album: tags.album || tags.v1.album || tags.v2.album,
-        //                    artist: tags.artist || tags.v1.artist || taqgs.v2.artist,
-        //                    name: tags.title || tags.v1.title || tags.v2.title,
-        //                    genre: tags.v1.genre || tags.v2.genre,
-        //                    year: tags.year || tags.v1.year || tags.v2.year,
-        //                    image: imageBase64,
-        //                    duration: duration
-        //                };
-        //
-        //                console.log(trackModel);
-        //            })
-        //        })
-        //    });
-        //})
     },
 
-    parseFile = function (filelink) {
+    parseFile = function (file) {
         var trackModel = {};
 
         async.waterfall([
             function(callback) {
-                getTags(filelink, function (tags) {
+                getTags(file.link, function (tags) {
+                    console.log(tags);
                     trackModel = {
-                        album: tags.album || tags.v1.album || tags.v2.album,
-                        artist: tags.artist || tags.v1.artist || taqgs.v2.artist,
-                        name: tags.title || tags.v1.title || tags.v2.title,
-                        genre: tags.v1.genre || tags.v2.genre,
-                        year: tags.year || tags.v1.year || tags.v2.year
+                        link: file.link,
+                        name: tags.title || file.name || '',
+                        album: tags.album || '',
+                        artist: tags.artist || '',
+                        comment: {
+                            language: tags.comment.language || '',
+                            short_description: tags.comment.short_description || '',
+                            text: tags.comment.text || ''
+                        },
+                        genre: tags.genre || '',
+                        year: tags.year || ''
                     };
 
                     callback(null, tags);
                 });
             },
             function(tags, callback) {
-                getBase64(tags.v2.image.data, function (base64image) {
-                    trackModel.image = base64image;
+                getBase64(tags.picture, function (dataBase64) {
+                    trackModel.image = dataBase64;
 
                     callback(null);
                 });
             },
             function(callback) {
-                getDuration(filelink, function (seconds) {
+                getDuration(file.link, function (seconds) {
+                    seconds = parseInt(seconds, 10);
+                    trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );
 
                     callback(null, seconds);
                 });
-            },
-            function(seconds, callback) {
-                seconds = parseInt(seconds, 10);
-                trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );
-
-                callback(null);
             }
         ], function (err) {
             if(err) return console.log(err);
 
-            tracksCollection.add(trackModel);
+            tracksCollection.add( trackModel );
 
             currentIndex++;
             queueParse();
@@ -90,20 +72,25 @@ var filesCollection = false,
     },
 
     getTags = function (filelink, callback) {
-        id3(filelink, function(err, tags) {
-            if(err) return console.log(err);
-
-            if(typeof callback === 'function') callback(tags);
+        jsmediatags.read(filelink, {
+            onSuccess: function(data) {
+                if(typeof callback === 'function') callback(data.tags);
+            },
+            onError: function(error) {
+                console.log(error);
+            }
         });
     },
 
-    getBase64 = function (arrayBuffer, callback) {
-        var result = false;
-        if(arrayBuffer) {
-            result = btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
+    getBase64 = function (imgTag, callback) {
+        var data = '';
+
+        if( !$.isEmptyObject(imgTag) && imgTag.data.length) {
+            data = w.btoa(String.fromCharCode.apply(null, new Uint8Array( imgTag.data )));
+            data = 'data:' + imgTag.format + ';base64,' + data;
         }
 
-        if(typeof callback === 'function') callback( window.btoa( result ) );
+        if(typeof callback === 'function') callback( data );
     },
 
     getDuration = function (filelink, callback) {
@@ -117,6 +104,6 @@ var filesCollection = false,
     return {
         init: init
     }
-})(id3, async);
+})(jsmediatags, async, window);
 
 App.Events.on('start-parse-loaded-files', App.AudioParsing.init);
