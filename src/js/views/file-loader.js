@@ -59,6 +59,6 @@ App.Views.FileLoader = Backbone.View.extend({
     },
 
     messages: {
-        "files_not_found": "Files not found. Please, upload files"
+        "files_not_found": "Files not found. Please, upload files" //ToDo: Delete if we close loading files
     }
 });

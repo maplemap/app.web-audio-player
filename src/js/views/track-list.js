@@ -13,6 +13,7 @@ App.Views.TrackList = Backbone.View.extend({
 
     render: function () {
         var that = this;
+        //ToDo: Add check for the presence of file on server
 
         $.each(App.LoadFiles.toJSON(), function (i, track) {
             that.addOneToCollection(track);
