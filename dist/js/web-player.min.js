@@ -38,6 +38,7 @@ App.TmpEngine = (function () {
             playlistInfo: function (data) {
                 return '<li class="duration"><span>'+ data.duration +'</span></li>\
                         <li class="amount"><span>'+ data.amount +'</span></li>\
+                        <li class="info hidden"></li>\
                         <li class="tracks-delete"><button>delete all</button></li>'
             },
 
@@ -335,7 +336,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.listenTo(App.Tracks, 'all', this.render);
+        this.listenTo(App.Tracks, 'all', this.refreshData);
         App.Events.on('start-file-parse-process', this.startParseProcess, this);
         App.Events.on('stop-file-parse-process', this.stopParseProcess, this);
     },
@@ -347,25 +348,35 @@ App.Views.PlaylistInfo = Backbone.View.extend({
         };
 
         this.$el.html( App.TmpEngine.getTemplate('playlistInfo', data) );
+        this.$amount = this.$el.find('.amount');
+        this.$duration = this.$el.find('.duration');
+        this.$info = this.$el.find('.info');
 
         return this;
+    },
+
+    refreshData: function () {
+        this.$amount.html( App.Tracks.length );
+        this.$duration.html( App.Tracks.getTotalTime() );
+    },
+
+    startParseProcess: function () {
+        this.$info.html('Adding tracks')
+                  .removeClass('hidden')
+                  .addClass('processing');
+    },
+
+    stopParseProcess: function () {
+        this.$info.addClass('hidden')
+                  .html('')
+                  .removeClass('processing');
     },
 
     destroyAllCollection: function () {
         console.log('ToDo: Add load process of destroying'); //ToDo: Add load process of destroying
         App.Tracks.destroyAllCollection();
-    },
-
-    startParseProcess: function () {
-        
-    },
-
-    stopParseProcess: function () {
-
     }
 });
-
-//ToDo: Add loader for adding tracks to tracklist from server
 'use strict';
 
 App.Views.ModalWindow = Backbone.View.extend({
@@ -413,6 +424,8 @@ App.Views.ModalWindow = Backbone.View.extend({
     },
     
     enableLoaderWindow: function () {
+        App.LoadFiles.destroyAllCollection();
+
         if( !this.fileLoader ) {
             this.fileLoader = new App.Views.FileLoader();
         }
@@ -599,7 +612,7 @@ App.Views.FileUploader = Backbone.View.extend({
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
         this.$inputTypeFile = this.$dropZone.find('input[type="file"]');
         this.fileUploadListInfo = new App.Views.FileUploadListInfo();
-        this.fileList = new App.Views.FileList();
+        this.fileList = new App.Views.UploadFileList();
 
         App.Events.on('show-filelist', this.showFilelist, this);
         App.Events.on('hide-filelist', this.hideFilelist, this);
@@ -761,7 +774,7 @@ App.Views.FileUploader = Backbone.View.extend({
 
 'use strict';
 
-App.Views.FileList = Backbone.View.extend({
+App.Views.UploadFileList = Backbone.View.extend({
     tagName: 'ul',
     className: App.Settings.classPrefix + '-fileList',
 
@@ -799,6 +812,7 @@ App.Views.FileList = Backbone.View.extend({
         App.Events.trigger('hide-filelist');
 
         App.Events.trigger('file-upload-abort', 'cancel');
+        App.UploadFiles.destroyAllCollection();
     },
 
     initFileListScroll: function () {
@@ -840,6 +854,10 @@ App.Views.LoadFileList = Backbone.View.extend({
         App.Events.trigger('hide-filelist');
     },
 
+    destroyLoadFilesCollection: function () {
+        App.LoadFiles.destroyAllCollection();
+    },
+
     initFileListScroll: function () {
         this.$el.perfectScrollbar({
             minScrollbarLength: 50
@@ -858,7 +876,6 @@ App.Views.FileUploadListInfo = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(App.UploadFiles, 'all', this.refreshData);
-        App.Events.on('disable-modal-window', this.destroyAllCollection, this);
         App.Events.on('finish-upload', this.finishUpload, this);
     },
 
@@ -890,10 +907,6 @@ App.Views.FileUploadListInfo = Backbone.View.extend({
         this.$uploadBtn
             .removeAttr('disabled')
             .removeClass('processing');
-    },
-
-    destroyAllCollection: function () {
-        App.UploadFiles.destroyAllCollection();
     }
 });
 'use strict';
@@ -901,10 +914,6 @@ App.Views.FileUploadListInfo = Backbone.View.extend({
 App.Views.FileLoaderListInfo = Backbone.View.extend({
     tagName: 'ul',
     className: App.Settings.classPrefix + '-file-loader-List-info',
-
-    events: {
-
-    },
 
     initialize: function () {
         this.listenTo(App.LoadFiles, 'all', this.refreshData);
@@ -932,8 +941,8 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$actionBtn
             .html('Add to playlist')
             .on('click', function () {
-                App.Events.trigger('disable-modal-window');
                 App.Events.trigger('start-parse-loaded-files');
+                App.Events.trigger('disable-modal-window');
             })
     },
 
@@ -997,7 +1006,7 @@ var filesCollection = false,
     currentIndex = 0,
 
     init = function () {
-        filesCollection = App.LoadFiles.toJSON();
+        filesCollection = App.LoadFiles;
         tracksCollection = App.Tracks;
 
         queueParse();
@@ -1005,9 +1014,12 @@ var filesCollection = false,
     },
 
     queueParse = function () {
-        if(filesCollection && filesCollection.length !== currentIndex) {
-            parseFile( filesCollection[currentIndex] );
+        var filesArray = filesCollection.toJSON();
+
+        if(filesArray && filesArray.length !== currentIndex) {
+            parseFile( filesArray[currentIndex] );
         } else {
+            filesCollection.destroyAllCollection();
             App.Events.trigger('stop-file-parse-process');
         }
     },
@@ -1018,17 +1030,12 @@ var filesCollection = false,
         async.waterfall([
             function(callback) {
                 getTags(file.link, function (tags) {
-                    console.log(tags);
                     trackModel = {
                         link: file.link,
                         name: tags.title || file.name || '',
                         album: tags.album || '',
                         artist: tags.artist || '',
-                        comment: {
-                            language: tags.comment.language || '',
-                            short_description: tags.comment.short_description || '',
-                            text: tags.comment.text || ''
-                        },
+                        comment: tags.comment || '',
                         genre: tags.genre || '',
                         year: tags.year || ''
                     };

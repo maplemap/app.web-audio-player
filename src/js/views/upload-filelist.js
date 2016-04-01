@@ -1,6 +1,6 @@
 'use strict';
 
-App.Views.FileList = Backbone.View.extend({
+App.Views.UploadFileList = Backbone.View.extend({
     tagName: 'ul',
     className: App.Settings.classPrefix + '-fileList',
 

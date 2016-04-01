@@ -147,6 +147,9 @@
 #webAudioPlayer button[disabled="disabled"] {
   cursor: not-allowed;
 }
+#webAudioPlayer .hidden {
+  display: none;
+}
 #webAudioPlayer .processing:after {
   content: '';
   position: absolute;
@@ -317,6 +320,24 @@
   font-size: 10px;
   margin-top: 5px;
 }
+#webAudioPlayer .wap-playlist-info li.amount,
+#webAudioPlayer .wap-file-loader-List-info li.amount,
+#webAudioPlayer .wap-file-upload-list-info li.amount,
+#webAudioPlayer .wap-playlist-info li.duration,
+#webAudioPlayer .wap-file-loader-List-info li.duration,
+#webAudioPlayer .wap-file-upload-list-info li.duration {
+  float: left;
+}
+#webAudioPlayer .wap-playlist-info li.amount,
+#webAudioPlayer .wap-file-loader-List-info li.amount,
+#webAudioPlayer .wap-file-upload-list-info li.amount {
+  margin-left: 7px;
+}
+#webAudioPlayer .wap-playlist-info li.info,
+#webAudioPlayer .wap-file-loader-List-info li.info,
+#webAudioPlayer .wap-file-upload-list-info li.info {
+  position: relative;
+}
 #webAudioPlayer .wap-playlist-info li.tracks-delete,
 #webAudioPlayer .wap-file-loader-List-info li.tracks-delete,
 #webAudioPlayer .wap-file-upload-list-info li.tracks-delete {
@@ -336,12 +357,8 @@
   color: #333;
   opacity: 1;
 }
-#webAudioPlayer .wap-file-upload-list-info li.amount,
-#webAudioPlayer .wap-file-loader-List-info li.amount,
-#webAudioPlayer .wap-file-upload-list-info li.server,
-#webAudioPlayer .wap-file-loader-List-info li.server {
-  float: left;
-  margin: 7px 0 0 5px;
+#webAudioPlayer .wap-playlist-info {
+  text-align: center;
 }
 #webAudioPlayer .wap-file-upload-list-info {
   position: relative;
