@@ -2,8 +2,7 @@
 
 App.Models.File = Backbone.Model.extend({
     defaults: {
-        index: '',
-        filename: ''
+        index: ''
     },
 
     initialize: function () {
