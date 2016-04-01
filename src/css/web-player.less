@@ -71,6 +71,10 @@
     }
   }
 
+  .hidden {
+    display: none;
+  }
+
   .processing:after {
     content: '';
     position: absolute;
@@ -242,6 +246,19 @@
       font-size: 10px;
       margin-top: 5px;
 
+      &.amount,
+      &.duration {
+        float: left;
+      }
+
+      &.amount {
+        margin-left: 7px;
+      }
+
+      &.info {
+        position: relative;
+      }
+
       &.tracks-delete {
         float: right;
         cursor: pointer;
@@ -260,15 +277,8 @@
     }
   }
 
-  .@{class-prefix}-file-upload-list-info,
-  .@{class-prefix}-file-loader-List-info {
-      li {
-        &.amount,
-        &.server {
-          float: left;
-          margin: 7px 0 0 5px;
-        }
-      }
+  .@{class-prefix}-playlist-info {
+    text-align: center;
   }
 
   .@{class-prefix}-file-upload-list-info {
