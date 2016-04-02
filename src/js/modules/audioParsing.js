@@ -7,7 +7,7 @@ var filesCollection = false,
     currentIndex = 0,
 
     init = function () {
-        filesCollection = App.LoadFiles.toJSON();
+        filesCollection = App.LoadFiles;
         tracksCollection = App.Tracks;
 
         queueParse();
@@ -15,9 +15,12 @@ var filesCollection = false,
     },
 
     queueParse = function () {
-        if(filesCollection && filesCollection.length !== currentIndex) {
-            parseFile( filesCollection[currentIndex] );
+        var filesArray = filesCollection.toJSON();
+
+        if(filesArray && filesArray.length !== currentIndex) {
+            parseFile( filesArray[currentIndex] );
         } else {
+            filesCollection.destroyAllCollection();
             App.Events.trigger('stop-file-parse-process');
         }
     },
@@ -28,17 +31,12 @@ var filesCollection = false,
         async.waterfall([
             function(callback) {
                 getTags(file.link, function (tags) {
-                    console.log(tags);
                     trackModel = {
                         link: file.link,
                         name: tags.title || file.name || '',
                         album: tags.album || '',
                         artist: tags.artist || '',
-                        comment: {
-                            language: tags.comment.language || '',
-                            short_description: tags.comment.short_description || '',
-                            text: tags.comment.text || ''
-                        },
+                        comment: tags.comment || '',
                         genre: tags.genre || '',
                         year: tags.year || ''
                     };

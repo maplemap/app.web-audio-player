@@ -45,6 +45,8 @@ App.Views.ModalWindow = Backbone.View.extend({
     },
     
     enableLoaderWindow: function () {
+        App.LoadFiles.destroyAllCollection();
+
         if( !this.fileLoader ) {
             this.fileLoader = new App.Views.FileLoader();
         }

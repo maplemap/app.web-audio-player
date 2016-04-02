@@ -4,10 +4,6 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     tagName: 'ul',
     className: App.Settings.classPrefix + '-file-loader-List-info',
 
-    events: {
-
-    },
-
     initialize: function () {
         this.listenTo(App.LoadFiles, 'all', this.refreshData);
         App.Events.on('start-loading-process', this.addLoader, this);
@@ -34,8 +30,8 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$actionBtn
             .html('Add to playlist')
             .on('click', function () {
-                App.Events.trigger('disable-modal-window');
                 App.Events.trigger('start-parse-loaded-files');
+                App.Events.trigger('disable-modal-window');
             })
     },
 

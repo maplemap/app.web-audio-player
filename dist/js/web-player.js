@@ -854,10 +854,6 @@ App.Views.LoadFileList = Backbone.View.extend({
         App.Events.trigger('hide-filelist');
     },
 
-    destroyLoadFilesCollection: function () {
-        App.LoadFiles.destroyAllCollection();
-    },
-
     initFileListScroll: function () {
         this.$el.perfectScrollbar({
             minScrollbarLength: 50

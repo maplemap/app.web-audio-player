@@ -10,7 +10,6 @@ App.Views.FileUploadListInfo = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(App.UploadFiles, 'all', this.refreshData);
-        App.Events.on('disable-modal-window', this.destroyAllCollection, this);
         App.Events.on('finish-upload', this.finishUpload, this);
     },
 
@@ -42,9 +41,5 @@ App.Views.FileUploadListInfo = Backbone.View.extend({
         this.$uploadBtn
             .removeAttr('disabled')
             .removeClass('processing');
-    },
-
-    destroyAllCollection: function () {
-        App.UploadFiles.destroyAllCollection();
     }
 });

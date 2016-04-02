@@ -16,7 +16,7 @@ App.Views.FileUploader = Backbone.View.extend({
         this.$dropZone = $( App.TmpEngine.getTemplate('dropZone') );
         this.$inputTypeFile = this.$dropZone.find('input[type="file"]');
         this.fileUploadListInfo = new App.Views.FileUploadListInfo();
-        this.fileList = new App.Views.FileList();
+        this.fileList = new App.Views.UploadFileList();
 
         App.Events.on('show-filelist', this.showFilelist, this);
         App.Events.on('hide-filelist', this.hideFilelist, this);
