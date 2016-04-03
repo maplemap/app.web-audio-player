@@ -574,6 +574,7 @@ App.Views.FileLoader = Backbone.View.extend({
 
     dataHandler: function (data) {
         var that = this;
+        this.$fileList.html('');
 
         if(data && data.length) {
             App.Events.trigger('show-filelist');
@@ -1012,8 +1013,6 @@ var filesCollection = false,
     queueParse = function () {
         var filesArray = filesCollection.toJSON();
 
-        console.log('queue');
-
         if(filesArray && filesArray.length !== currentIndex) {
             parseFile( filesArray[currentIndex] );
         } else {
@@ -1042,7 +1041,6 @@ var filesCollection = false,
                 });
             },
             function(tags, callback) {
-                console.log('dataBase64');
                 getBase64(tags.picture, function (dataBase64) {
                     trackModel.image = dataBase64;
 
@@ -1051,7 +1049,6 @@ var filesCollection = false,
             },
             function(callback) {
                 getDuration(file.link, function (seconds) {
-                    console.log('duration');
 
                     seconds = parseInt(seconds, 10);
                     trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );

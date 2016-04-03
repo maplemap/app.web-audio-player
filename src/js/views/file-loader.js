@@ -43,6 +43,7 @@ App.Views.FileLoader = Backbone.View.extend({
 
     dataHandler: function (data) {
         var that = this;
+        this.$fileList.html('');
 
         if(data && data.length) {
             App.Events.trigger('show-filelist');
