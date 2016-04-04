@@ -53,6 +53,7 @@ var filesCollection = false,
             },
             function(callback) {
                 getDuration(file.link, function (seconds) {
+
                     seconds = parseInt(seconds, 10);
                     trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );
 
@@ -76,6 +77,9 @@ var filesCollection = false,
             },
             onError: function(error) {
                 console.log(error);
+
+                currentIndex++;
+                queueParse();
             }
         });
     },
@@ -84,11 +88,20 @@ var filesCollection = false,
         var data = '';
 
         if( !$.isEmptyObject(imgTag) && imgTag.data.length) {
-            data = w.btoa(String.fromCharCode.apply(null, new Uint8Array( imgTag.data )));
+            var array = new Uint8Array(imgTag.data);
+            data = bufferToBase64(array);
+
             data = 'data:' + imgTag.format + ';base64,' + data;
         }
 
         if(typeof callback === 'function') callback( data );
+
+        function bufferToBase64(buf) {
+            var binstr = Array.prototype.map.call(buf, function (ch) {
+                return String.fromCharCode(ch);
+            }).join('');
+            return btoa(binstr);
+        }
     },
 
     getDuration = function (filelink, callback) {
