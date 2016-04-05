@@ -39,6 +39,7 @@ App.TmpEngine = (function () {
                 return '<li class="duration"><span>'+ data.duration +'</span></li>\
                         <li class="amount"><span>'+ data.amount +'</span></li>\
                         <li class="info hidden"></li>\
+                        <li class="stop-adding-tracks hidden"><button>stop process</button></li>\
                         <li class="tracks-delete"><button>delete all</button></li>'
             },
 
@@ -332,13 +333,14 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playlist-info',
 
     events: {
-        'click .tracks-delete': 'destroyAllCollection'
+        'click .tracks-delete': 'destroyAllCollection',
+        'click .stop-adding-tracks': 'stopParseLoadedFilesEvent'
     },
 
     initialize: function () {
         this.listenTo(App.Tracks, 'all', this.refreshData);
-        App.Events.on('start-file-parse-process', this.startParseProcess, this);
-        App.Events.on('stop-file-parse-process', this.stopParseProcess, this);
+        App.Events.on('start-audio-parsing', this.startParseProcess, this);
+        App.Events.on('stop-audio-parsing', this.stopParseProcess, this);
     },
 
     render: function () {
@@ -351,6 +353,8 @@ App.Views.PlaylistInfo = Backbone.View.extend({
         this.$amount = this.$el.find('.amount');
         this.$duration = this.$el.find('.duration');
         this.$info = this.$el.find('.info');
+        this.$stopAddTracks = this.$el.find('.stop-adding-tracks');
+        this.$tracksDelete = this.$el.find('.tracks-delete');
 
         return this;
     },
@@ -364,16 +368,27 @@ App.Views.PlaylistInfo = Backbone.View.extend({
         this.$info.html('Adding tracks')
                   .removeClass('hidden')
                   .addClass('processing');
+
+        this.$tracksDelete.addClass('hidden');
+        this.$stopAddTracks.removeClass('hidden');
     },
 
     stopParseProcess: function () {
         this.$info.addClass('hidden')
                   .html('')
                   .removeClass('processing');
+
+        this.$tracksDelete.removeClass('hidden');
+        this.$stopAddTracks.addClass('hidden');
+    },
+
+    stopParseLoadedFilesEvent: function () {
+        App.Events.trigger('stop-parse-loaded-files');
     },
 
     destroyAllCollection: function () {
         console.log('ToDo: Add load process of destroying'); //ToDo: Add load process of destroying
+        App.Events.trigger('start-destroying-of-tracks-collection');
         App.Tracks.destroyAllCollection();
     }
 });
@@ -555,11 +570,11 @@ App.Views.FileLoader = Backbone.View.extend({
     filesLoading: function () {
 
         var that = this;
-
+        console.log('start loading');
         $.ajax({
             url: App.Settings.phpServer.loadUrl,
             type: 'GET',
-            cache: false,
+            cache: true,
             dataType: 'json',
             error: function(xhr, ajaxOptions, thrownError) {
                 App.Events.trigger('stop-loading-process');
@@ -591,7 +606,7 @@ App.Views.FileLoader = Backbone.View.extend({
     },
 
     messages: {
-        "files_not_found": "Files not found. Please, upload files" //ToDo: Delete if we close loading files
+        "files_not_found": "Files not found. Please, upload files"
     }
 });
 
@@ -1000,25 +1015,46 @@ App.AudioParsing = (function (jsmediatags, async, w) {
 
 var filesCollection = false,
     tracksCollection = false,
+    breakPoint = false,
     currentIndex = 0,
 
-    init = function () {
+    start = function () {
         filesCollection = App.LoadFiles;
         tracksCollection = App.Tracks;
 
         queueParse();
-        App.Events.trigger('start-file-parse-process');
+        App.Events.trigger('start-audio-parsing');
+    },
+
+    stop = function () {
+        if(!filesCollection) return;
+
+        console.log('stop');
+        breakPoint = true;
+        currentIndex = 0
+        filesCollection.destroyAllCollection();
+
+        App.Events.trigger('stop-audio-parsing');
     },
 
     queueParse = function () {
         var filesArray = filesCollection.toJSON();
+        console.log(filesArray.length);
+        console.log(currentIndex);
+        console.log((filesArray && filesArray.length > currentIndex));
+        console.log((filesArray.length > currentIndex));
 
-        if(filesArray && filesArray.length !== currentIndex) {
+        if(filesArray && filesArray.length > currentIndex) {
+            breakPoint = false;
             parseFile( filesArray[currentIndex] );
         } else {
-            filesCollection.destroyAllCollection();
-            App.Events.trigger('stop-file-parse-process');
+            stop();
         }
+    },
+
+    startNextFile = function () {
+        currentIndex++;
+        queueParse();
     },
 
     parseFile = function (file) {
@@ -1026,9 +1062,14 @@ var filesCollection = false,
 
         async.waterfall([
             function(callback) {
-                getTags(file.link, function (tags) {
+                console.log('getTags');
+                console.log(file);
+                getTags(file.link, function (err, tags) {
+                    if(err) return callback(true);
+
                     trackModel = {
                         link: file.link,
+                        duration: file.duration,
                         name: tags.title || file.name || '',
                         album: tags.album || '',
                         artist: tags.artist || '',
@@ -1039,43 +1080,57 @@ var filesCollection = false,
 
                     callback(null, tags);
                 });
-            },
-            function(tags, callback) {
-                getBase64(tags.picture, function (dataBase64) {
-                    trackModel.image = dataBase64;
-
-                    callback(null);
-                });
-            },
-            function(callback) {
-                getDuration(file.link, function (seconds) {
-
-                    seconds = parseInt(seconds, 10);
-                    trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );
-
-                    callback(null, seconds);
-                });
-            }
+            }//,
+            //function(tags, callback) {
+            //    console.log('getBase64');
+            //    getBase64(tags.picture, function (dataBase64) {
+            //        trackModel.image = dataBase64;
+            //
+            //        callback(null);
+            //    });
+            //},
+            //function(callback) {
+            //    console.log('getDuration');
+            //    trackModel.duration = file.duration;
+            //
+            //    getDuration(file.link, function (seconds) {
+            //
+            //        seconds = parseInt(seconds, 10);
+            //        trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );
+            //
+            //        callback(null, seconds);
+            //    });
+            //}
         ], function (err) {
-            if(err) return console.log(err);
+            if(err) {
+                startNextFile();
+                return console.log(err);
+            }
+            if(breakPoint) return console.log('parsing break');
 
+            console.log('addFile to tracksCollection');
             tracksCollection.add( trackModel );
 
-            currentIndex++;
-            queueParse();
+            startNextFile();
         });
     },
 
     getTags = function (filelink, callback) {
+        console.log('getTags');
+        var waitingPeriod = setTimeout(function () {
+            callback(true);
+        }, 4000);
+        
         jsmediatags.read(filelink, {
             onSuccess: function(data) {
-                if(typeof callback === 'function') callback(data.tags);
+                clearTimeout(waitingPeriod);
+                if(typeof callback === 'function') callback(null, data.tags);
             },
             onError: function(error) {
                 console.log(error);
+                clearTimeout(waitingPeriod);
 
-                currentIndex++;
-                queueParse();
+                callback(true);
             }
         });
     },
@@ -1109,11 +1164,13 @@ var filesCollection = false,
     };
 
     return {
-        init: init
+        start: start,
+        stop: stop
     }
 })(jsmediatags, async, window);
 
-App.Events.on('start-parse-loaded-files', App.AudioParsing.init);
+App.Events.on('start-parse-loaded-files', App.AudioParsing.start);
+App.Events.on('stop-parse-loaded-files', App.AudioParsing.stop);
 (function(A){if("object"===typeof exports&&"undefined"!==typeof module)module.f=A();else if("function"===typeof define&&define.M)define([],A);else{var g;"undefined"!==typeof window?g=window:"undefined"!==typeof global?g=global:"undefined"!==typeof self?g=self:g=this;g.ID3=A()}})(function(){return function g(l,h,f){function c(b,d){if(!h[b]){if(!l[b]){var e="function"==typeof require&&require;if(!d&&e)return e(b,!0);if(a)return a(b,!0);e=Error("Cannot find module '"+b+"'");throw e.code="MODULE_NOT_FOUND",
 e;}e=h[b]={f:{}};l[b][0].call(e.f,function(a){var e=l[b][1][a];return c(e?e:a)},e,e.f,g,l,h,f)}return h[b].f}for(var a="function"==typeof require&&require,b=0;b<f.length;b++)c(f[b]);return c}({1:[function(g,l){var h=g("./stringutils");if("undefined"!==typeof document){var f=document.createElement("script");f.type="text/vbscript";f.textContent="Function IEBinary_getByteAt(strBinary, iOffset)\r\n\tIEBinary_getByteAt = AscB(MidB(strBinary,iOffset+1,1))\r\nEnd Function\r\nFunction IEBinary_getLength(strBinary)\r\n\tIEBinary_getLength = LenB(strBinary)\r\nEnd Function\r\n";
 document.getElementsByTagName("head")[0].appendChild(f)}else g("btoa"),g("atob");l.f=function(c,a,b){var m=a||0,d=0;"string"==typeof c?(d=b||c.length,this.a=function(a){return c.charCodeAt(a+m)&255}):"unknown"==typeof c&&(d=b||IEBinary_getLength(c),this.a=function(a){return IEBinary_getByteAt(c,a+m)});this.s=function(a,b){for(var d=Array(b),m=0;m<b;m++)d[m]=this.a(a+m);return d};this.l=function(){return d};this.g=function(a,b){return 0!=(this.a(a)&1<<b)};this.F=function(a){a=(this.a(a+1)<<8)+this.a(a);

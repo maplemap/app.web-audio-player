@@ -148,7 +148,7 @@
   cursor: not-allowed;
 }
 #webAudioPlayer .hidden {
-  display: none;
+  display: none !important;
 }
 #webAudioPlayer .processing:after {
   content: '';
@@ -340,7 +340,10 @@
 }
 #webAudioPlayer .wap-playlist-info li.tracks-delete,
 #webAudioPlayer .wap-file-loader-List-info li.tracks-delete,
-#webAudioPlayer .wap-file-upload-list-info li.tracks-delete {
+#webAudioPlayer .wap-file-upload-list-info li.tracks-delete,
+#webAudioPlayer .wap-playlist-info li.stop-adding-tracks,
+#webAudioPlayer .wap-file-loader-List-info li.stop-adding-tracks,
+#webAudioPlayer .wap-file-upload-list-info li.stop-adding-tracks {
   float: right;
   cursor: pointer;
 }
