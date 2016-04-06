@@ -1077,8 +1077,6 @@ var filesCollection = false,
             function(tags, callback) {
                 getBase64(tags.picture, function (dataBase64) {
                     trackModel.image = dataBase64;
-                    console.log(trackModel.name);
-                    console.log(tags.picture);
 
                     callback(null);
                 });
@@ -1115,32 +1113,7 @@ var filesCollection = false,
     },
 
     getBase64 = function (pictureTag, callback) {
-        var data = '',
-            getMimeType = function (formatTag, callback) {
-                var imgFormats = {
-                        gif: 'image/gif',
-                        jpeg: 'image/jpeg1',
-                        png: 'image/png'
-                    };
-
-                formatTag = formatTag.toLowerCase();
-
-                for (var key in imgFormats) {
-                    if( formatTag.indexOf(key) + 1) {
-                        return callback( imgFormats[key] )
-                    }
-                }
-            },
-
-            bufferToBase64 = function (buf) {
-                var binstr = Array.prototype.map.call(buf, function (ch) {
-                    return String.fromCharCode(ch);
-                }).join('');
-
-                return btoa(binstr);
-            };
-
-
+        var data = '';
         if( !$.isEmptyObject(pictureTag) && pictureTag.data.length) {
             var array = new Uint8Array(pictureTag.data);
             data = bufferToBase64(array);
@@ -1151,6 +1124,33 @@ var filesCollection = false,
         }
 
         if(typeof callback === 'function') callback( data );
+
+
+
+        function bufferToBase64 (buf) {
+            var binstr = Array.prototype.map.call(buf, function (ch) {
+                return String.fromCharCode(ch);
+            }).join('');
+
+            return btoa(binstr);
+        }
+
+        function getMimeType (formatTag, callback) {
+            var imgFormats = {
+                gif: 'image/gif',
+                jpg: 'image/jpg',
+                jpeg: 'image/jpeg',
+                png: 'image/png'
+            };
+
+            formatTag = formatTag.toLowerCase();
+
+            for (var key in imgFormats) {
+                if( formatTag.indexOf(key) + 1) {
+                    return callback( imgFormats[key] )
+                }
+            }
+        }
     };
 
     return {
