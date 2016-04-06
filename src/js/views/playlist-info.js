@@ -5,13 +5,14 @@ App.Views.PlaylistInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playlist-info',
 
     events: {
-        'click .tracks-delete': 'destroyAllCollection'
+        'click .tracks-delete': 'destroyAllCollection',
+        'click .stop-adding-tracks': 'disableParseLoadedFilesEvent'
     },
 
     initialize: function () {
         this.listenTo(App.Tracks, 'all', this.refreshData);
-        App.Events.on('start-file-parse-process', this.startParseProcess, this);
-        App.Events.on('stop-file-parse-process', this.stopParseProcess, this);
+        App.Events.on('start-audio-parsing', this.startParseProcess, this);
+        App.Events.on('stop-audio-parsing', this.stopParseProcess, this);
     },
 
     render: function () {
@@ -24,6 +25,8 @@ App.Views.PlaylistInfo = Backbone.View.extend({
         this.$amount = this.$el.find('.amount');
         this.$duration = this.$el.find('.duration');
         this.$info = this.$el.find('.info');
+        this.$stopAddTracks = this.$el.find('.stop-adding-tracks');
+        this.$tracksDelete = this.$el.find('.tracks-delete');
 
         return this;
     },
@@ -37,16 +40,27 @@ App.Views.PlaylistInfo = Backbone.View.extend({
         this.$info.html('Adding tracks')
                   .removeClass('hidden')
                   .addClass('processing');
+
+        this.$tracksDelete.addClass('hidden');
+        this.$stopAddTracks.removeClass('hidden');
     },
 
     stopParseProcess: function () {
         this.$info.addClass('hidden')
                   .html('')
                   .removeClass('processing');
+
+        this.$tracksDelete.removeClass('hidden');
+        this.$stopAddTracks.addClass('hidden');
+    },
+
+    disableParseLoadedFilesEvent: function () {
+        App.Events.trigger('disable-parse-loaded-files');
     },
 
     destroyAllCollection: function () {
         console.log('ToDo: Add load process of destroying'); //ToDo: Add load process of destroying
+        App.Events.trigger('start-destroying-of-tracks-collection');
         App.Tracks.destroyAllCollection();
     }
 });

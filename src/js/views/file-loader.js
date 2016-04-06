@@ -24,11 +24,11 @@ App.Views.FileLoader = Backbone.View.extend({
     filesLoading: function () {
 
         var that = this;
-
+        console.log('start loading');
         $.ajax({
             url: App.Settings.phpServer.loadUrl,
             type: 'GET',
-            cache: false,
+            cache: true,
             dataType: 'json',
             error: function(xhr, ajaxOptions, thrownError) {
                 App.Events.trigger('stop-loading-process');
@@ -60,6 +60,6 @@ App.Views.FileLoader = Backbone.View.extend({
     },
 
     messages: {
-        "files_not_found": "Files not found. Please, upload files" //ToDo: Delete if we close loading files
+        "files_not_found": "Files not found. Please, upload files"
     }
 });

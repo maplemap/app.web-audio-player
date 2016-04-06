@@ -19,6 +19,7 @@ App.TmpEngine = (function () {
                 return '<li class="duration"><span>'+ data.duration +'</span></li>\
                         <li class="amount"><span>'+ data.amount +'</span></li>\
                         <li class="info hidden"></li>\
+                        <li class="stop-adding-tracks hidden"><button>stop process</button></li>\
                         <li class="tracks-delete"><button>delete all</button></li>'
             },
 

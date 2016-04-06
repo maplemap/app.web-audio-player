@@ -72,7 +72,7 @@
   }
 
   .hidden {
-    display: none;
+    display: none !important;
   }
 
   .processing:after {
@@ -259,7 +259,8 @@
         position: relative;
       }
 
-      &.tracks-delete {
+      &.tracks-delete,
+      &.stop-adding-tracks {
         float: right;
         cursor: pointer;
       }
