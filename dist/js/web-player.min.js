@@ -334,7 +334,7 @@ App.Views.PlaylistInfo = Backbone.View.extend({
 
     events: {
         'click .tracks-delete': 'destroyAllCollection',
-        'click .stop-adding-tracks': 'stopParseLoadedFilesEvent'
+        'click .stop-adding-tracks': 'disableParseLoadedFilesEvent'
     },
 
     initialize: function () {
@@ -382,8 +382,8 @@ App.Views.PlaylistInfo = Backbone.View.extend({
         this.$stopAddTracks.addClass('hidden');
     },
 
-    stopParseLoadedFilesEvent: function () {
-        App.Events.trigger('stop-parse-loaded-files');
+    disableParseLoadedFilesEvent: function () {
+        App.Events.trigger('disable-parse-loaded-files');
     },
 
     destroyAllCollection: function () {
@@ -953,7 +953,7 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$actionBtn
             .html('Add to playlist')
             .on('click', function () {
-                App.Events.trigger('start-parse-loaded-files');
+                App.Events.trigger('enable-parse-loaded-files');
                 App.Events.trigger('disable-modal-window');
             })
     },
@@ -1011,7 +1011,7 @@ App.Views.File = Backbone.View.extend({
 });
 'use strict';
 
-App.AudioParsing = (function (jsmediatags, async, w) {
+App.AudioParsing = (function (jsmediatags, async) {
 
 var filesCollection = false,
     tracksCollection = false,
@@ -1029,9 +1029,8 @@ var filesCollection = false,
     stop = function () {
         if(!filesCollection) return;
 
-        console.log('stop');
         breakPoint = true;
-        currentIndex = 0
+        currentIndex = 0;
         filesCollection.destroyAllCollection();
 
         App.Events.trigger('stop-audio-parsing');
@@ -1039,10 +1038,6 @@ var filesCollection = false,
 
     queueParse = function () {
         var filesArray = filesCollection.toJSON();
-        console.log(filesArray.length);
-        console.log(currentIndex);
-        console.log((filesArray && filesArray.length > currentIndex));
-        console.log((filesArray.length > currentIndex));
 
         if(filesArray && filesArray.length > currentIndex) {
             breakPoint = false;
@@ -1062,10 +1057,8 @@ var filesCollection = false,
 
         async.waterfall([
             function(callback) {
-                console.log('getTags');
-                console.log(file);
                 getTags(file.link, function (err, tags) {
-                    if(err) return callback(true);
+                    if(err) return callback(err);
 
                     trackModel = {
                         link: file.link,
@@ -1080,27 +1073,16 @@ var filesCollection = false,
 
                     callback(null, tags);
                 });
-            }//,
-            //function(tags, callback) {
-            //    console.log('getBase64');
-            //    getBase64(tags.picture, function (dataBase64) {
-            //        trackModel.image = dataBase64;
-            //
-            //        callback(null);
-            //    });
-            //},
-            //function(callback) {
-            //    console.log('getDuration');
-            //    trackModel.duration = file.duration;
-            //
-            //    getDuration(file.link, function (seconds) {
-            //
-            //        seconds = parseInt(seconds, 10);
-            //        trackModel.duration = App.Tracks.getTimeFromSeconds( seconds );
-            //
-            //        callback(null, seconds);
-            //    });
-            //}
+            },
+            function(tags, callback) {
+                getBase64(tags.picture, function (dataBase64) {
+                    trackModel.image = dataBase64;
+                    console.log(trackModel.name);
+                    console.log(tags.picture);
+
+                    callback(null);
+                });
+            }
         ], function (err) {
             if(err) {
                 startNextFile();
@@ -1108,15 +1090,12 @@ var filesCollection = false,
             }
             if(breakPoint) return console.log('parsing break');
 
-            console.log('addFile to tracksCollection');
             tracksCollection.add( trackModel );
-
             startNextFile();
         });
     },
 
     getTags = function (filelink, callback) {
-        console.log('getTags');
         var waitingPeriod = setTimeout(function () {
             callback(true);
         }, 4000);
@@ -1135,32 +1114,43 @@ var filesCollection = false,
         });
     },
 
-    getBase64 = function (imgTag, callback) {
-        var data = '';
+    getBase64 = function (pictureTag, callback) {
+        var data = '',
+            getMimeType = function (formatTag, callback) {
+                var imgFormats = {
+                        gif: 'image/gif',
+                        jpeg: 'image/jpeg1',
+                        png: 'image/png'
+                    };
 
-        if( !$.isEmptyObject(imgTag) && imgTag.data.length) {
-            var array = new Uint8Array(imgTag.data);
+                formatTag = formatTag.toLowerCase();
+
+                for (var key in imgFormats) {
+                    if( formatTag.indexOf(key) + 1) {
+                        return callback( imgFormats[key] )
+                    }
+                }
+            },
+
+            bufferToBase64 = function (buf) {
+                var binstr = Array.prototype.map.call(buf, function (ch) {
+                    return String.fromCharCode(ch);
+                }).join('');
+
+                return btoa(binstr);
+            };
+
+
+        if( !$.isEmptyObject(pictureTag) && pictureTag.data.length) {
+            var array = new Uint8Array(pictureTag.data);
             data = bufferToBase64(array);
 
-            data = 'data:' + imgTag.format + ';base64,' + data;
+            getMimeType(pictureTag.format, function (mimeType) {
+                data = 'data:' + mimeType + ';base64,' + data;
+            });
         }
 
         if(typeof callback === 'function') callback( data );
-
-        function bufferToBase64(buf) {
-            var binstr = Array.prototype.map.call(buf, function (ch) {
-                return String.fromCharCode(ch);
-            }).join('');
-            return btoa(binstr);
-        }
-    },
-
-    getDuration = function (filelink, callback) {
-        var audio = new Audio();
-        audio.onloadedmetadata = function() {
-            if(typeof callback === 'function') callback( this.duration );
-        };
-        audio.src = filelink;
     };
 
     return {
@@ -1169,8 +1159,8 @@ var filesCollection = false,
     }
 })(jsmediatags, async, window);
 
-App.Events.on('start-parse-loaded-files', App.AudioParsing.start);
-App.Events.on('stop-parse-loaded-files', App.AudioParsing.stop);
+App.Events.on('enable-parse-loaded-files', App.AudioParsing.start);
+App.Events.on('disable-parse-loaded-files', App.AudioParsing.stop);
 (function(A){if("object"===typeof exports&&"undefined"!==typeof module)module.f=A();else if("function"===typeof define&&define.M)define([],A);else{var g;"undefined"!==typeof window?g=window:"undefined"!==typeof global?g=global:"undefined"!==typeof self?g=self:g=this;g.ID3=A()}})(function(){return function g(l,h,f){function c(b,d){if(!h[b]){if(!l[b]){var e="function"==typeof require&&require;if(!d&&e)return e(b,!0);if(a)return a(b,!0);e=Error("Cannot find module '"+b+"'");throw e.code="MODULE_NOT_FOUND",
 e;}e=h[b]={f:{}};l[b][0].call(e.f,function(a){var e=l[b][1][a];return c(e?e:a)},e,e.f,g,l,h,f)}return h[b].f}for(var a="function"==typeof require&&require,b=0;b<f.length;b++)c(f[b]);return c}({1:[function(g,l){var h=g("./stringutils");if("undefined"!==typeof document){var f=document.createElement("script");f.type="text/vbscript";f.textContent="Function IEBinary_getByteAt(strBinary, iOffset)\r\n\tIEBinary_getByteAt = AscB(MidB(strBinary,iOffset+1,1))\r\nEnd Function\r\nFunction IEBinary_getLength(strBinary)\r\n\tIEBinary_getLength = LenB(strBinary)\r\nEnd Function\r\n";
 document.getElementsByTagName("head")[0].appendChild(f)}else g("btoa"),g("atob");l.f=function(c,a,b){var m=a||0,d=0;"string"==typeof c?(d=b||c.length,this.a=function(a){return c.charCodeAt(a+m)&255}):"unknown"==typeof c&&(d=b||IEBinary_getLength(c),this.a=function(a){return IEBinary_getByteAt(c,a+m)});this.s=function(a,b){for(var d=Array(b),m=0;m<b;m++)d[m]=this.a(a+m);return d};this.l=function(){return d};this.g=function(a,b){return 0!=(this.a(a)&1<<b)};this.F=function(a){a=(this.a(a+1)<<8)+this.a(a);
