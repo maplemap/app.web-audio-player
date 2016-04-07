@@ -4,6 +4,7 @@ App.Views.File = Backbone.View.extend({
     tagName: 'li',
 
     events: {
+        'click .choose': 'choose',
         'click .delete': 'destroy'
     },
 
@@ -33,5 +34,13 @@ App.Views.File = Backbone.View.extend({
 
     changeProgressBar: function () {
         this.$progressBar.text( this.model.get('progressDone') + '%' );
+    },
+
+    choose: function (e) {
+        var target = $(e.target),
+            className = 'selected';
+
+        target.toggleClass(className);
+        target.parent('li').toggleClass(className);
     }
 });
