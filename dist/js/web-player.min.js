@@ -78,7 +78,9 @@ App.TmpEngine = (function () {
 
             fileLoaderListInfo: function (data) {
                 return  '<li class="amount">0</li>\
-                        <li><button class="action-btn"></button></li>'
+                        <li class="selected-files">0</li>\
+                        <li><button class="action-btn"></button></li>\
+                        <li class="select hidden"><button>choose all</button></li>'
             },
 
             file: function (data) {
@@ -847,6 +849,8 @@ App.Views.LoadFileList = Backbone.View.extend({
     initialize: function () {
         this.listenTo(App.LoadFiles, 'add', this.addOne);
         App.Events.on('disable-modal-window', this.disableFileList, this);
+        App.Events.on('select-all-loading-files', this.selectAllFiles, this);
+        App.Events.on('deselect-all-loading-files', this.deselectAllFiles, this);
     },
 
     render: function () {
@@ -875,6 +879,14 @@ App.Views.LoadFileList = Backbone.View.extend({
         this.$el.perfectScrollbar({
             minScrollbarLength: 50
         });
+    },
+
+    selectAllFiles: function () {
+        this.$el.find('li').addClass('selected');
+    },
+
+    deselectAllFiles: function () {
+        this.$el.find('li').removeClass('selected');
     }
 });
 'use strict';
@@ -928,10 +940,14 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     tagName: 'ul',
     className: App.Settings.classPrefix + '-file-loader-List-info',
 
+    events: {
+        'click .select': 'toggleSelectLoadingFiles'
+    },
+
     initialize: function () {
         this.listenTo(App.LoadFiles, 'all', this.refreshData);
-        App.Events.on('start-loading-process', this.addLoader, this);
-        App.Events.on('stop-loading-process', this.removeLoader, this);
+        App.Events.on('start-loading-process', this.startLoadingProcess, this);
+        App.Events.on('stop-loading-process', this.stopLoadingProcess, this);
         App.Events.on('activate-add-to-pl-btn', this.activateAddToPlaylistBtn, this);
     },
 
@@ -939,7 +955,9 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$el.html( App.TmpEngine.getTemplate('fileLoaderListInfo') );
 
         this.$amount = this.$el.find('.amount');
+        this.$selectedFiles = this.$el.find('.selected-files');
         this.$actionBtn = this.$el.find('.action-btn');
+        this.$selectAll = this.$el.find('.select');
 
         this.delegateEvents(this.events);
 
@@ -947,6 +965,12 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     },
 
     refreshData: function () {
+        var selectedFiles = 0;
+        _.each(App.LoadFiles.toJSON(), function (file) {
+            if(file.selected) selectedFiles++;
+        });
+
+        this.$selectedFiles.html( selectedFiles );
         this.$amount.html( App.LoadFiles.length );
     },
 
@@ -959,18 +983,30 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
             })
     },
 
-    addLoader: function () {
+    startLoadingProcess: function () {
         this.$actionBtn
             .html('Loading')
             .attr('disabled', 'disabled')
             .addClass('processing');
     },
 
-    removeLoader: function () {
+    stopLoadingProcess: function () {
         this.$actionBtn
             .removeAttr('disabled')
             .removeClass('processing')
             .html('');
+
+        this.$selectAll.removeClass('hidden');
+    },
+
+    toggleSelectLoadingFiles: function () {
+        if( this.$selectAll.hasClass('selected-all')) {
+            this.$selectAll.removeClass('selected-all');
+            App.Events.trigger('deselect-all-loading-files');
+        } else {
+            this.$selectAll.addClass('selected-all');
+            App.Events.trigger('select-all-loading-files');
+        }
     }
 });
 'use strict';
@@ -1012,11 +1048,12 @@ App.Views.File = Backbone.View.extend({
     },
 
     choose: function (e) {
-        var target = $(e.target),
-            className = 'selected';
+        var $parentLi = $(e.target).parent('li');
 
-        target.toggleClass(className);
-        target.parent('li').toggleClass(className);
+        $parentLi.toggleClass('selected');
+
+        var selected = $parentLi.hasClass('selected');
+        this.model.set('selected', selected);
     }
 });
 'use strict';

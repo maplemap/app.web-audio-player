@@ -37,10 +37,11 @@ App.Views.File = Backbone.View.extend({
     },
 
     choose: function (e) {
-        var target = $(e.target),
-            className = 'selected';
+        var $parentLi = $(e.target).parent('li');
 
-        target.toggleClass(className);
-        target.parent('li').toggleClass(className);
+        $parentLi.toggleClass('selected');
+
+        var selected = $parentLi.hasClass('selected');
+        this.model.set('selected', selected);
     }
 });

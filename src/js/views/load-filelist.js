@@ -7,6 +7,8 @@ App.Views.LoadFileList = Backbone.View.extend({
     initialize: function () {
         this.listenTo(App.LoadFiles, 'add', this.addOne);
         App.Events.on('disable-modal-window', this.disableFileList, this);
+        App.Events.on('select-all-loading-files', this.selectAllFiles, this);
+        App.Events.on('deselect-all-loading-files', this.deselectAllFiles, this);
     },
 
     render: function () {
@@ -35,5 +37,13 @@ App.Views.LoadFileList = Backbone.View.extend({
         this.$el.perfectScrollbar({
             minScrollbarLength: 50
         });
+    },
+
+    selectAllFiles: function () {
+        this.$el.find('li').addClass('selected');
+    },
+
+    deselectAllFiles: function () {
+        this.$el.find('li').removeClass('selected');
     }
 });
