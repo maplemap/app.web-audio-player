@@ -19,6 +19,7 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$el.html( App.TmpEngine.getTemplate('fileLoaderListInfo') );
 
         this.$amount = this.$el.find('.amount');
+        this.$selectedFiles = this.$el.find('.selected-files');
         this.$actionBtn = this.$el.find('.action-btn');
         this.$selectAll = this.$el.find('.select');
 
@@ -28,6 +29,12 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     },
 
     refreshData: function () {
+        var selectedFiles = 0;
+        _.each(App.LoadFiles.toJSON(), function (file) {
+            if(file.selected) selectedFiles++;
+        });
+
+        this.$selectedFiles.html( selectedFiles );
         this.$amount.html( App.LoadFiles.length );
     },
 
