@@ -246,6 +246,7 @@ App.Collections.Files = Backbone.Collection.extend({
 
 App.UploadFiles = new App.Collections.Files();
 App.LoadFiles = new App.Collections.Files();
+App.SelectedFiles = new App.Collections.Files();
 App.ParseFiles = new App.Collections.Files();
 'use strict';
 
@@ -945,7 +946,8 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.listenTo(App.LoadFiles, 'all', this.refreshData);
+        this.listenTo(App.LoadFiles, 'all', this.refreshLoadData);
+        this.listenTo(App.SelectedFiles, 'all', this.refreshSelectedData);
         App.Events.on('start-loading-process', this.startLoadingProcess, this);
         App.Events.on('stop-loading-process', this.stopLoadingProcess, this);
         App.Events.on('activate-add-to-pl-btn', this.activateAddToPlaylistBtn, this);
@@ -964,14 +966,12 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         return this;
     },
 
-    refreshData: function () {
-        var selectedFiles = 0;
-        _.each(App.LoadFiles.toJSON(), function (file) {
-            if(file.selected) selectedFiles++;
-        });
-
-        this.$selectedFiles.html( selectedFiles );
+    refreshLoadData: function () {
         this.$amount.html( App.LoadFiles.length );
+    },
+
+    refreshSelectedData: function () {
+        this.$selectedFiles.html( App.SelectedFiles.length );
     },
 
     activateAddToPlaylistBtn: function () {
@@ -1003,9 +1003,15 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         if( this.$selectAll.hasClass('selected-all')) {
             this.$selectAll.removeClass('selected-all');
             App.Events.trigger('deselect-all-loading-files');
+
+            App.SelectedFiles.destroyAllCollection();
         } else {
             this.$selectAll.addClass('selected-all');
             App.Events.trigger('select-all-loading-files');
+
+            _.each(App.LoadFiles.models, function(model) {
+                App.SelectedFiles.add( model );
+            });
         }
     }
 });
@@ -1052,8 +1058,12 @@ App.Views.File = Backbone.View.extend({
 
         $parentLi.toggleClass('selected');
 
-        var selected = $parentLi.hasClass('selected');
-        this.model.set('selected', selected);
+        if( $parentLi.hasClass('selected') ) {
+            App.SelectedFiles.add( this.model );
+        } else {
+            console.log(this.model);
+            App.SelectedFiles.remove( this.model );
+        }
     }
 });
 'use strict';
@@ -1066,7 +1076,7 @@ var filesCollection = false,
     currentIndex = 0,
 
     start = function () {
-        filesCollection = App.LoadFiles;
+        filesCollection = App.SelectedFiles;
         tracksCollection = App.Tracks;
 
         queueParse();

@@ -11,4 +11,5 @@ App.Collections.Files = Backbone.Collection.extend({
 
 App.UploadFiles = new App.Collections.Files();
 App.LoadFiles = new App.Collections.Files();
+App.SelectedFiles = new App.Collections.Files();
 App.ParseFiles = new App.Collections.Files();

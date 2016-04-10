@@ -8,7 +8,7 @@ var filesCollection = false,
     currentIndex = 0,
 
     start = function () {
-        filesCollection = App.LoadFiles;
+        filesCollection = App.SelectedFiles;
         tracksCollection = App.Tracks;
 
         queueParse();

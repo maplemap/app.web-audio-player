@@ -41,7 +41,11 @@ App.Views.File = Backbone.View.extend({
 
         $parentLi.toggleClass('selected');
 
-        var selected = $parentLi.hasClass('selected');
-        this.model.set('selected', selected);
+        if( $parentLi.hasClass('selected') ) {
+            App.SelectedFiles.add( this.model );
+        } else {
+            console.log(this.model);
+            App.SelectedFiles.remove( this.model );
+        }
     }
 });
