@@ -60,7 +60,7 @@ App.TmpEngine = (function () {
                 return  '<li class="amount">0</li>\
                         <li class="selected-files">0</li>\
                         <li><button class="action-btn"></button></li>\
-                        <li class="select hidden"><button>choose all</button></li>'
+                        <li class="select-all hidden"><button>choose all</button></li>'
             },
 
             file: function (data) {

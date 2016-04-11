@@ -339,6 +339,7 @@
 #webAudioPlayer .wap-playlist-info li.selected-files,
 #webAudioPlayer .wap-file-loader-List-info li.selected-files,
 #webAudioPlayer .wap-file-upload-list-info li.selected-files {
+  width: 10px;
   margin-left: 7px;
 }
 #webAudioPlayer .wap-playlist-info li.info,
@@ -397,7 +398,7 @@
   opacity: 1;
   margin-top: 7px;
 }
-#webAudioPlayer .wap-file-loader-List-info li.select {
+#webAudioPlayer .wap-file-loader-List-info li.select-all {
   float: right;
 }
 #webAudioPlayer .wap-file-uploader {

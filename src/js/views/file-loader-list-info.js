@@ -5,7 +5,7 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
     className: App.Settings.classPrefix + '-file-loader-List-info',
 
     events: {
-        'click .select': 'toggleSelectLoadingFiles'
+        'click .select-all': 'toggleAllSelect'
     },
 
     initialize: function () {
@@ -22,7 +22,7 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$amount = this.$el.find('.amount');
         this.$selectedFiles = this.$el.find('.selected-files');
         this.$actionBtn = this.$el.find('.action-btn');
-        this.$selectAll = this.$el.find('.select');
+        this.$selectAll = this.$el.find('.select-all');
 
         this.delegateEvents(this.events);
 
@@ -41,6 +41,8 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$actionBtn
             .html('Add to playlist')
             .on('click', function () {
+                if(!App.SelectedFiles.length) return;
+
                 App.Events.trigger('enable-parse-loaded-files');
                 App.Events.trigger('disable-modal-window');
             })
@@ -62,18 +64,18 @@ App.Views.FileLoaderListInfo = Backbone.View.extend({
         this.$selectAll.removeClass('hidden');
     },
 
-    toggleSelectLoadingFiles: function () {
+    toggleAllSelect: function () {
+        App.SelectedFiles.destroyAllCollection();
+
         if( this.$selectAll.hasClass('selected-all')) {
             this.$selectAll.removeClass('selected-all');
             App.Events.trigger('deselect-all-loading-files');
-
-            App.SelectedFiles.destroyAllCollection();
         } else {
             this.$selectAll.addClass('selected-all');
             App.Events.trigger('select-all-loading-files');
 
-            _.each(App.LoadFiles.models, function(model) {
-                App.SelectedFiles.add( model );
+            App.LoadFiles.each( function(model) {
+                App.SelectedFiles.add( new Backbone.Model (model.toJSON() ) );
             });
         }
     }

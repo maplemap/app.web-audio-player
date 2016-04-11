@@ -37,15 +37,17 @@ App.Views.File = Backbone.View.extend({
     },
 
     choose: function (e) {
-        var $parentLi = $(e.target).parent('li');
+        var $parentLi = $(e.target).parent('li'),
+            index, model;
 
         $parentLi.toggleClass('selected');
+        index = this.model.get('index');
 
         if( $parentLi.hasClass('selected') ) {
-            App.SelectedFiles.add( this.model );
+            App.SelectedFiles.add( new Backbone.Model( this.model.toJSON() ) );
         } else {
-            console.log(this.model);
-            App.SelectedFiles.remove( this.model );
+            model = App.SelectedFiles.where({ index: index })[0];
+            App.SelectedFiles.remove( model );
         }
     }
 });
