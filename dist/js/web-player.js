@@ -474,7 +474,7 @@ App.Views.TrackList = Backbone.View.extend({
             that.addOneToCollection(track);
         });
 
-        this.initTrackerScroll();
+        App.Helper.initScroll( this.$el );
 
         return this;
     },
@@ -496,12 +496,6 @@ App.Views.TrackList = Backbone.View.extend({
         var that = this;
         App.Tracks.each(function (model, indx) {
             that.addOne(model);
-        });
-    },
-
-    initTrackerScroll: function () {
-        this.$el.perfectScrollbar({
-            minScrollbarLength: 50
         });
     }
 });
@@ -804,7 +798,7 @@ App.Views.UploadFileList = Backbone.View.extend({
     },
 
     render: function () {
-        this.initFileListScroll();
+        App.Helper.initScroll( this.$el );
 
         return this;
     },
@@ -833,12 +827,6 @@ App.Views.UploadFileList = Backbone.View.extend({
 
         App.Events.trigger('file-upload-abort', 'cancel');
         App.UploadFiles.destroyAllCollection();
-    },
-
-    initFileListScroll: function () {
-        this.$el.perfectScrollbar({
-            minScrollbarLength: 50
-        });
     }
 });
 'use strict';
@@ -855,7 +843,7 @@ App.Views.LoadFileList = Backbone.View.extend({
     },
 
     render: function () {
-        this.initFileListScroll();
+        App.Helper.initScroll( this.$el );
 
         return this;
     },
@@ -874,12 +862,6 @@ App.Views.LoadFileList = Backbone.View.extend({
 
     disableFileList: function () {
         App.Events.trigger('hide-filelist');
-    },
-
-    initFileListScroll: function () {
-        this.$el.perfectScrollbar({
-            minScrollbarLength: 50
-        });
     },
 
     selectAllFiles: function () {
@@ -1258,5 +1240,11 @@ h[c++],e=h[c++],l=h[c++],g=((g&7)<<18)+((d&63)<<12)+((e&63)<<6)+(l&63)-65536;a[b
 'use strict';
 
 App.Helper = {
-    fileCounter: 1
+    fileCounter: 1,
+
+    initScroll: function (element) {
+        element.perfectScrollbar({
+            minScrollbarLength: 50
+        });
+    }
 };

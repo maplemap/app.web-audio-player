@@ -19,7 +19,7 @@ App.Views.TrackList = Backbone.View.extend({
             that.addOneToCollection(track);
         });
 
-        this.initTrackerScroll();
+        App.Helper.initScroll( this.$el );
 
         return this;
     },
@@ -41,12 +41,6 @@ App.Views.TrackList = Backbone.View.extend({
         var that = this;
         App.Tracks.each(function (model, indx) {
             that.addOne(model);
-        });
-    },
-
-    initTrackerScroll: function () {
-        this.$el.perfectScrollbar({
-            minScrollbarLength: 50
         });
     }
 });

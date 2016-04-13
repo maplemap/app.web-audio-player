@@ -10,7 +10,7 @@ App.Views.UploadFileList = Backbone.View.extend({
     },
 
     render: function () {
-        this.initFileListScroll();
+        App.Helper.initScroll( this.$el );
 
         return this;
     },
@@ -39,11 +39,5 @@ App.Views.UploadFileList = Backbone.View.extend({
 
         App.Events.trigger('file-upload-abort', 'cancel');
         App.UploadFiles.destroyAllCollection();
-    },
-
-    initFileListScroll: function () {
-        this.$el.perfectScrollbar({
-            minScrollbarLength: 50
-        });
     }
 });

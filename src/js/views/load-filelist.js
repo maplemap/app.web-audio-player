@@ -12,7 +12,7 @@ App.Views.LoadFileList = Backbone.View.extend({
     },
 
     render: function () {
-        this.initFileListScroll();
+        App.Helper.initScroll( this.$el );
 
         return this;
     },
@@ -31,12 +31,6 @@ App.Views.LoadFileList = Backbone.View.extend({
 
     disableFileList: function () {
         App.Events.trigger('hide-filelist');
-    },
-
-    initFileListScroll: function () {
-        this.$el.perfectScrollbar({
-            minScrollbarLength: 50
-        });
     },
 
     selectAllFiles: function () {
