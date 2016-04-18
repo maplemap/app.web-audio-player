@@ -33,6 +33,7 @@ var path = {
                 './src/js/collections/file.js',
                 './src/js/views/player.js',
                 './src/js/views/playlist.js',
+                './src/js/views/playbox.js',
                 './src/js/views/playlist-info.js',
                 './src/js/views/modal-window.js',
                 './src/js/views/track-list.js',
