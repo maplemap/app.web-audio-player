@@ -472,6 +472,12 @@
 #webAudioPlayer .wap-file-loader .wap-fileList .delete {
   display: none;
 }
+#webAudioPlayer .wap-playbox {
+  min-height: 80px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  margin: 0 0 2px 0;
+}
 #webAudioPlayer .wap-playlist {
   position: relative;
   min-height: 250px;

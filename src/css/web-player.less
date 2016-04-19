@@ -10,10 +10,14 @@
 @playlist-min-height: 250px;
 @playlist-max-height: 350px;
 
+@playbox-min-height: 80px;
+
 @processing-width: 13px;
 @processing-height: 13px;
 
 @track-active-hover-bg: #ddd;
+
+@block-indent: 2px;
 
 
 @font-face {
@@ -401,6 +405,14 @@
       }
   }
 
+  .@{class-prefix}-playbox {
+    min-height: @playbox-min-height;
+    border: 1px solid @player-main-color;
+    border-radius: @player-main-border-radius;
+    margin: 0 0 @block-indent 0;
+  }
+
+
   .@{class-prefix}-playlist {
     position: relative;
     min-height: @playlist-min-height;
@@ -428,7 +440,7 @@
     border: 1px solid @player-main-color;
     border-radius: @player-main-border-radius;
     padding: 0 8px;
-    margin: 2px 0 0 0;
+    margin: @block-indent 0 0 0;
     background: #fff;
 
     li {
