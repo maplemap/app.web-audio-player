@@ -10,7 +10,7 @@
 @playlist-min-height: 250px;
 @playlist-max-height: 350px;
 
-@playbox-min-height: 80px;
+@playbox-height: 80px;
 
 @processing-width: 13px;
 @processing-height: 13px;
@@ -406,10 +406,30 @@
   }
 
   .@{class-prefix}-playbox {
-    min-height: @playbox-min-height;
+    height: @playbox-height;
+    box-sizing: content-box;
     border: 1px solid @player-main-color;
     border-radius: @player-main-border-radius;
+    padding: 5px;
     margin: 0 0 @block-indent 0;
+
+    .@{class-prefix}-information {
+      width: 100%;
+      height: 80%;
+    }
+
+    .album-cover {
+      float: left;
+      width: @playbox-height;
+      height: @playbox-height;
+      vertical-align: middle;
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: @player-main-border-radius;
+      }
+    }
   }
 
 

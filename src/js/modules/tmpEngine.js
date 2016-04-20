@@ -9,6 +9,12 @@ App.TmpEngine = (function () {
 
         Templates = {
 
+            playbox: function () {
+                return '<div class="album-cover">\
+                            <img src="../dist/img/default-album-cover.png" alt="album-cover">\
+                        </div>'
+            },
+
             audiobox: function () {
                 return '<div class="'+ App.Settings.classPrefix +'-audiobox">\
                             <audio></audio>\
@@ -89,9 +95,6 @@ App.TmpEngine = (function () {
 
 }());
 
-//<div class="'+ settings.classPrefix +'-header">\
-//<span class="'+ settings.classPrefix +'-logo"></span>\
-//</div>\
 //<div class="'+ settings.classPrefix +'-information">\
 //<div class="'+ settings.classPrefix +'-album-cover">\
 //<img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\

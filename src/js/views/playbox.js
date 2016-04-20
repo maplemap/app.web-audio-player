@@ -4,13 +4,17 @@ App.Views.Playbox = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playbox',
 
     initialize: function () {
-        this.audioBoxView = App.TmpEngine.getTemplate('audiobox');
+        this.$audioBox = $( App.TmpEngine.getTemplate('audiobox') );
+        this.playbox = App.TmpEngine.getTemplate('playbox');
 
         this.render();
     },
 
     render: function () {
-        this.$el.append( this.audioBoxView );
+        this.$el.append( this.$audioBox );
+        this.$el.append( this.playbox );
+
+        this.$albumCover = this.$el.find('.album-cover');
 
         return this;
     }
