@@ -420,14 +420,16 @@
 
     .album-cover {
       float: left;
-      width: @playbox-height;
-      height: @playbox-height;
+      width: @playbox-height - 20;
+      height: @playbox-height - 20;
       vertical-align: middle;
+      border: 1px solid #D4D4D4;
+      border-radius: @player-main-border-radius;
 
       img {
         width: 100%;
         height: auto;
-        border-radius: @player-main-border-radius;
+        border: 1px solid @player-main-color;
       }
     }
   }

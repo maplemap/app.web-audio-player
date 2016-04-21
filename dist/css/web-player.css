@@ -486,14 +486,16 @@
 }
 #webAudioPlayer .wap-playbox .album-cover {
   float: left;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   vertical-align: middle;
+  border: 1px solid #D4D4D4;
+  border-radius: 3px;
 }
 #webAudioPlayer .wap-playbox .album-cover img {
   width: 100%;
   height: auto;
-  border-radius: 3px;
+  border: 1px solid #333;
 }
 #webAudioPlayer .wap-playlist {
   position: relative;

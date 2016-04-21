@@ -30,9 +30,7 @@ App.TmpEngine = (function () {
         Templates = {
 
             playbox: function () {
-                return '<div class="album-cover">\
-                            <img src="../dist/img/default-album-cover.png" alt="album-cover">\
-                        </div>'
+                return '<div class="album-cover"></div>'
             },
 
             audiobox: function () {
@@ -115,6 +113,8 @@ App.TmpEngine = (function () {
 
 }());
 
+
+//<img src="../dist/img/default-album-cover.png1" alt="album-cover">
 //<div class="'+ settings.classPrefix +'-information">\
 //<div class="'+ settings.classPrefix +'-album-cover">\
 //<img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
