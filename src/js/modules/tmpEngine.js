@@ -10,7 +10,10 @@ App.TmpEngine = (function () {
         Templates = {
 
             playbox: function () {
-                return '<div class="album-cover"></div>'
+                return '<div class="album-cover no-cover">\
+                            <img src="" alt="album-cover" />\
+                        </div>\
+                        <div class="progress-bar"></div>'
             },
 
             audiobox: function () {

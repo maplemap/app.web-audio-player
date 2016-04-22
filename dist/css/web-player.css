@@ -486,16 +486,34 @@
 }
 #webAudioPlayer .wap-playbox .album-cover {
   float: left;
-  width: 60px;
-  height: 60px;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  text-align: center;
   vertical-align: middle;
   border: 1px solid #D4D4D4;
-  border-radius: 3px;
+}
+#webAudioPlayer .wap-playbox .album-cover:before {
+  content: '';
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .4;
+  background: url("../img/default-album-cover.png") center center no-repeat;
+  background-size: 90% 90%;
 }
 #webAudioPlayer .wap-playbox .album-cover img {
   width: 100%;
   height: auto;
-  border: 1px solid #333;
+}
+#webAudioPlayer .wap-playbox .album-cover.no-cover:before {
+  visibility: visible;
+}
+#webAudioPlayer .wap-playbox .album-cover.no-cover img {
+  display: none;
 }
 #webAudioPlayer .wap-playlist {
   position: relative;

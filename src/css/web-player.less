@@ -420,16 +420,39 @@
 
     .album-cover {
       float: left;
-      width: @playbox-height - 20;
-      height: @playbox-height - 20;
+      position: relative;
+      width: @playbox-height;
+      height: @playbox-height;
+      text-align: center;
       vertical-align: middle;
       border: 1px solid #D4D4D4;
-      border-radius: @player-main-border-radius;
+
+      &:before {
+        content: '';
+        visibility: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        opacity: .4;
+        background: url("../img/default-album-cover.png") center center no-repeat;
+        background-size: 90% 90%;
+      }
 
       img {
         width: 100%;
         height: auto;
-        border: 1px solid @player-main-color;
+      }
+
+      &.no-cover {
+
+        &:before {
+          visibility: visible;
+        }
+        img {
+          display: none;
+        }
       }
     }
   }
