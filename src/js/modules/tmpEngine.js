@@ -13,7 +13,9 @@ App.TmpEngine = (function () {
                 return '<div class="album-cover no-cover">\
                             <img src="" alt="album-cover" />\
                         </div>\
-                        <div class="progress-bar"></div>'
+                        <div class="controls">\
+                            <div class="progress-bar"></div>\
+                        </div>'
             },
 
             audiobox: function () {

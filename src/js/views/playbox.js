@@ -15,8 +15,22 @@ App.Views.Playbox = Backbone.View.extend({
         this.$el.append( this.playbox );
 
         this.$albumCover = this.$el.find('.album-cover');
+        this.$progressBar = this.$el.find('.progress-bar');
+
+        this.initProgressBar();
 
         return this;
+    },
+
+    initProgressBar: function () {
+        this.$progressBar.slider({
+            range: "min",
+            min: 0,
+            max: 100,
+            slide: function( event, ui ) {
+
+            }
+        });
     }
 });
 

@@ -474,7 +474,6 @@
 }
 #webAudioPlayer .wap-playbox {
   height: 80px;
-  box-sizing: content-box;
   border: 1px solid #333;
   border-radius: 3px;
   padding: 5px;
@@ -488,10 +487,10 @@
   float: left;
   position: relative;
   width: 80px;
-  height: 80px;
+  height: 78px;
   text-align: center;
   vertical-align: middle;
-  border: 1px solid #D4D4D4;
+  border: 1px solid rgba(51, 51, 51, 0.2);
 }
 #webAudioPlayer .wap-playbox .album-cover:before {
   content: '';
@@ -514,6 +513,29 @@
 }
 #webAudioPlayer .wap-playbox .album-cover.no-cover img {
   display: none;
+}
+#webAudioPlayer .wap-playbox .controls {
+  float: left;
+  position: relative;
+  width: 72%;
+  height: 80px;
+  margin-left: 5px;
+}
+#webAudioPlayer .wap-playbox .controls .progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  border: 1px solid #333;
+}
+#webAudioPlayer .wap-playbox .controls .progress-bar .ui-slider-range {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #333;
 }
 #webAudioPlayer .wap-playlist {
   position: relative;
@@ -578,4 +600,9 @@
 }
 #webAudioPlayer .ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
   width: 5px;
+}
+@media screen and (max-width: 320px) {
+  #webAudioPlayer .wap-playbox .controls {
+    width: 68%;
+  }
 }
