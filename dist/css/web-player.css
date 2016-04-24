@@ -521,13 +521,56 @@
   height: 80px;
   margin-left: 5px;
 }
-#webAudioPlayer .wap-playbox .controls .progress-bar {
+#webAudioPlayer .wap-playbox .controls .control-buttons,
+#webAudioPlayer .wap-playbox .controls .progress-bar,
+#webAudioPlayer .wap-playbox .controls .info-line {
   position: absolute;
-  bottom: 0;
   left: 0;
   width: 100%;
-  height: 5px;
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons {
+  bottom: 17px;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li {
+  display: inline-block;
+  list-style: none;
+  height: 17px;
+  text-align: center;
   cursor: pointer;
+  margin-left: 15px;
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li:first-child {
+  margin-left: 0;
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li:before {
+  font-family: Entypo, sans-serif;
+  font-size: 20px;
+  vertical-align: middle;
+  opacity: .9;
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li.stop:before {
+  content: '\25a0';
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li.prev:before {
+  content: '\23ea';
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li.play:before {
+  content: '\25b6';
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li.next:before {
+  content: '\23e9';
+}
+#webAudioPlayer .wap-playbox .controls .control-buttons li:active:before {
+  opacity: 1;
+}
+#webAudioPlayer .wap-playbox .controls .progress-bar {
+  bottom: 0;
+  height: 8px;
+  cursor: pointer;
+  opacity: .9;
   border: 1px solid #333;
 }
 #webAudioPlayer .wap-playbox .controls .progress-bar .ui-slider-range {
