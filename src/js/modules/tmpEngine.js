@@ -14,13 +14,19 @@ App.TmpEngine = (function () {
                             <img src="" alt="album-cover" />\
                         </div>\
                         <div class="controls">\
+                            <div class="info-line"></div>\
                             <ul class="control-buttons">\
                                 <li class="stop"></li>\
                                 <li class="play"></li>\
                                 <li class="prev"></li>\
                                 <li class="next"></li>\
                             </ul>\
-                            <div class="progress-bar"></div>\
+                            <div class="progress-bar">\
+                                <div class="track-time">\
+                                    <span class="played">0:00</span>\
+                                    <span class="total">0:00</span>\
+                                </div>\
+                            </div>\
                         </div>'
             },
 

@@ -462,13 +462,78 @@
       height: @playbox-height;
       margin-left: 5px;
 
-      .progress-bar {
+      .control-buttons,
+      .progress-bar,
+      .info-line {
         position: absolute;
-        bottom: 0;
         left: 0;
         width: 100%;
+      }
+
+      .control-buttons {
+        bottom: 12px;
+        text-align: left;
+        padding: 0;
+        margin: 0;
+
+        li {
+          display: inline-block;
+          list-style: none;
+          height: 17px;
+          text-align: center;
+          cursor: pointer;
+          margin-left: 10px;
+
+          &:first-child {
+            margin-left: 0;
+          }
+
+          &:before {
+            font-family: Entypo, sans-serif;
+            font-size: 18px;
+            vertical-align: middle;
+            opacity: .9;
+          }
+
+          &.stop {
+            &:before {
+              content: '\25a0';
+            }
+          }
+          &.prev {
+            &:before {
+              content: '\23ea';
+            }
+          }
+          &.play {
+            &:before {
+              content: '\25b6';
+            }
+          }
+          &.pause {
+            &:before {
+              content: '\2389';
+            }
+          }
+          &.next {
+            &:before {
+              content: '\23e9';
+            }
+          }
+
+          &:active {
+            &:before {
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      .progress-bar {
+        bottom: 0;
         height: 5px;
         cursor: pointer;
+        opacity: .9;
         border: 1px solid @player-main-color;
 
         .ui-slider-range {
@@ -478,6 +543,25 @@
           height: 100%;
           background: @player-main-color;
         }
+
+        .track-time {
+          position: absolute;
+          bottom: 12px;
+          right: 0;
+          font-size: 12px;
+          opacity: .8;
+
+          .total {
+            &:before {
+              content: '/';
+              margin-left: -5px;
+            }
+          }
+        }
+      }
+
+      .info-line {
+        top: 0;
       }
     }
   }

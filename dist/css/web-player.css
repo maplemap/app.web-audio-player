@@ -529,8 +529,8 @@
   width: 100%;
 }
 #webAudioPlayer .wap-playbox .controls .control-buttons {
-  bottom: 17px;
-  text-align: center;
+  bottom: 12px;
+  text-align: left;
   padding: 0;
   margin: 0;
 }
@@ -540,14 +540,14 @@
   height: 17px;
   text-align: center;
   cursor: pointer;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 #webAudioPlayer .wap-playbox .controls .control-buttons li:first-child {
   margin-left: 0;
 }
 #webAudioPlayer .wap-playbox .controls .control-buttons li:before {
   font-family: Entypo, sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   vertical-align: middle;
   opacity: .9;
 }
@@ -560,6 +560,9 @@
 #webAudioPlayer .wap-playbox .controls .control-buttons li.play:before {
   content: '\25b6';
 }
+#webAudioPlayer .wap-playbox .controls .control-buttons li.pause:before {
+  content: '\2389';
+}
 #webAudioPlayer .wap-playbox .controls .control-buttons li.next:before {
   content: '\23e9';
 }
@@ -568,7 +571,7 @@
 }
 #webAudioPlayer .wap-playbox .controls .progress-bar {
   bottom: 0;
-  height: 8px;
+  height: 5px;
   cursor: pointer;
   opacity: .9;
   border: 1px solid #333;
@@ -579,6 +582,20 @@
   left: 0;
   height: 100%;
   background: #333;
+}
+#webAudioPlayer .wap-playbox .controls .progress-bar .track-time {
+  position: absolute;
+  bottom: 12px;
+  right: 0;
+  font-size: 12px;
+  opacity: .8;
+}
+#webAudioPlayer .wap-playbox .controls .progress-bar .track-time .total:before {
+  content: '/';
+  margin-left: -5px;
+}
+#webAudioPlayer .wap-playbox .controls .info-line {
+  top: 0;
 }
 #webAudioPlayer .wap-playlist {
   position: relative;
