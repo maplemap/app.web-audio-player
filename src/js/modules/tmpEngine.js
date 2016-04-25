@@ -13,9 +13,11 @@ App.TmpEngine = (function () {
                 return '<div class="album-cover no-cover">\
                             <img src="" alt="album-cover" />\
                         </div>\
-                        <div class="controls">\
+                        <div class="left-block">\
+                            <div class="volume-bar"></div>\
+                            <div class="sound-btn"></div>\
                             <div class="info-line"></div>\
-                            <ul class="control-buttons">\
+                            <ul class="control-btns">\
                                 <li class="stop"></li>\
                                 <li class="play"></li>\
                                 <li class="prev"></li>\

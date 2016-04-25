@@ -133,7 +133,7 @@
   font-family: Inconsolata, sans-serif;
   font-size: 14px;
   margin: 0 auto;
-  /*** plugin's styles ***/
+  /*** plugins styles ***/
 }
 #webAudioPlayer button {
   font-family: Inconsolata, sans-serif;
@@ -187,7 +187,7 @@
   z-index: 20;
   top: 4px;
   right: 4px;
-  font-family: 'Entypo', sans-serif;
+  font-family: Entypo, sans-serif;
   font-size: 15px;
   cursor: pointer;
 }
@@ -225,7 +225,7 @@
   position: absolute;
   top: 10px;
   left: 7px;
-  font-family: 'Entypo', sans-serif;
+  font-family: Entypo, sans-serif;
   font-size: 13px;
 }
 #webAudioPlayer .wap-track-list li:hover,
@@ -253,7 +253,7 @@
 #webAudioPlayer .wap-fileList li .delete:before {
   display: none;
   content: '\2715';
-  font-family: 'Entypo', sans-serif;
+  font-family: Entypo, sans-serif;
   font-size: 13px;
   vertical-align: middle;
 }
@@ -514,27 +514,36 @@
 #webAudioPlayer .wap-playbox .album-cover.no-cover img {
   display: none;
 }
-#webAudioPlayer .wap-playbox .controls {
+#webAudioPlayer .wap-playbox .left-block {
   float: left;
   position: relative;
   width: 72%;
   height: 80px;
   margin-left: 5px;
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons,
-#webAudioPlayer .wap-playbox .controls .progress-bar,
-#webAudioPlayer .wap-playbox .controls .info-line {
+#webAudioPlayer .wap-playbox .left-block .ui-slider-range {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #333;
+}
+#webAudioPlayer .wap-playbox .left-block .control-btns,
+#webAudioPlayer .wap-playbox .left-block .progress-bar,
+#webAudioPlayer .wap-playbox .left-block .info-line,
+#webAudioPlayer .wap-playbox .left-block .volume-bar,
+#webAudioPlayer .wap-playbox .left-block .sound-btn {
   position: absolute;
   left: 0;
   width: 100%;
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons {
+#webAudioPlayer .wap-playbox .left-block .control-btns {
   bottom: 12px;
   text-align: left;
   padding: 0;
   margin: 0;
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li {
+#webAudioPlayer .wap-playbox .left-block .control-btns li {
   display: inline-block;
   list-style: none;
   height: 17px;
@@ -542,59 +551,77 @@
   cursor: pointer;
   margin-left: 10px;
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li:first-child {
+#webAudioPlayer .wap-playbox .left-block .control-btns li:first-child {
   margin-left: 0;
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li:before {
+#webAudioPlayer .wap-playbox .left-block .control-btns li:before {
   font-family: Entypo, sans-serif;
   font-size: 18px;
   vertical-align: middle;
   opacity: .9;
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li.stop:before {
+#webAudioPlayer .wap-playbox .left-block .control-btns li.stop:before {
   content: '\25a0';
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li.prev:before {
+#webAudioPlayer .wap-playbox .left-block .control-btns li.prev:before {
   content: '\23ea';
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li.play:before {
+#webAudioPlayer .wap-playbox .left-block .control-btns li.play:before {
   content: '\25b6';
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li.pause:before {
+#webAudioPlayer .wap-playbox .left-block .control-btns li.pause:before {
   content: '\2389';
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li.next:before {
+#webAudioPlayer .wap-playbox .left-block .control-btns li.next:before {
   content: '\23e9';
 }
-#webAudioPlayer .wap-playbox .controls .control-buttons li:active:before {
+#webAudioPlayer .wap-playbox .left-block .control-btns li:active:before {
   opacity: 1;
 }
-#webAudioPlayer .wap-playbox .controls .progress-bar {
-  bottom: 0;
-  height: 5px;
-  cursor: pointer;
+#webAudioPlayer .wap-playbox .left-block .progress-bar,
+#webAudioPlayer .wap-playbox .left-block .volume-bar {
   opacity: .9;
-  border: 1px solid #333;
+  cursor: pointer;
+  height: 5px;
+  background: rgba(193, 193, 193, 0.2);
 }
-#webAudioPlayer .wap-playbox .controls .progress-bar .ui-slider-range {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: #333;
+#webAudioPlayer .wap-playbox .left-block .progress-bar {
+  bottom: 0;
 }
-#webAudioPlayer .wap-playbox .controls .progress-bar .track-time {
+#webAudioPlayer .wap-playbox .left-block .progress-bar .track-time {
   position: absolute;
   bottom: 12px;
   right: 0;
   font-size: 12px;
   opacity: .8;
 }
-#webAudioPlayer .wap-playbox .controls .progress-bar .track-time .total:before {
+#webAudioPlayer .wap-playbox .left-block .progress-bar .track-time .total:before {
   content: '/';
   margin-left: -5px;
 }
-#webAudioPlayer .wap-playbox .controls .info-line {
+#webAudioPlayer .wap-playbox .left-block .volume-bar {
+  left: auto;
+  right: 0;
+  bottom: 33px;
+  width: 53px;
+}
+#webAudioPlayer .wap-playbox .left-block .sound-btn {
+  left: auto;
+  right: 58px;
+  bottom: 29px;
+  width: 14px;
+  cursor: pointer;
+}
+#webAudioPlayer .wap-playbox .left-block .sound-btn:before {
+  content: '\1f50a';
+  opacity: .9;
+  font-family: Entypo, sans-serif;
+  font-size: 12px;
+}
+#webAudioPlayer .wap-playbox .left-block .sound-btn.mute:before {
+  content: '\1f507';
+}
+#webAudioPlayer .wap-playbox .left-block .info-line {
   top: 0;
 }
 #webAudioPlayer .wap-playlist {
@@ -626,7 +653,7 @@
 #webAudioPlayer .wap-tools li {
   display: inline-block;
   list-style-type: none;
-  font-family: 'Entypo', sans-serif;
+  font-family: Entypo, sans-serif;
   font-size: 17px;
   cursor: pointer;
 }

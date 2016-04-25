@@ -16,8 +16,10 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.$albumCover = this.$el.find('.album-cover');
         this.$progressBar = this.$el.find('.progress-bar');
+        this.$volumeBar = this.$el.find('.volume-bar');
 
         this.initProgressBar();
+        this.initVolumeBar();
 
         return this;
     },
@@ -31,35 +33,17 @@ App.Views.Playbox = Backbone.View.extend({
 
             }
         });
+    },
+
+    initVolumeBar: function () {
+        this.$volumeBar.slider({
+            range: "min",
+            min: 0,
+            max: 100,
+            value: 20,
+            slide: function( event, ui ) {
+
+            }
+        });
     }
 });
-
-//initFileUpload: function () {
-//    var that = this;
-//
-//    app.UploadFiles.init('#' + app.PLAYER_ID + ' .upload-files', function (allFiles) {
-//        $.each(tracks, function (i, track) {
-//            that.addOneToCollection(track);
-//        })
-//    });
-//},
-
-//initTimeline: function () {
-//    this.$(".timeline").slider({
-//        range: "min",
-//        min: 0,
-//        max: 100
-//    });
-//},
-//
-//initVolumeControl: function () {
-//    this.$(".volume").slider({
-//        range: "min",
-//        min: 0,
-//        max: 100,
-//        value: 20,
-//        slide: function( event, ui ) {
-//            //$( "#amount" ).val( ui.value );
-//        }
-//    });
-//}
