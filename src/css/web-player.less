@@ -599,8 +599,37 @@
         }
       }
 
-      .info-line {
+      .track-info {
         top: 0;
+        width: 230px;
+
+        .name,
+        .artist,
+        .album {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .name {
+          font-size: 15px;
+          font-weight: bold;
+        }
+        .artist {
+          margin: 5px 0 0 5px;
+        }
+        .artist,
+        .album {
+          display: inline-block;
+          font-size: 11px;
+          opacity: .8;
+        }
+        .album {
+          &:before {
+            content: '-';
+            margin-right: 5px;
+          }
+        }
       }
     }
   }

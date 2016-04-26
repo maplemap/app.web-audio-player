@@ -621,8 +621,33 @@
 #webAudioPlayer .wap-playbox .left-block .sound-btn.mute:before {
   content: '\1f507';
 }
-#webAudioPlayer .wap-playbox .left-block .info-line {
+#webAudioPlayer .wap-playbox .left-block .track-info {
   top: 0;
+  width: 230px;
+}
+#webAudioPlayer .wap-playbox .left-block .track-info .name,
+#webAudioPlayer .wap-playbox .left-block .track-info .artist,
+#webAudioPlayer .wap-playbox .left-block .track-info .album {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#webAudioPlayer .wap-playbox .left-block .track-info .name {
+  font-size: 15px;
+  font-weight: bold;
+}
+#webAudioPlayer .wap-playbox .left-block .track-info .artist {
+  margin: 5px 0 0 5px;
+}
+#webAudioPlayer .wap-playbox .left-block .track-info .artist,
+#webAudioPlayer .wap-playbox .left-block .track-info .album {
+  display: inline-block;
+  font-size: 11px;
+  opacity: .8;
+}
+#webAudioPlayer .wap-playbox .left-block .track-info .album:before {
+  content: '-';
+  margin-right: 5px;
 }
 #webAudioPlayer .wap-playlist {
   position: relative;
