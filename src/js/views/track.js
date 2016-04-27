@@ -4,7 +4,8 @@ App.Views.Track = Backbone.View.extend({
     tagName: 'li',
 
     events: {
-        'click .delete': 'destroy'
+        'click .delete': 'destroy',
+        'click' : 'startPlayingTrack'
     },
 
     initialize: function () {
@@ -24,5 +25,9 @@ App.Views.Track = Backbone.View.extend({
 
     destroy: function () {
         this.model.destroy();
+    },
+
+    startPlayingTrack: function () {
+        App.Events.trigger('start-playing-track', this.model)
     }
 });

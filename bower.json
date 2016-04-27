@@ -17,6 +17,7 @@
     "backbone.localStorage": "backbone.localstorage#^1.1.16",
     "perfect-scrollbar": "^0.6.10",
     "async": "^1.5.2",
-    "jsmediatags-sebastianha": "^3.0.5"
+    "jsmediatags-sebastianha": "^3.0.5",
+    "audiojs": "^1.0.1"
   }
 }

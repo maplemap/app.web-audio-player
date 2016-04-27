@@ -18,6 +18,7 @@ App.Views.Playbox = Backbone.View.extend({
         this.$progressBar = this.$el.find('.progress-bar');
         this.$volumeBar = this.$el.find('.volume-bar');
 
+        this.initAudioJS();
         this.initProgressBar();
         this.initVolumeBar();
 
@@ -45,5 +46,15 @@ App.Views.Playbox = Backbone.View.extend({
 
             }
         });
+    initAudioJS: function () {
+        var that = this,
+            audioSelector = that.$audioBox.find('audio');
+
+        audiojs.events.ready( function() {
+            that.audio = audiojs.create( audioSelector )[0];
+
+            that.initVolumeBar();
+        });
+    },
     }
 });
