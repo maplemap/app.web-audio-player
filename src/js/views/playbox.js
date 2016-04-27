@@ -2,10 +2,13 @@
 
 App.Views.Playbox = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playbox',
+    volumeDefault: 0.2,
 
     initialize: function () {
         this.$audioBox = $( App.TmpEngine.getTemplate('audiobox') );
         this.playbox = App.TmpEngine.getTemplate('playbox');
+
+        App.Events.on('start-playing-track', this.startPlayingTrack, this);
 
         this.render();
     },
@@ -19,8 +22,6 @@ App.Views.Playbox = Backbone.View.extend({
         this.$volumeBar = this.$el.find('.volume-bar');
 
         this.initAudioJS();
-        this.initProgressBar();
-        this.initVolumeBar();
 
         return this;
     },
@@ -37,15 +38,21 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     initVolumeBar: function () {
+        var that = this;
+        that.audio.setVolume( that.volumeDefault );
+
         this.$volumeBar.slider({
             range: "min",
             min: 0,
-            max: 100,
-            value: 20,
+            max: 1,
+            step: 0.01,
+            value: that.volumeDefault,
             slide: function( event, ui ) {
-
+                that.audio.setVolume( ui.value );
             }
         });
+    },
+
     initAudioJS: function () {
         var that = this,
             audioSelector = that.$audioBox.find('audio');
@@ -54,7 +61,14 @@ App.Views.Playbox = Backbone.View.extend({
             that.audio = audiojs.create( audioSelector )[0];
 
             that.initVolumeBar();
+            that.initProgressBar();
         });
     },
+
+    startPlayingTrack: function (model) {
+        var source = model.get('link');
+
+        this.audio.load(source);
+        this.audio.play();
     }
 });
