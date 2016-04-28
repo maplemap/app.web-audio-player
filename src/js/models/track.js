@@ -5,6 +5,12 @@ App.Models.Track = Backbone.Model.extend({
         artist: '',
         name: '',
         link: '',
-        duration: ''
+        duration: '',
+        index: ''
+    },
+
+    initialize: function () {
+        this.set('index', App.Helper.fileCounter);
+        App.Helper.fileCounter += 1;
     }
 });

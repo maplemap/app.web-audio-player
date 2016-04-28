@@ -179,6 +179,7 @@ App.Views.Track = Backbone.View.extend({
 
     render: function () {
         this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
+        //this.$el.attr('data-index', this.model.get('index'));
 
         return this;
     },
@@ -191,8 +192,12 @@ App.Views.Track = Backbone.View.extend({
         this.model.destroy();
     },
 
-    startPlayingTrack: function () {
-        App.Events.trigger('start-playing-track', this.model)
+    startPlayingTrack: function (event) {
+        var currentIndex = this.model.get('index');
+        App.Events.trigger('remove-all-active-classes', currentIndex);
+
+        App.Events.trigger('start-playing-track', this.model);
+        this.$el.addClass('active');
     }
 });
 'use strict';
@@ -202,7 +207,13 @@ App.Models.Track = Backbone.Model.extend({
         artist: '',
         name: '',
         link: '',
-        duration: ''
+        duration: '',
+        index: ''
+    },
+
+    initialize: function () {
+        this.set('index', App.Helper.fileCounter);
+        App.Helper.fileCounter += 1;
     }
 });
 'use strict';
@@ -538,6 +549,7 @@ App.Views.TrackList = Backbone.View.extend({
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);
         App.Events.on('add-files-to-playlist', this.render, this);
+        App.Events.on('remove-all-active-classes', this.removeAllActiveClasses, this);
 
         App.Tracks.fetch();
     },
@@ -568,11 +580,15 @@ App.Views.TrackList = Backbone.View.extend({
         App.Tracks.add(track);
     },
 
-    renderList: function (event) {
+    renderList: function () {
         var that = this;
         App.Tracks.each(function (model, indx) {
             that.addOne(model);
         });
+    },
+
+    removeAllActiveClasses: function (currentIndex) {
+        this.$el.find('li:not([data-index="'+ currentIndex +'"])').removeClass('active');
     }
 });
 'use strict';
