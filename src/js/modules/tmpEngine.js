@@ -17,9 +17,8 @@ App.TmpEngine = (function () {
                             <div class="volume-bar"></div>\
                             <div class="sound-btn"></div>\
                             <div class="track-info">\
-                                <div class="name">Che’s Neighborhood</div>\
-                                <div class="artist">Mark Kilian</div>\
-                                <div class="album">La Mission</div>\
+                                <div class="name"></div>\
+                                <div class="extra"></div>\
                             </div>\
                             <ul class="control-btns">\
                                 <li class="stop"></li>\

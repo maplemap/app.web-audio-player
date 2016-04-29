@@ -20,6 +20,7 @@ App.Views.Playbox = Backbone.View.extend({
         this.$albumCover = this.$el.find('.album-cover');
         this.$progressBar = this.$el.find('.progress-bar');
         this.$volumeBar = this.$el.find('.volume-bar');
+        this.$trackInfo = this.$el.find('.track-info');
 
         this.initAudioJS();
 
@@ -70,5 +71,18 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.audio.load(source);
         this.audio.play();
+
+        this.refreshTrackInfo(model);
+    },
+
+    refreshTrackInfo: function (model) {
+        var name = model.get('name'),
+            artist = model.get('artist'),
+            album = model.get('album');
+
+
+
+        this.$trackInfo.find('.name').text( name ).attr('title', name);
+        this.$trackInfo.find('.extra').text(artist + ' - ' + album).attr('title', artist + ' - ' + album);
     }
 });

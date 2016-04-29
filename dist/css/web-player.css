@@ -231,7 +231,9 @@
 #webAudioPlayer .wap-track-list li:hover,
 #webAudioPlayer .wap-fileList li:hover,
 #webAudioPlayer .wap-track-list li.selected,
-#webAudioPlayer .wap-fileList li.selected {
+#webAudioPlayer .wap-fileList li.selected,
+#webAudioPlayer .wap-track-list li.active,
+#webAudioPlayer .wap-fileList li.active {
   background: #ddd;
 }
 #webAudioPlayer .wap-track-list li span,
@@ -626,8 +628,7 @@
   width: 230px;
 }
 #webAudioPlayer .wap-playbox .left-block .track-info .name,
-#webAudioPlayer .wap-playbox .left-block .track-info .artist,
-#webAudioPlayer .wap-playbox .left-block .track-info .album {
+#webAudioPlayer .wap-playbox .left-block .track-info .extra {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -636,14 +637,10 @@
   font-size: 15px;
   font-weight: bold;
 }
-#webAudioPlayer .wap-playbox .left-block .track-info .artist {
-  margin: 5px 0 0 5px;
-}
-#webAudioPlayer .wap-playbox .left-block .track-info .artist,
-#webAudioPlayer .wap-playbox .left-block .track-info .album {
-  display: inline-block;
+#webAudioPlayer .wap-playbox .left-block .track-info .extra {
   font-size: 11px;
   opacity: .8;
+  margin: 5px 0 0 5px;
 }
 #webAudioPlayer .wap-playbox .left-block .track-info .album:before {
   content: '-';

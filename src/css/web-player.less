@@ -163,7 +163,8 @@
         font-size: 13px;
       }
       &:hover,
-      &.selected {
+      &.selected,
+      &.active {
         background: @track-active-hover-bg;
       }
 
@@ -604,8 +605,7 @@
         width: 230px;
 
         .name,
-        .artist,
-        .album {
+        .extra {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -615,14 +615,10 @@
           font-size: 15px;
           font-weight: bold;
         }
-        .artist {
-          margin: 5px 0 0 5px;
-        }
-        .artist,
-        .album {
-          display: inline-block;
+        .extra {
           font-size: 11px;
           opacity: .8;
+          margin: 5px 0 0 5px;
         }
         .album {
           &:before {
