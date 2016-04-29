@@ -4,11 +4,14 @@ App.Views.Playbox = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playbox',
     volumeDefault: 0.2,
 
+    events: {
+        'click .stop': 'stopTrack',
+        'click .play': 'playTrack',
     initialize: function () {
         this.$audioBox = $( App.TmpEngine.getTemplate('audiobox') );
         this.playbox = App.TmpEngine.getTemplate('playbox');
 
-        App.Events.on('start-playing-track', this.startPlayingTrack, this);
+        App.Events.on('start-playing-track', this.startTrack, this);
 
         this.render();
     },
@@ -73,6 +76,22 @@ App.Views.Playbox = Backbone.View.extend({
         this.audio.play();
 
         this.refreshTrackInfo(model);
+    playTrack: function () {
+        this.audio.play();
+        this.$playBtn.attr('class', 'pause');
+    },
+
+    pauseTrack: function () {
+        this.audio.pause();
+        this.$playBtn.attr('class', 'play');
+    },
+
+    stopTrack: function () {
+        this.pauseTrack();
+        this.audio.skipTo(0);
+
+        App.Events.trigger('stop-playing-track');
+    },
     },
 
     refreshTrackInfo: function (model) {

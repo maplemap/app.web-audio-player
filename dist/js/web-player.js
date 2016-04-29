@@ -178,6 +178,7 @@ App.Views.Track = Backbone.View.extend({
 
     render: function () {
         this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
+        this.$el.data('index', this.model.get('index'));
 
         return this;
     },
@@ -347,11 +348,19 @@ App.Views.Playbox = Backbone.View.extend({
     className: App.Settings.classPrefix + '-playbox',
     volumeDefault: 0.2,
 
+    events: {
+        'click .stop': 'stopTrack',
+        'click .play': 'playTrack',
+        'click .pause': 'pauseTrack',
+        'click .prev': 'prevTrack',
+        'click .next': 'nextTrack'
+    },
+
     initialize: function () {
         this.$audioBox = $( App.TmpEngine.getTemplate('audiobox') );
         this.playbox = App.TmpEngine.getTemplate('playbox');
 
-        App.Events.on('start-playing-track', this.startPlayingTrack, this);
+        App.Events.on('start-playing-track', this.startTrack, this);
 
         this.render();
     },
@@ -364,6 +373,7 @@ App.Views.Playbox = Backbone.View.extend({
         this.$progressBar = this.$el.find('.progress-bar');
         this.$volumeBar = this.$el.find('.volume-bar');
         this.$trackInfo = this.$el.find('.track-info');
+        this.$playBtn = this.$el.find('.play');
 
         this.initAudioJS();
 
@@ -374,10 +384,8 @@ App.Views.Playbox = Backbone.View.extend({
         this.$progressBar.slider({
             range: "min",
             min: 0,
-            max: 100,
-            slide: function( event, ui ) {
-
-            }
+            max: 1,
+            step: 0.01
         });
     },
 
@@ -399,23 +407,58 @@ App.Views.Playbox = Backbone.View.extend({
 
     initAudioJS: function () {
         var that = this,
-            audioSelector = that.$audioBox.find('audio');
+            $audioElement = that.$audioBox.find('audio');
 
         audiojs.events.ready( function() {
-            that.audio = audiojs.create( audioSelector )[0];
+            that.audio = audiojs.create( $audioElement, {
+                trackEnded: function () {
+                    console.log('trackEnded')
+                },
+
+                updatePlayhead: function (percent) {
+                    that.$progressBar.slider('value', percent);
+                }
+            } )[0];
 
             that.initVolumeBar();
             that.initProgressBar();
         });
     },
 
-    startPlayingTrack: function (model) {
+    startTrack: function (model) {
         var source = model.get('link');
+        this.currenTrackIndex = model.get('index');
 
         this.audio.load(source);
         this.audio.play();
 
         this.refreshTrackInfo(model);
+        this.$playBtn.attr('class', 'pause');
+    },
+
+    playTrack: function () {
+        this.audio.play();
+        this.$playBtn.attr('class', 'pause');
+    },
+
+    pauseTrack: function () {
+        this.audio.pause();
+        this.$playBtn.attr('class', 'play');
+    },
+
+    stopTrack: function () {
+        this.pauseTrack();
+        this.audio.skipTo(0);
+
+        App.Events.trigger('stop-playing-track');
+    },
+
+    prevTrack: function () {
+
+    },
+
+    nextTrack: function () {
+
     },
 
     refreshTrackInfo: function (model) {
@@ -562,6 +605,7 @@ App.Views.TrackList = Backbone.View.extend({
         this.listenTo(App.Tracks, 'add', this.addOne);
         App.Events.on('add-files-to-playlist', this.render, this);
         App.Events.on('remove-all-active-classes', this.removeAllActiveClasses, this);
+        App.Events.on('stop-playing-track', this.removeAllActiveClasses, this);
 
         App.Tracks.fetch();
     },
@@ -600,6 +644,8 @@ App.Views.TrackList = Backbone.View.extend({
     },
 
     removeAllActiveClasses: function (currentIndex) {
+        currentIndex = currentIndex || 'noIndex'
+
         this.$el.find('li:not([data-index="'+ currentIndex +'"])').removeClass('active');
     }
 });

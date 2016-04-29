@@ -568,6 +568,10 @@
 #webAudioPlayer .wap-playbox .left-block .control-btns li.prev:before {
   content: '\23ea';
 }
+#webAudioPlayer .wap-playbox .left-block .control-btns li.play,
+#webAudioPlayer .wap-playbox .left-block .control-btns li.pause {
+  width: 18px;
+}
 #webAudioPlayer .wap-playbox .left-block .control-btns li.play:before {
   content: '\25b6';
 }
