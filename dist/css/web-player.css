@@ -266,7 +266,7 @@
 #webAudioPlayer .wap-track-list li .name,
 #webAudioPlayer .wap-fileList li .name {
   position: relative;
-  max-width: 60%;
+  max-width: 80%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

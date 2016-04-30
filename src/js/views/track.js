@@ -15,7 +15,6 @@ App.Views.Track = Backbone.View.extend({
 
     render: function () {
         this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
-        //this.$el.attr('data-index', this.model.get('index'));
 
         return this;
     },
