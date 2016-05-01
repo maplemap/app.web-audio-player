@@ -7,8 +7,8 @@ App.Views.TrackList = Backbone.View.extend({
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);
         App.Events.on('add-files-to-playlist', this.render, this);
-        App.Events.on('remove-all-active-classes', this.removeAllActiveClasses, this);
-        App.Events.on('stop-playing-track', this.removeAllActiveClasses, this);
+        App.Events.on('set-active-class-for-track', this.setActiveClassForTrack, this);
+        App.Events.on('stop-playing-track', this.setActiveClassForTrack, this);
 
         App.Tracks.fetch();
     },
@@ -46,9 +46,10 @@ App.Views.TrackList = Backbone.View.extend({
         });
     },
 
-    removeAllActiveClasses: function (currentIndex) {
-        currentIndex = currentIndex || 'noIndex'
+    setActiveClassForTrack: function (currentIndex) {
+        currentIndex = currentIndex || 'noIndex';
 
         this.$el.find('li:not([data-index="'+ currentIndex +'"])').removeClass('active');
+        this.$el.find('li[data-index="'+ currentIndex +'"]').addClass('active');
     }
 });

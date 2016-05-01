@@ -49,7 +49,7 @@ App.TmpEngine = (function () {
                             <div class="progress-bar">\
                                 <div class="track-time">\
                                     <span class="played">0:00</span>\
-                                    <span class="total">0:00</span>\
+                                    <span class="duration">0:00</span>\
                                 </div>\
                             </div>\
                         </div>'
@@ -178,7 +178,7 @@ App.Views.Track = Backbone.View.extend({
 
     render: function () {
         this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
-        this.$el.data('index', this.model.get('index'));
+        this.$el.attr('data-index', this.model.get('index'));
 
         return this;
     },
@@ -191,12 +191,8 @@ App.Views.Track = Backbone.View.extend({
         this.model.destroy();
     },
 
-    startPlayingTrack: function (event) {
-        var currentIndex = this.model.get('index');
-        App.Events.trigger('remove-all-active-classes', currentIndex);
-
+    startPlayingTrack: function () {
         App.Events.trigger('start-playing-track', this.model);
-        this.$el.addClass('active');
     }
 });
 'use strict';
@@ -373,6 +369,7 @@ App.Views.Playbox = Backbone.View.extend({
         this.$progressBar = this.$el.find('.progress-bar');
         this.$volumeBar = this.$el.find('.volume-bar');
         this.$trackInfo = this.$el.find('.track-info');
+        this.$trackTime = this.$el.find('.track-time');
         this.$playBtn = this.$el.find('.play');
 
         this.initAudioJS();
@@ -412,7 +409,7 @@ App.Views.Playbox = Backbone.View.extend({
         audiojs.events.ready( function() {
             that.audio = audiojs.create( $audioElement, {
                 trackEnded: function () {
-                    console.log('trackEnded')
+                    that.nextTrack();
                 },
 
                 updatePlayhead: function (percent) {
@@ -428,6 +425,7 @@ App.Views.Playbox = Backbone.View.extend({
     startTrack: function (model) {
         var source = model.get('link');
         this.currenTrackIndex = model.get('index');
+        App.Events.trigger('set-active-class-for-track', this.currenTrackIndex);
 
         this.audio.load(source);
         this.audio.play();
@@ -437,8 +435,13 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     playTrack: function () {
-        this.audio.play();
-        this.$playBtn.attr('class', 'pause');
+        if (this.currenTrackIndex) {
+            this.audio.play();
+            this.$playBtn.attr('class', 'pause');
+        } else {
+            var model = App.Tracks.where({ index: 1 })[0];
+            this.startTrack( model );
+        }
     },
 
     pauseTrack: function () {
@@ -450,26 +453,50 @@ App.Views.Playbox = Backbone.View.extend({
         this.pauseTrack();
         this.audio.skipTo(0);
 
+        this.currenTrackIndex = null;
+        this.refreshTrackInfo();
         App.Events.trigger('stop-playing-track');
     },
 
     prevTrack: function () {
+        if (!this.currenTrackIndex) return;
 
+        var prevIndex = this.currenTrackIndex - 1;
+
+        if (prevIndex < 1) {
+            this.stopTrack();
+        } else {
+            var model = App.Tracks.where({ index: prevIndex })[0];
+            this.startTrack( model );
+        }
     },
 
     nextTrack: function () {
+        if (!this.currenTrackIndex) return;
 
+        var nextIndex = this.currenTrackIndex + 1;
+
+        if (nextIndex > App.Tracks.length) {
+            this.stopTrack();
+        } else {
+            var model = App.Tracks.where({ index: nextIndex })[0];
+            this.startTrack( model );
+        }
     },
 
     refreshTrackInfo: function (model) {
-        var name = model.get('name'),
-            artist = model.get('artist'),
-            album = model.get('album');
+        var name = '', artist = '', album = '', duration = '0:00';
 
-
+        if(model) {
+            name = model.get('name');
+            artist = model.get('artist');
+            album = ' - ' + model.get('album');
+            duration = model.get('duration');
+        }
 
         this.$trackInfo.find('.name').text( name ).attr('title', name);
-        this.$trackInfo.find('.extra').text(artist + ' - ' + album).attr('title', artist + ' - ' + album);
+        this.$trackInfo.find('.extra').text(artist + album).attr('title', artist + album);
+        this.$trackTime.find('.duration').text(duration);
     }
 });
 'use strict';
@@ -604,8 +631,8 @@ App.Views.TrackList = Backbone.View.extend({
     initialize: function () {
         this.listenTo(App.Tracks, 'add', this.addOne);
         App.Events.on('add-files-to-playlist', this.render, this);
-        App.Events.on('remove-all-active-classes', this.removeAllActiveClasses, this);
-        App.Events.on('stop-playing-track', this.removeAllActiveClasses, this);
+        App.Events.on('set-active-class-for-track', this.setActiveClassForTrack, this);
+        App.Events.on('stop-playing-track', this.setActiveClassForTrack, this);
 
         App.Tracks.fetch();
     },
@@ -643,10 +670,11 @@ App.Views.TrackList = Backbone.View.extend({
         });
     },
 
-    removeAllActiveClasses: function (currentIndex) {
-        currentIndex = currentIndex || 'noIndex'
+    setActiveClassForTrack: function (currentIndex) {
+        currentIndex = currentIndex || 'noIndex';
 
         this.$el.find('li:not([data-index="'+ currentIndex +'"])').removeClass('active');
+        this.$el.find('li[data-index="'+ currentIndex +'"]').addClass('active');
     }
 });
 'use strict';

@@ -15,6 +15,7 @@ App.Views.Track = Backbone.View.extend({
 
     render: function () {
         this.$el.html( App.TmpEngine.getTemplate('track', this.model.toJSON()) );
+        this.$el.attr('data-index', this.model.get('index'));
 
         return this;
     },
@@ -27,11 +28,7 @@ App.Views.Track = Backbone.View.extend({
         this.model.destroy();
     },
 
-    startPlayingTrack: function (event) {
-        var currentIndex = this.model.get('index');
-        App.Events.trigger('remove-all-active-classes', currentIndex);
-
+    startPlayingTrack: function () {
         App.Events.trigger('start-playing-track', this.model);
-        this.$el.addClass('active');
     }
 });

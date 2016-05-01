@@ -601,7 +601,7 @@
   font-size: 12px;
   opacity: .8;
 }
-#webAudioPlayer .wap-playbox .left-block .progress-bar .track-time .total:before {
+#webAudioPlayer .wap-playbox .left-block .progress-bar .track-time .duration:before {
   content: '/';
   margin-left: -5px;
 }
