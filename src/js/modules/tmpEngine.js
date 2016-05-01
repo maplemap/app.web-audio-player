@@ -29,7 +29,7 @@ App.TmpEngine = (function () {
                             <div class="progress-bar">\
                                 <div class="track-time">\
                                     <span class="played">0:00</span>\
-                                    <span class="total">0:00</span>\
+                                    <span class="duration">0:00</span>\
                                 </div>\
                             </div>\
                         </div>'
@@ -37,7 +37,7 @@ App.TmpEngine = (function () {
 
             audiobox: function () {
                 return '<div class="'+ App.Settings.classPrefix +'-audiobox">\
-                            <audio></audio>\
+                            <audio preload="auto"></audio>\
                         </div>';
             },
 

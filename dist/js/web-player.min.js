@@ -57,7 +57,7 @@ App.TmpEngine = (function () {
 
             audiobox: function () {
                 return '<div class="'+ App.Settings.classPrefix +'-audiobox">\
-                            <audio></audio>\
+                            <audio preload="auto"></audio>\
                         </div>';
             },
 
@@ -368,8 +368,10 @@ App.Views.Playbox = Backbone.View.extend({
         this.$albumCover = this.$el.find('.album-cover');
         this.$progressBar = this.$el.find('.progress-bar');
         this.$volumeBar = this.$el.find('.volume-bar');
-        this.$trackInfo = this.$el.find('.track-info');
-        this.$trackTime = this.$el.find('.track-time');
+        this.$trackInfoName = this.$el.find('.track-info .name');
+        this.$trackInfoExtra = this.$el.find('.track-info .extra');
+        this.$trackTimePlayed = this.$el.find('.track-time .played');
+        this.$trackTimeDuration = this.$el.find('.track-time .duration');
         this.$playBtn = this.$el.find('.play');
 
         this.initAudioJS();
@@ -378,11 +380,16 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     initProgressBar: function () {
+        var that = this;
+
         this.$progressBar.slider({
             range: "min",
             min: 0,
             max: 1,
-            step: 0.01
+            step: 0.01,
+            slide: function ( event, ui ) {
+                that.audio.skipTo(ui.value);
+            }
         });
     },
 
@@ -414,6 +421,7 @@ App.Views.Playbox = Backbone.View.extend({
 
                 updatePlayhead: function (percent) {
                     that.$progressBar.slider('value', percent);
+                    that.refreshTrackTime(this.duration, percent);
                 }
             } )[0];
 
@@ -485,18 +493,26 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     refreshTrackInfo: function (model) {
-        var name = '', artist = '', album = '', duration = '0:00';
+        var name = '', artist = '', album = '';
 
         if(model) {
             name = model.get('name');
             artist = model.get('artist');
             album = ' - ' + model.get('album');
-            duration = model.get('duration');
         }
 
-        this.$trackInfo.find('.name').text( name ).attr('title', name);
-        this.$trackInfo.find('.extra').text(artist + album).attr('title', artist + album);
-        this.$trackTime.find('.duration').text(duration);
+        this.$trackInfoName.text( name ).attr('title', name);
+        this.$trackInfoExtra.text(artist + album).attr('title', artist + album);
+    },
+
+    refreshTrackTime: function (duration, percentPlayed) {
+        duration = Math.floor( duration );
+        var played = Math.floor( duration * percentPlayed),
+            durationTime = App.Tracks.getTimeFromSeconds( duration),
+            playedTime = App.Tracks.getTimeFromSeconds( played );
+
+        this.$trackTimePlayed.text( playedTime );
+        this.$trackTimeDuration.text( durationTime );
     }
 });
 'use strict';
