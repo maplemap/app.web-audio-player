@@ -27,6 +27,9 @@ App.TmpEngine = (function () {
                                 <li class="next"></li>\
                             </ul>\
                             <div class="progress-bar">\
+                                <div class="loading-bar">\
+                                    <span></span>\
+                                </div>\
                                 <div class="track-time">\
                                     <span class="played">0:00</span>\
                                     <span class="duration">0:00</span>\
@@ -37,7 +40,7 @@ App.TmpEngine = (function () {
 
             audiobox: function () {
                 return '<div class="'+ App.Settings.classPrefix +'-audiobox">\
-                            <audio preload="auto"></audio>\
+                            <audio></audio>\
                         </div>';
             },
 
@@ -114,30 +117,3 @@ App.TmpEngine = (function () {
     }
 
 }());
-
-
-//<img src="../dist/img/default-album-cover.png1" alt="album-cover">
-//<div class="'+ settings.classPrefix +'-information">\
-//<div class="'+ settings.classPrefix +'-album-cover">\
-//<img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
-//</div>\
-//<div class="track-name">We’ll be coming back</div>\
-//<div class="'+ settings.classPrefix +'-author">Calvin Harris</div>\
-//<div class="'+ settings.classPrefix +'-album-name">18 months</div>\
-//</div>\
-
-//<ul class="'+ settings.classPrefix +'-controls">\
-//<li class="prev"></li>\
-//<li class="play-pause"></li>\
-//<li class="next"></li>\
-//<li class="timeline"></li>\
-//<li class="volume" title="volume"></li>\
-//<li class="shuffle"></li>\
-//<li class="repeat"></li>\
-//</ul>\
-//<div class="'+ settings.classPrefix +'-footer"> </div>\
-
-
-
-
-//<li class="get-files" title="get files from server"></li>

@@ -27,6 +27,7 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.$albumCover = this.$el.find('.album-cover');
         this.$progressBar = this.$el.find('.progress-bar');
+        this.$loadingBar = this.$progressBar.find('.loading-bar');
         this.$volumeBar = this.$el.find('.volume-bar');
         this.$trackInfoName = this.$el.find('.track-info .name');
         this.$trackInfoExtra = this.$el.find('.track-info .extra');
@@ -75,14 +76,24 @@ App.Views.Playbox = Backbone.View.extend({
 
         audiojs.events.ready( function() {
             that.audio = audiojs.create( $audioElement, {
-                trackEnded: function () {
-                    that.nextTrack();
+                loadStarted: function () {
+                    console.log('start');
                 },
-
+                loadProgress: function(percent) {
+                    console.log(percent);
+                    that.$loadingBar.css('width', percent*100 + '%');
+                },
+                loadError: function (e) {
+                  console.log('Loading stop');
+                },
                 updatePlayhead: function (percent) {
                     that.$progressBar.slider('value', percent);
                     that.refreshTrackTime(this.duration, percent);
+                },
+                trackEnded: function () {
+                    that.nextTrack();
                 }
+
             } )[0];
 
             that.initVolumeBar();
@@ -91,6 +102,9 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     startTrack: function (model) {
+        this.audio.skipTo(0);
+        this.skipLoadingBar();
+
         var source = model.get('link');
         this.currenTrackIndex = model.get('index');
         App.Events.trigger('set-active-class-for-track', this.currenTrackIndex);
@@ -120,6 +134,7 @@ App.Views.Playbox = Backbone.View.extend({
     stopTrack: function () {
         this.pauseTrack();
         this.audio.skipTo(0);
+        this.skipLoadingBar();
 
         this.currenTrackIndex = null;
         this.refreshTrackInfo();
@@ -173,5 +188,10 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.$trackTimePlayed.text( playedTime );
         this.$trackTimeDuration.text( durationTime );
+    },
+
+    skipLoadingBar: function () {
+        this.$audioBox.find('audio').attr('src', '');
+        this.$loadingBar.css('width', 0);
     }
 });
