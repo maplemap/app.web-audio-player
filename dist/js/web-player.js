@@ -469,8 +469,6 @@ App.Views.Playbox = Backbone.View.extend({
 
         var prevIndex = this.currenTrackIndex - 1;
 
-        console.log(prevIndex);
-
         if (prevIndex < App.Tracks.toJSON()[0].index) {
             this.stopTrack();
         } else {
@@ -483,7 +481,6 @@ App.Views.Playbox = Backbone.View.extend({
         if (!this.currenTrackIndex) return;
 
         var nextIndex = this.currenTrackIndex + 1;
-        console.log(nextIndex);
 
         if (nextIndex > App.Tracks.toJSON()[0].index + App.Tracks.length - 1) {
             this.stopTrack();
