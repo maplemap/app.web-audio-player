@@ -20,15 +20,17 @@ App.Views.Track = Backbone.View.extend({
         return this;
     },
 
-    remove: function () {
-      this.$el.remove();
+    remove: function (e) {
+        this.$el.remove();
     },
 
     destroy: function () {
         this.model.destroy();
     },
 
-    startPlayingTrack: function () {
+    startPlayingTrack: function (e) {
+        if( $(e.target).hasClass('delete') ) return;
+
         App.Events.trigger('start-playing-track', this.model);
     }
 });

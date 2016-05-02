@@ -159,15 +159,17 @@ App.Views.Track = Backbone.View.extend({
         return this;
     },
 
-    remove: function () {
-      this.$el.remove();
+    remove: function (e) {
+        this.$el.remove();
     },
 
     destroy: function () {
         this.model.destroy();
     },
 
-    startPlayingTrack: function () {
+    startPlayingTrack: function (e) {
+        if( $(e.target).hasClass('delete') ) return;
+
         App.Events.trigger('start-playing-track', this.model);
     }
 });
@@ -392,11 +394,7 @@ App.Views.Playbox = Backbone.View.extend({
 
         audiojs.events.ready( function() {
             that.audio = audiojs.create( $audioElement, {
-                loadStarted: function () {
-                    console.log('start');
-                },
                 loadProgress: function(percent) {
-                    console.log(percent);
                     that.$loadingBar.css('width', percent*100 + '%');
                 },
                 loadError: function (e) {
@@ -420,15 +418,16 @@ App.Views.Playbox = Backbone.View.extend({
     startTrack: function (model) {
         this.audio.skipTo(0);
         this.skipLoadingBar();
+        this.currentTrackModel = model;
 
-        var source = model.get('link');
-        this.currenTrackIndex = model.get('index');
+        var source = this.currentTrackModel.get('link');
+        this.currenTrackIndex = this.currentTrackModel.get('index');
         App.Events.trigger('set-active-class-for-track', this.currenTrackIndex);
 
         this.audio.load(source);
         this.audio.play();
 
-        this.refreshTrackInfo(model);
+        this.refreshTrackInfo( this.currentTrackModel );
         this.$playBtn.attr('class', 'pause');
     },
 
@@ -504,11 +503,18 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.$trackTimePlayed.text( playedTime );
         this.$trackTimeDuration.text( durationTime );
+        this.trackDurationCorrection( durationTime );
     },
 
     skipLoadingBar: function () {
         this.$audioBox.find('audio').attr('src', '');
         this.$loadingBar.css('width', 0);
+    },
+
+    trackDurationCorrection: function (duration) {
+        if(this.currentTrackModel) {
+            //console.log(this.currentTrackModel.set('duration', '00:00'));
+        }
     }
 });
 'use strict';

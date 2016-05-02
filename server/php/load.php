@@ -8,7 +8,7 @@ $pathForScan = "../uploads/";
 $files = preg_grep('/^([^.])/', scandir($pathForScan));
 
 foreach ($files as &$filename) {
-    $mp3file = new MP3File("../uploads/".$filename); //http://www.npr.org/rss/podcast.php?id=510282
+    $mp3file = new MP3File("../uploads/".$filename);
     $duration2 = $mp3file->getDuration(); //(slower) for VBR (or CBR)
     $durationSec = MP3File::formatTime($duration2);
 
