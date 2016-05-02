@@ -20,7 +20,7 @@ App.Views.Track = Backbone.View.extend({
         return this;
     },
 
-    remove: function (e) {
+    remove: function () {
         this.$el.remove();
     },
 

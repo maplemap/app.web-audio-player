@@ -159,7 +159,7 @@ App.Views.Track = Backbone.View.extend({
         return this;
     },
 
-    remove: function (e) {
+    remove: function () {
         this.$el.remove();
     },
 
@@ -512,8 +512,14 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     trackDurationCorrection: function (duration) {
-        if(this.currentTrackModel) {
-            //console.log(this.currentTrackModel.set('duration', '00:00'));
+        if (this.currentTrackModel) {
+            var currentDuration = this.currentTrackModel.get('duration');
+
+            if (currentDuration !== duration) {
+                console.log('correcting of track duration');
+                this.currentTrackModel.set('duration', duration);
+                this.currentTrackModel.save();
+            }
         }
     }
 });
