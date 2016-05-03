@@ -9,7 +9,8 @@ App.Views.Playbox = Backbone.View.extend({
         'click .play': 'playTrack',
         'click .pause': 'pauseTrack',
         'click .prev': 'prevTrack',
-        'click .next': 'nextTrack'
+        'click .next': 'nextTrack',
+        'click .sound-btn': 'toggleMute'
     },
 
     initialize: function () {
@@ -29,6 +30,7 @@ App.Views.Playbox = Backbone.View.extend({
         this.$progressBar = this.$el.find('.progress-bar');
         this.$loadingBar = this.$progressBar.find('.loading-bar');
         this.$volumeBar = this.$el.find('.volume-bar');
+        this.$soundBtn = this.$el.find('.sound-btn');
         this.$trackInfoName = this.$el.find('.track-info .name');
         this.$trackInfoExtra = this.$el.find('.track-info .extra');
         this.$trackTimePlayed = this.$el.find('.track-time .played');
@@ -65,7 +67,10 @@ App.Views.Playbox = Backbone.View.extend({
             step: 0.01,
             value: that.volumeDefault,
             slide: function( event, ui ) {
-                that.audio.setVolume( ui.value );
+                that.currentVolume = ui.value;
+                that.audio.setVolume( that.currentVolume );
+
+                that.$soundBtn.removeClass('mute');
             }
         });
     },
@@ -218,6 +223,16 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.$albumCover.addClass('no-cover');
         $albumCoverImg.attr('src', '');
+    },
+
+    toggleMute: function () {
+        if ( this.$soundBtn.hasClass('mute') ) {
+            this.$soundBtn.removeClass('mute');
+            this.audio.setVolume( this.currentVolume );
+        } else {
+            this.$soundBtn.addClass('mute');
+            this.audio.setVolume( 0 );
+        }
     },
 
     skipLoadingBar: function () {
