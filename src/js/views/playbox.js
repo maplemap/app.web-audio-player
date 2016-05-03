@@ -98,6 +98,8 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     startTrack: function (model) {
+        if (!model) return;
+
         this.audio.skipTo(0);
         this.skipLoadingBar();
         this.currentTrackModel = model;
@@ -135,6 +137,7 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.currenTrackIndex = null;
         this.refreshTrackInfo();
+        this.refreshTrackTime();
         App.Events.trigger('stop-playing-track');
     },
 
@@ -178,14 +181,20 @@ App.Views.Playbox = Backbone.View.extend({
     },
 
     refreshTrackTime: function (duration, percentPlayed) {
-        duration = Math.floor( duration );
-        var played = Math.floor( duration * percentPlayed),
-            durationTime = App.Tracks.getTimeFromSeconds( duration),
+        var playedTime = '00:00',
+            durationTime = '00:00';
+
+        if (duration && percentPlayed) {
+            duration = Math.floor( duration );
+            var played = Math.floor( duration * percentPlayed);
+            durationTime = App.Tracks.getTimeFromSeconds( duration);
             playedTime = App.Tracks.getTimeFromSeconds( played );
+
+            this.trackDurationCorrection( durationTime );
+        }
 
         this.$trackTimePlayed.text( playedTime );
         this.$trackTimeDuration.text( durationTime );
-        this.trackDurationCorrection( durationTime );
     },
 
     skipLoadingBar: function () {

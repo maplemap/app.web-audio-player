@@ -31,8 +31,8 @@ App.TmpEngine = (function () {
                                     <span></span>\
                                 </div>\
                                 <div class="track-time">\
-                                    <span class="played">0:00</span>\
-                                    <span class="duration">0:00</span>\
+                                    <span class="played">00:00</span>\
+                                    <span class="duration">00:00</span>\
                                 </div>\
                             </div>\
                         </div>'
