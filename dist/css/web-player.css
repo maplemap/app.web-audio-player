@@ -509,6 +509,7 @@
 #webAudioPlayer .wap-playbox .album-cover img {
   width: 100%;
   height: auto;
+  max-height: 78px;
 }
 #webAudioPlayer .wap-playbox .album-cover.no-cover:before {
   visibility: visible;

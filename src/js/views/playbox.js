@@ -197,6 +197,24 @@ App.Views.Playbox = Backbone.View.extend({
         this.$trackTimeDuration.text( durationTime );
     },
 
+    refreshAlbumCover: function () {
+        var $albumCoverImg = this.$albumCover.find('img');
+
+        if (this.currentTrackModel) {
+            var dataImage = this.currentTrackModel.get('image');
+
+            if(dataImage) {
+                this.$albumCover.removeClass('no-cover');
+                $albumCoverImg.attr('src', dataImage);
+
+                return;
+            }
+        }
+
+        this.$albumCover.addClass('no-cover');
+        $albumCoverImg.attr('src', '');
+    },
+
     skipLoadingBar: function () {
         this.$audioBox.find('audio').attr('src', '');
         this.$loadingBar.css('width', 0);

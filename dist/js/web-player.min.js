@@ -429,7 +429,8 @@ App.Views.Playbox = Backbone.View.extend({
         this.audio.load(source);
         this.audio.play();
 
-        this.refreshTrackInfo( this.currentTrackModel );
+        this.refreshTrackInfo();
+        this.refreshAlbumCover();
         this.$playBtn.attr('class', 'pause');
     },
 
@@ -438,7 +439,8 @@ App.Views.Playbox = Backbone.View.extend({
             this.audio.play();
             this.$playBtn.attr('class', 'pause');
         } else {
-            var model = App.Tracks.where({ index: 1 })[0];
+            var firstTrackIndex = App.Tracks.toJSON()[0].index,
+                model = App.Tracks.where({ index: firstTrackIndex })[0];
             this.startTrack( model );
         }
     },
@@ -454,8 +456,11 @@ App.Views.Playbox = Backbone.View.extend({
         this.skipLoadingBar();
 
         this.currenTrackIndex = null;
+        this.currentTrackModel = null;
+
         this.refreshTrackInfo();
         this.refreshTrackTime();
+        this.refreshAlbumCover();
         App.Events.trigger('stop-playing-track');
     },
 
@@ -464,7 +469,9 @@ App.Views.Playbox = Backbone.View.extend({
 
         var prevIndex = this.currenTrackIndex - 1;
 
-        if (prevIndex < 1) {
+        console.log(prevIndex);
+
+        if (prevIndex < App.Tracks.toJSON()[0].index) {
             this.stopTrack();
         } else {
             var model = App.Tracks.where({ index: prevIndex })[0];
@@ -476,8 +483,9 @@ App.Views.Playbox = Backbone.View.extend({
         if (!this.currenTrackIndex) return;
 
         var nextIndex = this.currenTrackIndex + 1;
+        console.log(nextIndex);
 
-        if (nextIndex > App.Tracks.length) {
+        if (nextIndex > App.Tracks.toJSON()[0].index + App.Tracks.length - 1) {
             this.stopTrack();
         } else {
             var model = App.Tracks.where({ index: nextIndex })[0];
@@ -485,13 +493,13 @@ App.Views.Playbox = Backbone.View.extend({
         }
     },
 
-    refreshTrackInfo: function (model) {
+    refreshTrackInfo: function () {
         var name = '', artist = '', album = '';
 
-        if(model) {
-            name = model.get('name');
-            artist = model.get('artist');
-            album = ' - ' + model.get('album');
+        if (this.currentTrackModel) {
+            name = this.currentTrackModel.get('name');
+            artist = this.currentTrackModel.get('artist');
+            album = ' - ' + this.currentTrackModel.get('album');
         }
 
         this.$trackInfoName.text( name ).attr('title', name);
@@ -513,6 +521,24 @@ App.Views.Playbox = Backbone.View.extend({
 
         this.$trackTimePlayed.text( playedTime );
         this.$trackTimeDuration.text( durationTime );
+    },
+
+    refreshAlbumCover: function () {
+        var $albumCoverImg = this.$albumCover.find('img');
+
+        if (this.currentTrackModel) {
+            var dataImage = this.currentTrackModel.get('image');
+
+            if(dataImage) {
+                this.$albumCover.removeClass('no-cover');
+                $albumCoverImg.attr('src', dataImage);
+
+                return;
+            }
+        }
+
+        this.$albumCover.addClass('no-cover');
+        $albumCoverImg.attr('src', '');
     },
 
     skipLoadingBar: function () {
