@@ -4,7 +4,7 @@ App.TmpEngine = (function () {
 
     var getTemplate = function (tmpName, data) {
             data = data || {};
-            if( Templates[tmpName] ) return Templates[tmpName](data);
+            return ( Templates[tmpName] ) ? Templates[tmpName](data) : console.log('Tepmlate '+ tmpName +' is not created');
         },
 
         Templates = {
@@ -63,7 +63,7 @@ App.TmpEngine = (function () {
                         <li class="get-files" data-event="enable-loader-window" title="get files from server"></li>'
             },
             
-            information: function (options) {
+            information: function () {
                 return '<div class="'+ App.Settings.classPrefix +'-album-cover">\
                             <img class="cover-image active" src="https://upload.wikimedia.org/wikipedia/en/d/df/Calvin_Harris_-_18_Months.png" alt="Calvin_Harris_-_18_Months" />\
                         </div>\
