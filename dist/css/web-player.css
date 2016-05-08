@@ -744,7 +744,10 @@
   width: 5px;
 }
 @media screen and (max-width: 320px) {
-  #webAudioPlayer .wap-playbox .controls {
-    width: 68%;
+  #webAudioPlayer .wap-playbox .left-block {
+    width: 70%;
+  }
+  #webAudioPlayer .wap-playbox .left-block .track-info {
+    width: 200px;
   }
 }
