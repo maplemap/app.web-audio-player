@@ -14,6 +14,8 @@
 
 #### Without bower
 - [Download archive] (https://github.com/maplemap/app.web-audio-player/archive/master.zip)
+- unpack and upload to your host
+- add rights '777' for ``/server/uploads``
 - ``$ bower i``
 - ``$ npm i``
 - ``$ gulp build``
