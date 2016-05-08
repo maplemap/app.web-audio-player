@@ -20,7 +20,7 @@
 - ``$ npm i``
 - ``$ gulp build``
 
-and than run ``index.html`` in ``test/`` folder
+and than run ``index.html`` in ``test/``
 
 #### Uploading files
 Upload mp3 files to the server manually in ``server/uploads`` or with the player uploader (click to cloud icon)
