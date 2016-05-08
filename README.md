@@ -1,6 +1,19 @@
 #Web Audio Player
 
 ### Usage
+
+#### With bower
+- `` bower i web-audio-player ``
+- adjust the configuration of your server in ``/src/js/config.js``
+- run apllication on your page
+
+ ```js
+    var playerView = new App.Views.Player();
+    $('#container').append( playerView.$el );
+ ```
+
+#### Without bower
+- [https://github.com/maplemap/app.web-audio-player/archive/master.zip] (Download archive)
 - ``$ bower i``
 - ``$ npm i``
 - ``$ gulp build``
