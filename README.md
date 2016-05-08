@@ -13,7 +13,7 @@
  ```
 
 #### Without bower
-- [https://github.com/maplemap/app.web-audio-player/archive/master.zip] (Download archive)
+- [Download archive] (https://github.com/maplemap/app.web-audio-player/archive/master.zip)
 - ``$ bower i``
 - ``$ npm i``
 - ``$ gulp build``
