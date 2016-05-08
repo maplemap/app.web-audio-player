@@ -12,7 +12,8 @@ var gulp = require('gulp'),
     rimraf = require('rimraf'), //deleting files
     less = require('gulp-less'), //less compilation
     uncss = require('gulp-uncss'),//delete unused styles
-    watch = require('gulp-watch'); // tracking changes to files
+    watch = require('gulp-watch'), // tracking changes to files
+    streamqueue  = require('streamqueue');
 
 var path = {
     build: { //path of build
@@ -54,7 +55,11 @@ var path = {
                 './bower_components/jquery-ui/jquery-ui.js',
                 './bower_components/underscore/underscore.js',
                 './bower_components/backbone/backbone.js',
-                './bower_components/twig.js/twig.js'
+                './bower_components/backbone.localStorage/backbone.localStorage-min.js',
+                './bower_components/perfect-scrollbar/js/perfect-scrollbar.jquery.js',
+                './bower_components/jsmediatags-sebastianha/dist/jsmediatags.min.js',
+                './bower_components/async/dist/async.min.js',
+                './bower_components/audiojs/audiojs/audio.min.js'
             ]
         },
         css: './src/css/web-player.less',
@@ -73,19 +78,20 @@ var path = {
 
 //js
 gulp.task('js:build', function(){
-    gulp.src(path.src.js.webPlayer)
+    return streamqueue({ objectMode: true },
+        gulp.src(path.src.js.dependencies),
+        gulp.src(path.src.js.webPlayer)
+    )
         .pipe(concat('web-player.js'))
-        .pipe(gulp.dest(path.build.js))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(rename({suffix: ".min"}))
-        .pipe(gulp.dest(path.build.js))
+        .pipe(gulp.dest(path.build.js));
 });
 
 //css
 gulp.task('css:build', function(){
     gulp.src(path.src.css)
         .pipe(less())
-        .pipe(gulp.dest(path.build.css))
         .pipe(minifyCSS())
         .pipe(rename({suffix: ".min"}))
         .pipe(prefixer())
@@ -98,7 +104,7 @@ gulp.task('img:build', function(){
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
-            //use: [pngquant()], ToDo: with svg doesn't work
+            use: [pngquant()],
             interlaced: true
         }))
         .pipe(gulp.dest(path.build.img))

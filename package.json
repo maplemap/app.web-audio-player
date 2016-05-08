@@ -12,18 +12,19 @@
   "author": "sergey.illarionov <easthunch@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.8.1",
+    "gulp": "^3.9.1",
     "gulp-autoprefixer": "*",
-    "gulp-imagemin": "*",
     "gulp-concat": "^2.6.0",
+    "gulp-cssnano": "*",
+    "gulp-imagemin": "*",
     "gulp-import-css": "^0.1.2",
     "gulp-less": "*",
-    "gulp-cssnano": "*",
     "gulp-rename": "*",
     "gulp-uglify": "*",
     "gulp-uncss": "*",
     "gulp-watch": "*",
     "imagemin-pngquant": "*",
-    "rimraf": "*"
+    "rimraf": "*",
+    "streamqueue": "^1.1.1"
   }
 }
