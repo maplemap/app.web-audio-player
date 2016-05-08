@@ -7,16 +7,23 @@
 
 and than run ``index.html`` in ``test/`` folder
 
+#### Uploading files
+Upload mp3 files to the server manually in ``server/uploads`` or with the player uploader (click to cloud icon)
+
+#### Add tracks to playlist
+Click to '+' icon and wait for the download file list. Select multiple files or select all by pressing 'choose all' 
+and then click 'Add to playlist'
+
 ### Config
 If you want to change id name or class prefixes of application, you can do it in such files:
  - ``/src/js/config.js``
  
  ```js
-    App.PLAYER_ID = 'webAudioPlayer';
-    App.CLASS_PREFIX = 'wap';
+    App.Settings.playerID = 'webAudioPlayer';
+    App.Settings.classPrefix = 'wap';
  ```
  
- - ``/src/css/web-player.less``
+ - ``/src/css/variables.less``
  
  ```less
     @player-ID: webAudioPlayer;
