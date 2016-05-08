@@ -17,7 +17,6 @@
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "*",
     "gulp-imagemin": "*",
-    "gulp-import-css": "^0.1.2",
     "gulp-less": "*",
     "gulp-rename": "*",
     "gulp-uglify": "*",

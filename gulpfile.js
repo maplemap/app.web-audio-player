@@ -7,7 +7,6 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'), // concat js
     uglify = require('gulp-uglify'), // minify js
     imagemin = require('gulp-imagemin'), //minify img
-    importCss = require('gulp-import-css'), //import css one to one css
     pngquant = require('imagemin-pngquant'), // minify for png files
     rimraf = require('rimraf'), //deleting files
     less = require('gulp-less'), //less compilation
@@ -55,11 +54,11 @@ var path = {
                 './bower_components/jquery-ui/jquery-ui.js',
                 './bower_components/underscore/underscore.js',
                 './bower_components/backbone/backbone.js',
-                './bower_components/backbone.localStorage/backbone.localStorage-min.js',
+                './bower_components/backbone.localStorage/backbone.localStorage.js',
                 './bower_components/perfect-scrollbar/js/perfect-scrollbar.jquery.js',
-                './bower_components/jsmediatags-sebastianha/dist/jsmediatags.min.js',
-                './bower_components/async/dist/async.min.js',
-                './bower_components/audiojs/audiojs/audio.min.js'
+                './bower_components/jsmediatags-sebastianha/dist/jsmediatags.js',
+                './bower_components/async/dist/async.js',
+                './bower_components/audiojs/audiojs/audio.js'
             ]
         },
         css: './src/css/web-player.less',

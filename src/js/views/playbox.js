@@ -58,6 +58,7 @@ App.Views.Playbox = Backbone.View.extend({
 
     initVolumeBar: function () {
         var that = this;
+        that.currentVolume = that.volumeDefault;
         that.audio.setVolume( that.volumeDefault );
 
         this.$volumeBar.slider({
