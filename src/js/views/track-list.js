@@ -9,6 +9,7 @@ App.Views.TrackList = Backbone.View.extend({
         App.Events.on('add-files-to-playlist', this.render, this);
         App.Events.on('set-active-class-for-track', this.setActiveClassForTrack, this);
         App.Events.on('stop-playing-track', this.setActiveClassForTrack, this);
+        App.Events.on('scroll-list-to-top', this.scrollTopList, this);
 
         App.Tracks.fetch();
     },
@@ -51,5 +52,11 @@ App.Views.TrackList = Backbone.View.extend({
 
         this.$el.find('li:not([data-index="'+ currentIndex +'"])').removeClass('active');
         this.$el.find('li[data-index="'+ currentIndex +'"]').addClass('active');
+    },
+
+    scrollTopList: function (currentIndex) {
+        var position = this.$el.find( '[data-index="'+ currentIndex +'"]').position();
+
+        this.$el.scrollTop( position.top );
     }
 });

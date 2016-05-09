@@ -94,6 +94,8 @@ App.Views.Playbox = Backbone.View.extend({
                 },
                 trackEnded: function () {
                     that.nextTrack();
+
+                    App.Events.trigger('scroll-list-to-top', that.currenTrackIndex);
                 }
 
             } )[0];
@@ -243,10 +245,8 @@ App.Views.Playbox = Backbone.View.extend({
 
     trackDurationCorrection: function (duration) {
         if (this.currentTrackModel) {
-            var currentDuration = this.currentTrackModel.get('duration');
 
-            if (currentDuration !== duration) {
-                console.log('correcting of track duration');
+            if (this.currentTrackModel.get('duration') !== duration) {
                 this.currentTrackModel.set('duration', duration);
                 this.currentTrackModel.save();
             }
